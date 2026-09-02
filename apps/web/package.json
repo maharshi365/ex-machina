@@ -1,0 +1,20 @@
+{
+  "name": "@ex-machina/web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Web app",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "bun test --pass-with-no-tests",
+    "build": "echo \"no build needed\" && exit 0",
+    "dev": "bun --hot src/index.ts",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ex-machina/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@ex-machina/configs": "workspace:*"
+  }
+}

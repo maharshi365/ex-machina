@@ -1,0 +1,19 @@
+{
+  "$schema": "../../node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "import", "oxc"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "pedantic": "off",
+    "perf": "warn",
+    "nursery": "off"
+  },
+  "rules": {},
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.mts", "*.cts"],
+      "rules": {}
+    }
+  ],
+  "ignorePatterns": ["node_modules", "dist", "build", ".bun", "bun.lockb"]
+}

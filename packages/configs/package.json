@@ -1,0 +1,26 @@
+{
+  "name": "@ex-machina/configs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared configs for ex-machina (oxlint, oxfmt, typescript)",
+  "files": [
+    "tsconfig.base.json",
+    "oxlint.base.json",
+    "oxfmt.base.json"
+  ],
+  "type": "module",
+  "exports": {
+    "./tsconfig": "./tsconfig.base.json",
+    "./tsconfig.base": "./tsconfig.base.json",
+    "./oxlint": "./oxlint.base.json",
+    "./oxlint.base": "./oxlint.base.json",
+    "./oxfmt": "./oxfmt.base.json",
+    "./oxfmt.base": "./oxfmt.base.json"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "bun test --pass-with-no-tests",
+    "build": "echo \"no build needed for @ex-machina/configs\" && exit 0",
+    "clean": "echo \"no clean needed\" && exit 0"
+  }
+}

@@ -1,0 +1,38 @@
+# dependencies
+node_modules/
+bun.lockb
+
+# build outputs
+dist/
+build/
+.next/
+out/
+.turbo/
+.cache/
+
+# env
+.env
+.env.*
+!.env.example
+
+# logs
+logs
+*.log
+npm-debug.log*
+bun-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# os
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+
+# coverage
+coverage/
+.nyc_output/
