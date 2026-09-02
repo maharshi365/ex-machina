@@ -1,17 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react'
 import { authClient } from '#/lib/auth-client'
 
 export const Route = createFileRoute('/login')({ component: LoginPage })
 
 function LoginPage() {
   const { data: session, isPending } = authClient.useSession()
-  const [isSignUp, setIsSignUp] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
 
   if (isPending) {
     return (
@@ -25,9 +18,7 @@ function LoginPage() {
     return (
       <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6">
         <h1 className="text-2xl font-semibold">Welcome back</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Signed in as {session.user.email}
-        </p>
+        <p className="mt-1 text-sm text-muted-foreground">Signed in as {session.user.email}</p>
         <div className="mt-6 rounded-lg border p-4">
           <p className="text-sm font-medium">{session.user.name}</p>
           <p className="text-sm text-muted-foreground">{session.user.email}</p>
@@ -42,96 +33,39 @@ function LoginPage() {
     )
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
-    try {
-      if (isSignUp) {
-        const res = await authClient.signUp.email({ email, password, name })
-        if (res.error) setError(res.error.message ?? 'Sign up failed')
-      } else {
-        const res = await authClient.signIn.email({ email, password })
-        if (res.error) setError(res.error.message ?? 'Sign in failed')
-      }
-    } catch {
-      setError('Unexpected error')
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6">
-      <h1 className="text-2xl font-semibold">{isSignUp ? 'Create account' : 'Sign in'}</h1>
-      <p className="mt-1 text-sm text-muted-foreground">
-        {isSignUp ? 'Enter your details to create an account' : 'Enter your email to sign in'}
-      </p>
-
-      <form onSubmit={handleSubmit} className="mt-6 grid gap-4">
-        {isSignUp && (
-          <div className="grid gap-2">
-            <label htmlFor="name" className="text-sm font-medium">
-              Name
-            </label>
-            <input
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              className="flex h-9 rounded-md border border-input bg-transparent px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-            />
-          </div>
-        )}
-        <div className="grid gap-2">
-          <label htmlFor="email" className="text-sm font-medium">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="flex h-9 rounded-md border border-input bg-transparent px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-          />
-        </div>
-        <div className="grid gap-2">
-          <label htmlFor="password" className="text-sm font-medium">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={8}
-            className="flex h-9 rounded-md border border-input bg-transparent px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-          />
-        </div>
-
-        {error && <p className="text-sm text-destructive">{error}</p>}
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
-        >
-          {loading ? 'Please wait...' : isSignUp ? 'Create account' : 'Sign in'}
-        </button>
-      </form>
+      <h1 className="text-2xl font-semibold">Sign in</h1>
+      <p className="mt-1 text-sm text-muted-foreground">Continue with Google to access ex-machina.</p>
 
       <button
-        type="button"
-        onClick={() => {
-          setIsSignUp(!isSignUp)
-          setError('')
-        }}
-        className="mt-4 text-center text-sm text-muted-foreground hover:text-foreground"
+        onClick={() => void authClient.signIn.social({ provider: 'google', callbackURL: '/' })}
+        className="mt-6 inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border bg-white px-4 text-sm font-medium text-zinc-900 hover:bg-zinc-50"
       >
-        {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            fill="#4285F4"
+            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.07 5.07 0 0 1-2.2 3.31v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.09z"
+          />
+          <path
+            fill="#34A853"
+            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+          />
+          <path
+            fill="#FBBC05"
+            d="M5.84 14.09A6.97 6.97 0 0 1 5.48 12s0-.4.36-2.09V7.07H2.18A11 11 0 0 0 1 12c0 1.78.42 3.45 1.18 4.93l3.66-2.84z"
+          />
+          <path
+            fill="#EA4335"
+            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+          />
+        </svg>
+        Continue with Google
       </button>
+
+      <p className="mt-4 text-center text-xs text-muted-foreground">
+        By continuing you agree to our Terms.
+      </p>
     </main>
   )
 }
