@@ -1,0 +1,28 @@
+{
+  "name": "@ex-machina/db",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Database layer for ex-machina (MongoDB)",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts",
+    "./agents": "./src/agents.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "bun test --pass-with-no-tests",
+    "build": "echo \"no build needed\" && exit 0",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "mongodb": "^6.18.0"
+  },
+  "devDependencies": {
+    "@ex-machina/configs": "workspace:*",
+    "@types/node": "^22.10.2",
+    "mongodb-memory-server": "^11.2.0",
+    "typescript": "^6.0.2"
+  }
+}

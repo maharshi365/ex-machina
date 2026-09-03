@@ -2,15 +2,10 @@ import { betterAuth } from 'better-auth'
 import { mongodbAdapter } from 'better-auth/adapters/mongodb'
 import { organization } from 'better-auth/plugins'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
-import { MongoClient } from 'mongodb'
+import { getDb, getMongoClient } from '#/lib/db'
 
-const mongoUri =
-  process.env.MONGODB_URI ??
-  process.env.DATABASE_URL ??
-  'mongodb://localhost:27017/ex-machina'
-
-const client = new MongoClient(mongoUri)
-const db = client.db()
+const client = getMongoClient()
+const db = getDb()
 
 export const auth = betterAuth({
   database: mongodbAdapter(db, {
