@@ -1,16 +1,9 @@
 "use client"
 
 import * as React from "react"
-import {
-  Bot,
-  GalleryVerticalEnd,
-  LayoutDashboard,
-  Sparkles,
-  SquareTerminal,
-} from "lucide-react"
+import { Bot, GalleryVerticalEnd, Sparkles } from "lucide-react"
 import { Link, useRouterState } from "@tanstack/react-router"
 
-import { NavMain } from "#/components/nav-main.tsx"
 import { NavUser } from "#/components/nav-user.tsx"
 import { TeamSwitcher } from "#/components/team-switcher.tsx"
 import {
@@ -33,18 +26,6 @@ const data = {
       name: "ex-machina",
       logo: GalleryVerticalEnd,
       plan: "Workspace",
-    },
-  ],
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: LayoutDashboard,
-    },
-    {
-      title: "Onboarding",
-      url: "/onboarding",
-      icon: SquareTerminal,
     },
   ],
   library: [
@@ -77,7 +58,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
         <SidebarGroup>
           <SidebarGroupLabel>Library</SidebarGroupLabel>
           <SidebarMenu>
