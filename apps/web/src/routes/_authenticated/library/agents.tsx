@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { LayoutDashboard } from 'lucide-react'
+import { Bot } from 'lucide-react'
 import { AppSidebar } from '#/components/app-sidebar'
 import {
   Breadcrumb,
@@ -9,19 +9,16 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '#/components/ui/breadcrumb'
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '#/components/ui/empty'
+import { Button } from '#/components/ui/button'
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '#/components/ui/empty'
 import { Separator } from '#/components/ui/separator'
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from '#/components/ui/sidebar'
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '#/components/ui/sidebar'
 
-export const Route = createFileRoute('/_authenticated/dashboard')({
-  component: DashboardPage,
+export const Route = createFileRoute('/_authenticated/library/agents')({
+  component: AgentsPage,
 })
 
-function DashboardPage() {
+function AgentsPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -33,11 +30,11 @@ function DashboardPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">ex-machina</BreadcrumbLink>
+                  <BreadcrumbLink href="#">Library</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                  <BreadcrumbPage>Agents</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -47,13 +44,15 @@ function DashboardPage() {
           <Empty className="border bg-card">
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <LayoutDashboard />
+                <Bot />
               </EmptyMedia>
-              <EmptyTitle>Dashboard ready</EmptyTitle>
-              <EmptyDescription>
-                Your authenticated dashboard is set up with sidebar-07. Add widgets and data here.
-              </EmptyDescription>
+              <EmptyTitle>No agents yet</EmptyTitle>
+              <EmptyDescription>Create your first agent to automate workflows. Agents will appear here.</EmptyDescription>
             </EmptyHeader>
+            <EmptyContent>
+              <Button>Create agent</Button>
+              <Button variant="outline">Learn more</Button>
+            </EmptyContent>
           </Empty>
         </div>
       </SidebarInset>
