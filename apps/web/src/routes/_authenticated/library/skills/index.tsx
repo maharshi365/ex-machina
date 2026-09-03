@@ -25,7 +25,6 @@ import {
   DialogTitle,
 } from '#/components/ui/dialog'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '#/components/ui/empty'
-import { Separator } from '#/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '#/components/ui/sidebar'
 import { Skeleton } from '#/components/ui/skeleton'
 import { getActiveOrganizationServerFn } from '#/lib/org-api'
@@ -51,8 +50,7 @@ function SkillsPage() {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <SkillsHeader />
-          <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          <div className="flex flex-1 flex-col gap-4 p-4">
             <Card className="border-dashed">
               <CardHeader className="text-center">
                 <div className="mx-auto flex size-12 items-center justify-center rounded-full border bg-muted">
@@ -74,28 +72,6 @@ function SkillsPage() {
   }
 
   return <SkillsManager organizationId={activeOrg.id} organizationName={activeOrg.name} queryClient={queryClient} />
-}
-
-function SkillsHeader() {
-  return (
-    <header className="sticky top-0 z-20 flex h-16 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-      <div className="flex items-center gap-2 px-4">
-        <SidebarTrigger className="-ml-1" />
-        <Separator orientation="vertical" className="mr-2 h-4" />
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink href="#">Library</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Skills</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-    </header>
-  )
 }
 
 function SkillsManager({
@@ -125,14 +101,24 @@ function SkillsManager({
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <SkillsHeader />
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="sticky top-16 z-10 -mx-4 flex items-center justify-between gap-2 border-b bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div>
-              <h1 className="text-xl font-semibold tracking-tight">Skills</h1>
-              <p className="text-sm text-muted-foreground">
-                {organizationName} · {skills?.length ?? 0} skills · SKILL.md spec
-              </p>
+          <div className="sticky top-0 z-10 -mx-4 flex items-center justify-between gap-2 border-b bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="flex min-w-0 items-center gap-2">
+              <SidebarTrigger className="-ml-1" />
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem className="hidden md:block">
+                    <BreadcrumbLink href="#">Library</BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator className="hidden md:block" />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>Skills</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+              <span className="hidden truncate text-sm text-muted-foreground sm:inline">
+                · {organizationName} · {skills?.length ?? 0} skills
+              </span>
             </div>
             <Button asChild>
               <Link to="/library/skills/new">
