@@ -116,9 +116,6 @@ function SkillsManager({
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
-              <span className="hidden truncate text-sm text-muted-foreground sm:inline">
-                · {organizationName} · {skills?.length ?? 0} skills
-              </span>
             </div>
             <Button asChild>
               <Link to="/library/skills/new">

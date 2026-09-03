@@ -116,9 +116,6 @@ function AgentsManager({
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
-              <span className="hidden truncate text-sm text-muted-foreground sm:inline">
-                · {organizationName} · {agents?.length ?? 0} agents
-              </span>
             </div>
             <Button asChild>
               <Link to="/library/agents/new">
