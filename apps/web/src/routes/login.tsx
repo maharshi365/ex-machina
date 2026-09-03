@@ -1,10 +1,35 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
+import { getRequest } from '@tanstack/react-start/server'
+import { useEffect } from 'react'
+import { auth } from '#/lib/auth'
 import { authClient } from '#/lib/auth-client'
 
-export const Route = createFileRoute('/login')({ component: LoginPage })
+const getSession = createServerFn({ method: 'GET' }).handler(async () => {
+  const request = getRequest()
+  const session = await auth.api.getSession({ headers: request.headers })
+  return session
+})
+
+export const Route = createFileRoute('/login')({
+  beforeLoad: async () => {
+    const session = await getSession()
+    if (session?.user) {
+      throw redirect({ to: '/onboarding' })
+    }
+  },
+  component: LoginPage,
+})
 
 function LoginPage() {
+  const navigate = useNavigate()
   const { data: session, isPending } = authClient.useSession()
+
+  useEffect(() => {
+    if (!isPending && session?.user) {
+      void navigate({ to: '/onboarding' })
+    }
+  }, [isPending, session, navigate])
 
   if (isPending) {
     return (
@@ -16,19 +41,8 @@ function LoginPage() {
 
   if (session?.user) {
     return (
-      <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6">
-        <h1 className="text-2xl font-semibold">Welcome back</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Signed in as {session.user.email}</p>
-        <div className="mt-6 rounded-lg border p-4">
-          <p className="text-sm font-medium">{session.user.name}</p>
-          <p className="text-sm text-muted-foreground">{session.user.email}</p>
-        </div>
-        <button
-          onClick={() => void authClient.signOut()}
-          className="mt-4 inline-flex h-9 items-center justify-center rounded-md border px-4 text-sm font-medium hover:bg-accent"
-        >
-          Sign out
-        </button>
+      <main className="mx-auto flex min-h-screen max-w-md items-center justify-center px-6">
+        <p className="text-sm text-muted-foreground">Redirecting to onboarding…</p>
       </main>
     )
   }
@@ -39,7 +53,7 @@ function LoginPage() {
       <p className="mt-1 text-sm text-muted-foreground">Continue with Google to access ex-machina.</p>
 
       <button
-        onClick={() => void authClient.signIn.social({ provider: 'google', callbackURL: '/' })}
+        onClick={() => void authClient.signIn.social({ provider: 'google', callbackURL: '/onboarding' })}
         className="mt-6 inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border bg-white px-4 text-sm font-medium text-zinc-900 hover:bg-zinc-50"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
