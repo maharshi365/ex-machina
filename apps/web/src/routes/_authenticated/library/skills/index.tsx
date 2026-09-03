@@ -23,17 +23,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '#/components/ui/dialog'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '#/components/ui/empty'
-import { Input } from '#/components/ui/input'
-import { Label } from '#/components/ui/label'
 import { Separator } from '#/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '#/components/ui/sidebar'
 import { Skeleton } from '#/components/ui/skeleton'
-import { Textarea } from '#/components/ui/textarea'
 import { getActiveOrganizationServerFn } from '#/lib/org-api'
-import { createSkillMutationOptions, deleteSkillMutationOptions, skillKeys, skillsQueryOptions } from '#/lib/skills.queries'
+import { deleteSkillMutationOptions, skillKeys, skillsQueryOptions } from '#/lib/skills.queries'
 
 export const Route = createFileRoute('/_authenticated/library/skills/')({
   loader: async ({ context }) => {
@@ -113,18 +109,7 @@ function SkillsManager({
 }) {
   const { data: skills, isLoading, error } = useQuery(skillsQueryOptions(organizationId))
 
-  const [createOpen, setCreateOpen] = React.useState(false)
   const [deleting, setDeleting] = React.useState<{ _id: string; name: string } | null>(null)
-
-  const createMutation = useMutation({
-    ...createSkillMutationOptions(organizationId),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: skillKeys.list(organizationId) })
-      setCreateOpen(false)
-      toast.success('Skill created')
-    },
-    onError: (e: unknown) => toast.error(e instanceof Error ? e.message : 'Failed to create skill'),
-  })
 
   const deleteMutation = useMutation({
     ...deleteSkillMutationOptions(organizationId),
@@ -149,22 +134,12 @@ function SkillsManager({
                 {organizationName} · {skills?.length ?? 0} skills · SKILL.md spec
               </p>
             </div>
-            <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus className="size-4" />
-                  Create skill
-                </Button>
-              </DialogTrigger>
-              <SkillFormDialog
-                title="Create skill"
-                description="SKILL.md frontmatter requires spec-compliant name + description. Body is loaded progressively."
-                submitLabel="Create"
-                isPending={createMutation.isPending}
-                onSubmit={(values) => createMutation.mutate(values)}
-                onClose={() => setCreateOpen(false)}
-              />
-            </Dialog>
+            <Button asChild>
+              <Link to="/library/skills/new">
+                <Plus className="size-4" />
+                Create skill
+              </Link>
+            </Button>
           </div>
 
           {isLoading ? (
@@ -198,9 +173,11 @@ function SkillsManager({
                 <EmptyDescription>Skills extend agent capabilities per the Agent Skills spec. They are scoped to {organizationName}.</EmptyDescription>
               </EmptyHeader>
               <EmptyContent>
-                <Button onClick={() => setCreateOpen(true)}>
-                  <Plus className="size-4" />
-                  Create skill
+                <Button asChild>
+                  <Link to="/library/skills/new">
+                    <Plus className="size-4" />
+                    Create skill
+                  </Link>
                 </Button>
                 <Button variant="outline" asChild>
                   <Link to="/dashboard">Go to dashboard</Link>
@@ -274,118 +251,5 @@ function SkillsManager({
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
-}
-
-function SkillFormDialog({
-  title,
-  description,
-  submitLabel,
-  initialValues,
-  isPending,
-  onSubmit,
-  onClose,
-}: {
-  title: string
-  description: string
-  submitLabel: string
-  initialValues?: { name: string; description: string; content: string }
-  isPending: boolean
-  onSubmit: (values: { name: string; description: string; content: string }) => void
-  onClose: () => void
-}) {
-  const [name, setName] = React.useState(initialValues?.name ?? '')
-  const [desc, setDesc] = React.useState(initialValues?.description ?? '')
-  const [content, setContent] = React.useState(initialValues?.content ?? '')
-
-  React.useEffect(() => {
-    setName(initialValues?.name ?? '')
-    setDesc(initialValues?.description ?? '')
-    setContent(initialValues?.content ?? '')
-  }, [initialValues])
-
-  const nameError = React.useMemo(() => {
-    if (!name) return null
-    if (name.length > 64) return 'Max 64 characters'
-    if (!/^[a-z0-9-]+$/.test(name)) return 'Only lowercase a-z, 0-9, hyphens'
-    if (name.startsWith('-') || name.endsWith('-')) return 'Must not start/end with hyphen'
-    if (name.includes('--')) return 'No consecutive hyphens'
-    if (name.includes('<') || name.includes('>')) return 'No XML tags'
-    const lower = name.toLowerCase()
-    if (lower.includes('anthropic') || lower.includes('claude')) return 'No reserved words (anthropic/claude)'
-    return null
-  }, [name])
-
-  const descTooLong = desc.length > 1024
-  const canSubmit = name.trim() && desc.trim() && content.trim() && !nameError && !descTooLong
-
-  return (
-    <DialogContent className="sm:max-w-xl">
-      <DialogHeader>
-        <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>{description}</DialogDescription>
-      </DialogHeader>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          if (!canSubmit) return
-          onSubmit({ name: name.trim(), description: desc.trim(), content: content.trim() })
-        }}
-        className="space-y-4"
-      >
-        <div className="space-y-2">
-          <Label htmlFor="skill-name">Name *</Label>
-          <Input
-            id="skill-name"
-            value={name}
-            onChange={(e) => setName(e.target.value.toLowerCase())}
-            placeholder="pdf-processing"
-            required
-            maxLength={64}
-          />
-          <p className="text-xs text-muted-foreground">1-64 chars, lowercase a-z, 0-9, hyphens only; no --, no start/end -, no anthropic/claude, no &lt;&gt;.</p>
-          {nameError && <p className="text-xs text-destructive">{nameError}</p>}
-          {name && !nameError && <p className="text-xs text-emerald-600">✓ spec-compliant</p>}
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="skill-desc">Description *</Label>
-          <Textarea
-            id="skill-desc"
-            value={desc}
-            onChange={(e) => setDesc(e.target.value)}
-            placeholder="Extract text and tables from PDFs, fill forms... Use when working with PDF files or when the user mentions PDFs."
-            className="min-h-[90px]"
-            required
-            maxLength={1024}
-          />
-          <div className="flex justify-between text-xs">
-            <span className="text-muted-foreground">What it does + when to use it. Primary trigger for agents.</span>
-            <span className={descTooLong ? 'text-destructive' : 'text-muted-foreground'}>{desc.length}/1024</span>
-          </div>
-          {(desc.includes('<') || desc.includes('>')) && <p className="text-xs text-destructive">Must not contain XML tags (&lt; &gt;)</p>}
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="skill-content">Content (SKILL.md body) *</Label>
-          <Textarea
-            id="skill-content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder={"# PDF Processing\n\n## Instructions\nStep-by-step guidance for Claude...\n\n## Examples\n..."}
-            className="min-h-[160px] font-mono text-sm"
-            required
-          />
-          <p className="text-xs text-muted-foreground">Markdown instructions loaded when skill triggers (&lt;500 lines ideal). Loaded progressively — see spec levels 2/3.</p>
-        </div>
-        <DialogFooter>
-          <Button type="button" variant="outline" onClick={onClose} disabled={isPending}>
-            Cancel
-          </Button>
-          <Button type="submit" disabled={!canSubmit || isPending}>
-            {isPending && <Loader2 className="size-4 animate-spin" />}
-            {submitLabel}
-          </Button>
-        </DialogFooter>
-      </form>
-    </DialogContent>
   )
 }

@@ -23,16 +23,12 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '#/components/ui/dialog'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '#/components/ui/empty'
-import { Input } from '#/components/ui/input'
-import { Label } from '#/components/ui/label'
 import { Separator } from '#/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '#/components/ui/sidebar'
 import { Skeleton } from '#/components/ui/skeleton'
-import { Textarea } from '#/components/ui/textarea'
-import { agentKeys, agentsQueryOptions, createAgentMutationOptions, deleteAgentMutationOptions } from '#/lib/agents.queries'
+import { agentKeys, agentsQueryOptions, deleteAgentMutationOptions } from '#/lib/agents.queries'
 import { getActiveOrganizationServerFn } from '#/lib/org-api'
 
 export const Route = createFileRoute('/_authenticated/library/agents/')({
@@ -113,18 +109,7 @@ function AgentsManager({
 }) {
   const { data: agents, isLoading, error } = useQuery(agentsQueryOptions(organizationId))
 
-  const [createOpen, setCreateOpen] = React.useState(false)
   const [deleting, setDeleting] = React.useState<{ _id: string; name: string } | null>(null)
-
-  const createMutation = useMutation({
-    ...createAgentMutationOptions(organizationId),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: agentKeys.list(organizationId) })
-      setCreateOpen(false)
-      toast.success('Agent created')
-    },
-    onError: (e: unknown) => toast.error(e instanceof Error ? e.message : 'Failed to create agent'),
-  })
 
   const deleteMutation = useMutation({
     ...deleteAgentMutationOptions(organizationId),
@@ -149,22 +134,12 @@ function AgentsManager({
                 {organizationName} · {agents?.length ?? 0} agents
               </p>
             </div>
-            <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus className="size-4" />
-                  Create agent
-                </Button>
-              </DialogTrigger>
-              <AgentFormDialog
-                title="Create agent"
-                description="Create a new agent for this organization."
-                submitLabel="Create"
-                isPending={createMutation.isPending}
-                onSubmit={(values) => createMutation.mutate(values)}
-                onClose={() => setCreateOpen(false)}
-              />
-            </Dialog>
+            <Button asChild>
+              <Link to="/library/agents/new">
+                <Plus className="size-4" />
+                Create agent
+              </Link>
+            </Button>
           </div>
 
           {isLoading ? (
@@ -198,9 +173,11 @@ function AgentsManager({
                 <EmptyDescription>Create your first agent to automate workflows. Agents are scoped to {organizationName}.</EmptyDescription>
               </EmptyHeader>
               <EmptyContent>
-                <Button onClick={() => setCreateOpen(true)}>
-                  <Plus className="size-4" />
-                  Create agent
+                <Button asChild>
+                  <Link to="/library/agents/new">
+                    <Plus className="size-4" />
+                    Create agent
+                  </Link>
                 </Button>
                 <Button variant="outline" asChild>
                   <Link to="/dashboard">Go to dashboard</Link>
@@ -276,82 +253,5 @@ function AgentsManager({
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
-}
-
-function AgentFormDialog({
-  title,
-  description,
-  submitLabel,
-  initialValues,
-  isPending,
-  onSubmit,
-  onClose,
-}: {
-  title: string
-  description: string
-  submitLabel: string
-  initialValues?: { name: string; description: string; content: string }
-  isPending: boolean
-  onSubmit: (values: { name: string; description: string; content: string }) => void
-  onClose: () => void
-}) {
-  const [name, setName] = React.useState(initialValues?.name ?? '')
-  const [desc, setDesc] = React.useState(initialValues?.description ?? '')
-  const [content, setContent] = React.useState(initialValues?.content ?? '')
-
-  React.useEffect(() => {
-    setName(initialValues?.name ?? '')
-    setDesc(initialValues?.description ?? '')
-    setContent(initialValues?.content ?? '')
-  }, [initialValues])
-
-  const canSubmit = name.trim() && desc.trim() && content.trim()
-
-  return (
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>{description}</DialogDescription>
-      </DialogHeader>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          if (!canSubmit) return
-          onSubmit({ name: name.trim(), description: desc.trim(), content: content.trim() })
-        }}
-        className="space-y-4"
-      >
-        <div className="space-y-2">
-          <Label htmlFor="agent-name">Name</Label>
-          <Input id="agent-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Jarvis" required />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="agent-desc">Description</Label>
-          <Input id="agent-desc" value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="Helpful assistant for workflows" required />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="agent-content">Content</Label>
-          <Textarea
-            id="agent-content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="You are a helpful agent..."
-            className="min-h-[140px]"
-            required
-          />
-          <p className="text-xs text-muted-foreground">System prompt / instructions for the agent.</p>
-        </div>
-        <DialogFooter>
-          <Button type="button" variant="outline" onClick={onClose} disabled={isPending}>
-            Cancel
-          </Button>
-          <Button type="submit" disabled={!canSubmit || isPending}>
-            {isPending && <Loader2 className="size-4 animate-spin" />}
-            {submitLabel}
-          </Button>
-        </DialogFooter>
-      </form>
-    </DialogContent>
   )
 }

@@ -17,8 +17,10 @@ import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authentic
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AuthenticatedLibraryAgentsIndexRouteImport } from './routes/_authenticated/library/agents/index'
 import { Route as AuthenticatedLibraryAgentsAgentIdRouteImport } from './routes/_authenticated/library/agents/$agentId'
+import { Route as AuthenticatedLibraryAgentsNewRouteImport } from './routes/_authenticated/library/agents/new'
 import { Route as AuthenticatedLibrarySkillsIndexRouteImport } from './routes/_authenticated/library/skills/index'
 import { Route as AuthenticatedLibrarySkillsSkillIdRouteImport } from './routes/_authenticated/library/skills/$skillId'
+import { Route as AuthenticatedLibrarySkillsNewRouteImport } from './routes/_authenticated/library/skills/new'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -61,6 +63,12 @@ const AuthenticatedLibraryAgentsAgentIdRoute =
     path: '/library/agents/$agentId',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedLibraryAgentsNewRoute =
+  AuthenticatedLibraryAgentsNewRouteImport.update({
+    id: '/library/agents/new',
+    path: '/library/agents/new',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedLibrarySkillsIndexRoute =
   AuthenticatedLibrarySkillsIndexRouteImport.update({
     id: '/library/skills/',
@@ -73,6 +81,12 @@ const AuthenticatedLibrarySkillsSkillIdRoute =
     path: '/library/skills/$skillId',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedLibrarySkillsNewRoute =
+  AuthenticatedLibrarySkillsNewRouteImport.update({
+    id: '/library/skills/new',
+    path: '/library/skills/new',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -81,7 +95,9 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/library/agents/$agentId': typeof AuthenticatedLibraryAgentsAgentIdRoute
+  '/library/agents/new': typeof AuthenticatedLibraryAgentsNewRoute
   '/library/skills/$skillId': typeof AuthenticatedLibrarySkillsSkillIdRoute
+  '/library/skills/new': typeof AuthenticatedLibrarySkillsNewRoute
   '/library/agents/': typeof AuthenticatedLibraryAgentsIndexRoute
   '/library/skills/': typeof AuthenticatedLibrarySkillsIndexRoute
 }
@@ -92,7 +108,9 @@ export interface FileRoutesByTo {
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/library/agents/$agentId': typeof AuthenticatedLibraryAgentsAgentIdRoute
+  '/library/agents/new': typeof AuthenticatedLibraryAgentsNewRoute
   '/library/skills/$skillId': typeof AuthenticatedLibrarySkillsSkillIdRoute
+  '/library/skills/new': typeof AuthenticatedLibrarySkillsNewRoute
   '/library/agents': typeof AuthenticatedLibraryAgentsIndexRoute
   '/library/skills': typeof AuthenticatedLibrarySkillsIndexRoute
 }
@@ -105,7 +123,9 @@ export interface FileRoutesById {
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_authenticated/library/agents/$agentId': typeof AuthenticatedLibraryAgentsAgentIdRoute
+  '/_authenticated/library/agents/new': typeof AuthenticatedLibraryAgentsNewRoute
   '/_authenticated/library/skills/$skillId': typeof AuthenticatedLibrarySkillsSkillIdRoute
+  '/_authenticated/library/skills/new': typeof AuthenticatedLibrarySkillsNewRoute
   '/_authenticated/library/agents/': typeof AuthenticatedLibraryAgentsIndexRoute
   '/_authenticated/library/skills/': typeof AuthenticatedLibrarySkillsIndexRoute
 }
@@ -118,7 +138,9 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/api/auth/$'
     | '/library/agents/$agentId'
+    | '/library/agents/new'
     | '/library/skills/$skillId'
+    | '/library/skills/new'
     | '/library/agents/'
     | '/library/skills/'
   fileRoutesByTo: FileRoutesByTo
@@ -129,7 +151,9 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/api/auth/$'
     | '/library/agents/$agentId'
+    | '/library/agents/new'
     | '/library/skills/$skillId'
+    | '/library/skills/new'
     | '/library/agents'
     | '/library/skills'
   id:
@@ -141,7 +165,9 @@ export interface FileRouteTypes {
     | '/_authenticated/onboarding'
     | '/api/auth/$'
     | '/_authenticated/library/agents/$agentId'
+    | '/_authenticated/library/agents/new'
     | '/_authenticated/library/skills/$skillId'
+    | '/_authenticated/library/skills/new'
     | '/_authenticated/library/agents/'
     | '/_authenticated/library/skills/'
   fileRoutesById: FileRoutesById
@@ -211,6 +237,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLibraryAgentsAgentIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/library/agents/new': {
+      id: '/_authenticated/library/agents/new'
+      path: '/library/agents/new'
+      fullPath: '/library/agents/new'
+      preLoaderRoute: typeof AuthenticatedLibraryAgentsNewRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/library/skills/': {
       id: '/_authenticated/library/skills/'
       path: '/library/skills'
@@ -225,6 +258,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLibrarySkillsSkillIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/library/skills/new': {
+      id: '/_authenticated/library/skills/new'
+      path: '/library/skills/new'
+      fullPath: '/library/skills/new'
+      preLoaderRoute: typeof AuthenticatedLibrarySkillsNewRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
@@ -232,7 +272,9 @@ interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedLibraryAgentsAgentIdRoute: typeof AuthenticatedLibraryAgentsAgentIdRoute
+  AuthenticatedLibraryAgentsNewRoute: typeof AuthenticatedLibraryAgentsNewRoute
   AuthenticatedLibrarySkillsSkillIdRoute: typeof AuthenticatedLibrarySkillsSkillIdRoute
+  AuthenticatedLibrarySkillsNewRoute: typeof AuthenticatedLibrarySkillsNewRoute
   AuthenticatedLibraryAgentsIndexRoute: typeof AuthenticatedLibraryAgentsIndexRoute
   AuthenticatedLibrarySkillsIndexRoute: typeof AuthenticatedLibrarySkillsIndexRoute
 }
@@ -242,8 +284,10 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedLibraryAgentsAgentIdRoute:
     AuthenticatedLibraryAgentsAgentIdRoute,
+  AuthenticatedLibraryAgentsNewRoute: AuthenticatedLibraryAgentsNewRoute,
   AuthenticatedLibrarySkillsSkillIdRoute:
     AuthenticatedLibrarySkillsSkillIdRoute,
+  AuthenticatedLibrarySkillsNewRoute: AuthenticatedLibrarySkillsNewRoute,
   AuthenticatedLibraryAgentsIndexRoute: AuthenticatedLibraryAgentsIndexRoute,
   AuthenticatedLibrarySkillsIndexRoute: AuthenticatedLibrarySkillsIndexRoute,
 }
