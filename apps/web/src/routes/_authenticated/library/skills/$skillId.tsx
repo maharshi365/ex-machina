@@ -64,7 +64,6 @@ function SkillEditPage() {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <EditHeader skillId={skillId} />
           <div className="p-4">
             <Card className="border-dashed">
               <CardHeader className="text-center">
@@ -82,32 +81,6 @@ function SkillEditPage() {
   }
 
   return <SkillEditManager organizationId={activeOrg.id} organizationName={activeOrg.name} skillId={skillId} queryClient={queryClient} navigate={navigate} />
-}
-
-function EditHeader({ skillId }: { skillId: string }) {
-  return (
-    <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-      <div className="flex items-center gap-2 px-4">
-        <SidebarTrigger className="-ml-1" />
-        <Separator orientation="vertical" className="mr-2 h-4" />
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink asChild><Link to="/library/skills">Library</Link></BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
-            <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink asChild><Link to="/library/skills">Skills</Link></BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
-            <BreadcrumbItem>
-              <BreadcrumbPage className="font-mono text-xs">{skillId.slice(0, 8)}…</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-    </header>
-  )
 }
 
 function SkillEditManager({
@@ -159,7 +132,6 @@ function SkillEditManager({
       await queryClient.invalidateQueries({ queryKey: skillKeys.list(organizationId) })
       await queryClient.invalidateQueries({ queryKey: skillKeys.detail(organizationId, skillId) })
       toast.success('Skill saved')
-      void navigate({ to: '/library/skills' })
     },
     onError: (e: unknown) => toast.error(e instanceof Error ? e.message : 'Failed to save'),
   })
@@ -178,8 +150,7 @@ function SkillEditManager({
     return (
       <SidebarProvider>
         <AppSidebar />
-        <SidebarInset>
-          <EditHeader skillId={skillId} />
+        <SidebarInset className="flex h-svh flex-col overflow-hidden">
           <div className="p-4 space-y-4">
             <Skeleton className="h-8 w-48" />
             <Skeleton className="h-[60vh] w-full" />
@@ -194,7 +165,6 @@ function SkillEditManager({
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <EditHeader skillId={skillId} />
           <div className="p-4">
             <Card className="border-destructive">
               <CardHeader>
@@ -214,20 +184,25 @@ function SkillEditManager({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        <EditHeader skillId={skillId} />
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Button variant="ghost" size="icon" asChild>
-                <Link to="/library/skills"><ArrowLeft className="size-4" /></Link>
-              </Button>
-              <div>
-                <h1 className="text-2xl font-semibold tracking-tight flex items-center gap-2"><Sparkles className="size-5" />{skill.name}</h1>
-                <p className="text-sm text-muted-foreground">{organizationName} · SKILL.md spec · {skill._id}</p>
-              </div>
+      <SidebarInset className="flex h-svh flex-col overflow-hidden">
+        <div className="flex flex-1 flex-col min-h-0 overflow-hidden">
+          <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-2 border-b bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="flex min-w-0 items-center gap-2">
+              <SidebarTrigger className="-ml-1" />
+              <Separator orientation="vertical" className="mr-2 h-4" />
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem><BreadcrumbLink asChild><Link to="/library/skills">Skills</Link></BreadcrumbLink></BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem><BreadcrumbPage className="font-mono text-xs truncate max-w-[160px]">{skill.name}</BreadcrumbPage></BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+              <span className="hidden items-center gap-1 text-xs text-muted-foreground md:flex">
+                <span>·</span><Sparkles className="size-3" /><span className="truncate">{organizationName}</span>
+              </span>
             </div>
-            <div className="flex gap-2">
+            <div className="flex shrink-0 items-center gap-2">
+              <Button variant="ghost" asChild><Link to="/library/skills"><ArrowLeft className="size-4" />Back</Link></Button>
               <Button variant="destructive" onClick={() => setDeleteOpen(true)}><Trash2 className="size-4" />Delete</Button>
               <Button
                 onClick={() => updateMutation.mutate({ name: name.trim(), description: desc.trim(), content: content.trim() })}
@@ -238,14 +213,14 @@ function SkillEditManager({
             </div>
           </div>
 
-          <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
-            <Card className="flex flex-col">
-              <CardHeader>
-                <CardTitle>Edit skill — full SKILL.md</CardTitle>
-                <CardDescription>Frontmatter `name`/`description` + body `content` (progressive disclosure: Level 1 metadata always loaded, Level 2 body on trigger).</CardDescription>
+          <div className="flex flex-1 flex-col overflow-auto p-4">
+            <Card className="flex flex-1 flex-col overflow-hidden">
+              <CardHeader className="shrink-0">
+                <CardTitle className="flex items-center gap-2"><Sparkles className="size-5" />{skill.name}</CardTitle>
+                <CardDescription className="font-mono text-xs">{skill._id} · edited {new Date(skill.editedAt).toLocaleString()}</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4 flex-1 flex flex-col">
-                <div className="space-y-2">
+              <CardContent className="flex flex-1 flex-col gap-4 min-h-0 overflow-hidden">
+                <div className="space-y-2 shrink-0">
                   <Label htmlFor="edit-name">Name *</Label>
                   <Input
                     id="edit-name"
@@ -258,62 +233,35 @@ function SkillEditManager({
                   {nameError && <p className="text-xs text-destructive">{nameError}</p>}
                   {!nameError && name && <p className="text-xs text-emerald-600">✓ spec-compliant</p>}
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 shrink-0">
                   <Label htmlFor="edit-desc">Description *</Label>
                   <Textarea
                     id="edit-desc"
                     value={desc}
                     onChange={(e) => setDesc(e.target.value)}
                     placeholder="Extract text and tables from PDFs... Use when working with PDFs."
-                    className="min-h-[90px]"
+                    className="min-h-[80px]"
                     maxLength={1024}
                   />
                   <div className="flex justify-between text-xs">
-                    <span className="text-muted-foreground">What it does + when to use it (primary trigger).</span>
+                    <span className="text-muted-foreground">What it does + when to use (primary trigger).</span>
                     <span className={descTooLong ? 'text-destructive' : 'text-muted-foreground'}>{desc.length}/1024</span>
                   </div>
                   {(desc.includes('<') || desc.includes('>')) && <p className="text-xs text-destructive">No XML tags</p>}
                 </div>
-                <div className="space-y-2 flex-1 flex flex-col">
+                <div className="flex flex-1 flex-col gap-2 min-h-0">
                   <Label htmlFor="edit-content">Content · SKILL.md body (long)</Label>
                   <Textarea
                     id="edit-content"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     placeholder={"# PDF Processing\n\n## Instructions\n..."}
-                    className="min-h-[55vh] flex-1 font-mono text-sm leading-relaxed"
+                    className="flex-1 min-h-[260px] overflow-auto font-mono text-sm leading-relaxed"
                   />
-                  <p className="text-xs text-muted-foreground">{content.length} chars · full-page editor, scrollable · &lt;500 lines ideal per spec</p>
+                  <p className="text-xs text-muted-foreground shrink-0">{content.length} chars · fits in screen · scroll inside textarea</p>
                 </div>
               </CardContent>
             </Card>
-
-            <div className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-sm">Metadata</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2 text-sm">
-                  <div className="flex justify-between"><span className="text-muted-foreground">Organization</span><span className="font-medium">{organizationName}</span></div>
-                  <Separator />
-                  <div className="flex justify-between"><span className="text-muted-foreground">Created</span><span>{new Date(skill.createdAt).toLocaleString()}</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">Edited</span><span>{new Date(skill.editedAt).toLocaleString()}</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">Created by</span><span className="font-mono text-xs">{skill.createdBy.slice(0, 8)}…</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">Edited by</span><span className="font-mono text-xs">{skill.editedBy.slice(0, 8)}…</span></div>
-                </CardContent>
-              </Card>
-              <Card className="bg-muted/30">
-                <CardHeader>
-                  <CardTitle className="text-sm">Spec reminder</CardTitle>
-                </CardHeader>
-                <CardContent className="text-xs text-muted-foreground space-y-1">
-                  <p>• YAML frontmatter: `name` + `description` only required.</p>
-                  <p>• Level 1: name/desc always in context (~100 tokens).</p>
-                  <p>• Level 2: SKILL.md body when triggered.</p>
-                  <p>• Level 3: scripts/references/assets as needed.</p>
-                </CardContent>
-              </Card>
-            </div>
           </div>
 
           <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
@@ -335,5 +283,3 @@ function SkillEditManager({
     </SidebarProvider>
   )
 }
-
-

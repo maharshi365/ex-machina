@@ -42,7 +42,6 @@ function AgentCreatePage() {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <Header />
           <div className="p-4">
             <Card className="border-dashed">
               <CardHeader className="text-center">
@@ -60,26 +59,6 @@ function AgentCreatePage() {
   }
 
   return <Form organizationId={activeOrg.id} organizationName={activeOrg.name} queryClient={queryClient} navigate={navigate} />
-}
-
-function Header() {
-  return (
-    <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-      <div className="flex items-center gap-2 px-4">
-        <SidebarTrigger className="-ml-1" />
-        <Separator orientation="vertical" className="mr-2 h-4" />
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem className="hidden md:block"><BreadcrumbLink asChild><Link to="/library/agents">Library</Link></BreadcrumbLink></BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
-            <BreadcrumbItem className="hidden md:block"><BreadcrumbLink asChild><Link to="/library/agents">Agents</Link></BreadcrumbLink></BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
-            <BreadcrumbItem><BreadcrumbPage>New</BreadcrumbPage></BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-    </header>
-  )
 }
 
 function Form({
@@ -112,58 +91,62 @@ function Form({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        <Header />
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" asChild><Link to="/library/agents"><ArrowLeft className="size-4" /></Link></Button>
-            <div>
-              <h1 className="text-2xl font-semibold tracking-tight flex items-center gap-2"><Bot className="size-5" />New agent</h1>
-              <p className="text-sm text-muted-foreground">{organizationName} · full-page editor for long content</p>
+      <SidebarInset className="flex h-svh flex-col overflow-hidden">
+        <div className="flex flex-1 flex-col gap-0 min-h-0 overflow-hidden">
+          <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-2 border-b bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="flex min-w-0 items-center gap-2">
+              <SidebarTrigger className="-ml-1" />
+              <Separator orientation="vertical" className="mr-2 h-4" />
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem className="hidden md:block"><BreadcrumbLink asChild><Link to="/library/agents">Agents</Link></BreadcrumbLink></BreadcrumbItem>
+                  <BreadcrumbSeparator className="hidden md:block" />
+                  <BreadcrumbItem><BreadcrumbPage>New</BreadcrumbPage></BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+              <span className="hidden items-center gap-2 md:flex">
+                <span className="text-muted-foreground">·</span>
+                <Bot className="size-4 text-muted-foreground" />
+                <span className="truncate text-sm font-medium">{organizationName}</span>
+              </span>
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              <Button variant="ghost" asChild><Link to="/library/agents"><ArrowLeft className="size-4" />Back</Link></Button>
+              <Button variant="outline" asChild><Link to="/library/agents">Cancel</Link></Button>
+              <Button onClick={() => createMutation.mutate({ name: name.trim(), description: desc.trim(), content: content.trim() })} disabled={!canSubmit || createMutation.isPending}>
+                {createMutation.isPending ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />}Create
+              </Button>
             </div>
           </div>
 
-          <div className="grid gap-4 lg:grid-cols-[1fr_300px]">
-            <Card className="flex flex-col">
-              <CardHeader>
-                <CardTitle>Create agent</CardTitle>
-                <CardDescription>All fields required. Content is the system prompt — use full height for long instructions.</CardDescription>
+          <div className="flex flex-1 flex-col gap-4 overflow-auto p-4">
+            <Card className="flex flex-1 flex-col overflow-hidden">
+              <CardHeader className="shrink-0">
+                <CardTitle>New agent</CardTitle>
+                <CardDescription>Content fills remaining height — page fits in viewport, no extra scroll.</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4 flex-1 flex flex-col">
-                <div className="space-y-2">
-                  <Label htmlFor="new-name">Name</Label>
-                  <Input id="new-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Jarvis" />
+              <CardContent className="flex flex-1 flex-col gap-4 min-h-0 overflow-hidden p-4">
+                <div className="grid gap-4 sm:grid-cols-2 shrink-0">
+                  <div className="space-y-2">
+                    <Label htmlFor="new-name">Name</Label>
+                    <Input id="new-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Jarvis" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="new-desc">Description</Label>
+                    <Input id="new-desc" value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="Helpful assistant for workflows" />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="new-desc">Description</Label>
-                  <Input id="new-desc" value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="Helpful assistant for workflows" />
-                </div>
-                <div className="space-y-2 flex-1 flex flex-col">
+                <div className="flex flex-1 flex-col gap-2 min-h-0">
                   <Label htmlFor="new-content">Content · long prompt</Label>
                   <Textarea
                     id="new-content"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     placeholder="You are a helpful agent... (paste long instructions, markdown, examples)"
-                    className="min-h-[60vh] flex-1 font-mono text-sm leading-relaxed"
+                    className="flex-1 min-h-[280px] overflow-auto font-mono text-sm leading-relaxed"
                   />
-                  <p className="text-xs text-muted-foreground">{content.length} chars · scrollable · ideal for long content</p>
+                  <p className="text-xs text-muted-foreground shrink-0">{content.length} chars · scroll inside textarea · controls stay at top</p>
                 </div>
-                <div className="flex justify-end gap-2">
-                  <Button variant="outline" asChild><Link to="/library/agents">Cancel</Link></Button>
-                  <Button onClick={() => createMutation.mutate({ name: name.trim(), description: desc.trim(), content: content.trim() })} disabled={!canSubmit || createMutation.isPending}>
-                    {createMutation.isPending ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />}Create & edit
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-muted/30">
-              <CardHeader><CardTitle className="text-sm">Tips</CardTitle></CardHeader>
-              <CardContent className="text-xs text-muted-foreground space-y-2">
-                <p>• You’re creating in <b>{organizationName}</b> (org derived server-side).</p>
-                <p>• Content is fully visible here — no dialog clipping.</p>
-                <p>• After create you’ll be taken to the edit page where you can continue refining.</p>
               </CardContent>
             </Card>
           </div>

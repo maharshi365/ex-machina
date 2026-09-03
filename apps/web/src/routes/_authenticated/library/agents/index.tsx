@@ -78,7 +78,7 @@ function AgentsPage() {
 
 function AgentsHeader() {
   return (
-    <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+    <header className="sticky top-0 z-20 flex h-16 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
       <div className="flex items-center gap-2 px-4">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mr-2 h-4" />
@@ -127,9 +127,9 @@ function AgentsManager({
       <SidebarInset>
         <AgentsHeader />
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="flex items-center justify-between">
+          <div className="sticky top-16 z-10 -mx-4 flex items-center justify-between gap-2 border-b bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight">Agents</h1>
+              <h1 className="text-xl font-semibold tracking-tight">Agents</h1>
               <p className="text-sm text-muted-foreground">
                 {organizationName} · {agents?.length ?? 0} agents
               </p>
