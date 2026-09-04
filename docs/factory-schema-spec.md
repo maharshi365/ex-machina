@@ -6,7 +6,7 @@ Factory schema version: `1`
 ## Decisions
 
 - The portable `FactoryDefinition` is the canonical configuration shape. MongoDB wraps it with platform identity, lifecycle, revision, and audit data.
-- Library agents and skills are live references. An edit is used by the next run. Every run must snapshot the resolved agent, skills, definition revision, event, and execution configuration.
+- Library agents and skills are live references. An edit is used by the next run. Every run must snapshot the resolved agent, skills, definition revision, and execution configuration, and reference the immutable webhook delivery that caused it.
 - A factory assigns named local agents. Automations target those assignment keys rather than global library IDs.
 - Runtime inheritance is `factory defaults -> assigned agent -> automation`. A supplied `model`, `harness`, or `sandbox` block replaces that whole inherited block. Adapter `config` objects are never implicitly deep-merged.
 - Agent and automation `skillIds` are always present. They default to `[]`; an automation's list is authoritative for that automation.
@@ -17,7 +17,7 @@ Factory schema version: `1`
 ## Boundary
 
 ```text
-ExternalConnection (stored separately, reusable, owns authorization metadata)
+connectionId (opaque reference resolved by the integration system)
        |
 Database record (persistence concern; not part of the factory DTO)
   definition: FactoryDefinition (portable JSON / future config-as-code)
@@ -166,43 +166,35 @@ type StoredFactory = {
   createdAt: Date;
   editedAt: Date;
 };
+
+type StoredFactoryRevision = {
+  _id: ObjectId;
+  factoryId: ObjectId;
+  organizationId: ObjectId;
+  revision: number;
+  definition: FactoryDefinition;
+  createdBy: ObjectId;
+  createdAt: Date;
+};
 ```
 
 `StoredFactory` belongs in `@ex-machina/db`, not `@ex-machina/factory`. The factory package exports only the portable definition and never exposes MongoDB `_id`, `ObjectId`, dates, audit fields, or persistence lifecycle metadata.
 
 `schemaVersion` identifies the platform-owned definition shape. A database `revision` is unrelated: it increments on every successful mutation and supports optimistic concurrency (`update where _id + organizationId + revision`).
+Every successful mutation also stores an immutable `StoredFactoryRevision`. Trigger routes and run snapshots resolve that immutable revision so an event already being dispatched cannot race with a later factory edit.
 
 The server does not accept `_id`, `organizationId`, audit fields, `revision`, or a caller-selected schema version in create/update inputs. `defineFactory()` supplies the current schema version for code-authored definitions. Raw JSON/YAML imports must declare a supported version so a parser can select the correct migration and validator.
 
-## External Connections
+## Integration References
 
-Connections are reusable and separate because one GitHub App installation can serve multiple factories.
+The factory definition stores only opaque `connectionId` references and stable
+provider resource IDs. It does not define connection records, authorization
+grants, installation state, credentials, resource synchronization, webhook
+storage, or provider clients. The integration system resolves and validates
+those references when a factory is activated and when a run starts.
 
-```ts
-type ExternalConnection = {
-  _id: ObjectId;
-  organizationId: ObjectId;
-  provider: "github";
-  version: 1;
-  name: string;
-  status: "pending" | "active" | "error" | "revoked";
-  account: {
-    externalId: string;
-    login: string;
-    displayName?: string;
-  };
-  auth: {
-    strategy: "github_app";
-    installationId: string;
-  };
-  createdBy: ObjectId;
-  editedBy: ObjectId;
-  createdAt: Date;
-  editedAt: Date;
-};
-```
-
-No access token, private key, webhook secret, LLM API key, or sandbox credential belongs in this document. It contains only secret-manager lookup metadata.
+The authoritative connection and webhook models are defined in
+[`integration-system-design.md`](./integration-system-design.md).
 
 ## Example As Code
 
@@ -278,6 +270,7 @@ Activation validation additionally requires:
 - At least one repository, assigned agent, and enabled automation.
 - Every enabled automation has at least one target repository and trigger.
 - Every trigger has at least one source repository.
+- Every trigger uses only filters supported by its provider event.
 - Referenced connections, agents, and skills exist in the same organization.
 - Connections are active and authorize every referenced external repository.
 - Models, images, harnesses, and provider configs are currently supported.
@@ -301,8 +294,7 @@ type FactoryRunSnapshot = {
   schemaVersion: 1;
   automationKey: string;
   triggerKey: string;
-  eventId: string;
-  eventPayload: unknown;
+  webhookDeliveryId: ObjectId;
   resolvedAgent: { id: ObjectId; editedAt: Date; content: string };
   resolvedSkills: Array<{ id: ObjectId; editedAt: Date; content: string }>;
   resolvedExecution: ExecutionDefinition & { sandboxImageDigest: string };
@@ -310,23 +302,22 @@ type FactoryRunSnapshot = {
 };
 ```
 
-This snapshot is mandatory because library references intentionally resolve to latest at run start.
+This snapshot is mandatory because library references intentionally resolve to latest at run start. The normalized webhook is not copied into the snapshot: `webhookDeliveryId` references its canonical immutable record, which must be retained for at least the lifetime of the run.
 
 ## Indexes
 
 ```text
-external_connections unique: { organizationId: 1, provider: 1, "account.externalId": 1 }
 factories:                   { organizationId: 1, editedAt: -1 }
 factories:                   { organizationId: 1, status: 1 }
-factories dispatch:          { "definition.automations.triggers.source.connectionId": 1, status: 1 }
+factory_revisions unique:    { factoryId: 1, revision: 1 }
 ```
 
-Webhook delivery deduplication requires a separate unique provider delivery index, not a field on the factory.
+Integration indexes do not belong in the factory schema.
 
 ## Deliberately Deferred
 
-- Integration installation flows and token minting.
-- Webhook registration, normalization, delivery deduplication, and retry policy.
+- Integration implementation; its installation, token, webhook, routing, and retry design is specified in
+  [`integration-system-design.md`](./integration-system-design.md).
 - Sandbox provider config beyond AWS v1 and image catalog IDs.
 - Secret references and runtime permission policy.
 - Immutable library revisions; live references plus run snapshots are the selected initial behavior.
