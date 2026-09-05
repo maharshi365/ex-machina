@@ -1,11 +1,11 @@
-import { betterAuth } from 'better-auth'
-import { mongodbAdapter } from 'better-auth/adapters/mongodb'
-import { organization } from 'better-auth/plugins'
-import { tanstackStartCookies } from 'better-auth/tanstack-start'
-import { getDb, getMongoClient } from '@/lib/db/client'
+import { betterAuth } from 'better-auth';
+import { mongodbAdapter } from 'better-auth/adapters/mongodb';
+import { organization } from 'better-auth/plugins';
+import { tanstackStartCookies } from 'better-auth/tanstack-start';
+import { getDb, getMongoClient } from '@/lib/db/client';
 
-const client = getMongoClient()
-const db = getDb()
+const client = getMongoClient();
+const db = getDb();
 
 export const auth = betterAuth({
   database: mongodbAdapter(db, {
@@ -29,4 +29,4 @@ export const auth = betterAuth({
     },
   },
   plugins: [organization(), tanstackStartCookies()],
-})
+});

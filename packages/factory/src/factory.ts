@@ -3,8 +3,8 @@ import {
   FactoryDefinitionSchema,
   type FactoryDefinition,
   type FactoryDefinitionInput,
-} from "./definition/index.js";
-import { validateFactoryDefinition } from "./validation.js";
+} from './definition/index.js';
+import { validateFactoryDefinition } from './validation.js';
 
 export function defineFactory(input: FactoryDefinitionInput): FactoryDefinition {
   const definition = FactoryDefinitionSchema.parse({

@@ -126,23 +126,23 @@ installation.
 type ExternalConnection = {
   _id: ObjectId;
   organizationId: ObjectId;
-  provider: "github";
+  provider: 'github';
   version: 1;
   name: string;
-  status: "pending" | "active" | "suspended" | "error" | "revoked";
+  status: 'pending' | 'active' | 'suspended' | 'error' | 'revoked';
   account: {
     externalId: string; // stable GitHub account ID
     login: string; // display only; it can change
-    type: "user" | "organization";
+    type: 'user' | 'organization';
     avatarUrl?: string;
   };
   auth: {
-    strategy: "github_app";
+    strategy: 'github_app';
     installationId: string;
   };
   grants: {
-    repositorySelection: "all" | "selected";
-    permissions: Record<string, "read" | "write">;
+    repositorySelection: 'all' | 'selected';
+    permissions: Record<string, 'read' | 'write'>;
     events: string[];
   };
   lastSyncedAt?: Date;
@@ -172,10 +172,10 @@ type ExternalResource = {
   _id: ObjectId;
   organizationId: ObjectId;
   connectionId: ObjectId;
-  provider: "github";
-  kind: "repository";
+  provider: 'github';
+  kind: 'repository';
   externalId: string; // GitHub repository ID; stable across rename/transfer
-  status: "active" | "removed";
+  status: 'active' | 'removed';
   locator: { owner: string; name: string; fullName: string };
   display: { url: string; defaultBranch: string; private: boolean };
   permissions?: { admin: boolean; push: boolean; pull: boolean };
@@ -198,7 +198,7 @@ organization.
 ```ts
 type InstallationIntent = {
   _id: ObjectId;
-  provider: "github";
+  provider: 'github';
   organizationId: ObjectId;
   userId: ObjectId;
   installStateHash: string;
@@ -206,7 +206,7 @@ type InstallationIntent = {
   pkceVerifierCiphertext?: string;
   candidateInstallationId?: string;
   returnTo: string;
-  status: "awaiting_setup" | "awaiting_oauth" | "processing" | "completed" | "failed" | "expired";
+  status: 'awaiting_setup' | 'awaiting_oauth' | 'processing' | 'completed' | 'failed' | 'expired';
   createdAt: Date;
   expiresAt: Date;
 };
@@ -226,7 +226,7 @@ The delivery is both the audit record and durable inbox.
 type WebhookDelivery = {
   _id: ObjectId;
   source: {
-    provider: "github";
+    provider: 'github';
     version: 1;
     deliveryId: string; // X-GitHub-Delivery
     event: string; // normalized event, e.g. pull_request.opened
@@ -241,7 +241,7 @@ type WebhookDelivery = {
   occurredAt?: Date;
   data: WebhookData;
   processing: {
-    status: "pending" | "processing" | "processed" | "ignored" | "retry" | "dead_letter";
+    status: 'pending' | 'processing' | 'processed' | 'ignored' | 'retry' | 'dead_letter';
     attempts: number;
     availableAt: Date; // next retry time or processing lease expiry
     leaseExpiresAt?: Date;
@@ -294,7 +294,7 @@ type FactoryTriggerRoute = {
   provider: string;
   providerVersion: number;
   connectionId: ObjectId;
-  resourceKind: "repository";
+  resourceKind: 'repository';
   resourceExternalId: string;
   event: string;
   factoryId: ObjectId;
@@ -339,9 +339,9 @@ type ExternalAction = {
   organizationId: ObjectId;
   runId: ObjectId;
   idempotencyKey: string; // e.g. "create-pr:payments-api"
-  provider: "github";
-  kind: "branch_push" | "pull_request_create" | "comment_create";
-  status: "pending" | "processing" | "retry" | "succeeded" | "failed";
+  provider: 'github';
+  kind: 'branch_push' | 'pull_request_create' | 'comment_create';
+  status: 'pending' | 'processing' | 'retry' | 'succeeded' | 'failed';
   requestSummary: Record<string, unknown>;
   result?: { externalId: string; url?: string };
   attempts: number;

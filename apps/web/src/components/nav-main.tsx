@@ -1,11 +1,11 @@
-import { ChevronRight, type LucideIcon } from "lucide-react"
-import { Link, useRouterState } from "@tanstack/react-router"
+import { ChevronRight, type LucideIcon } from 'lucide-react';
+import { Link, useRouterState } from '@tanstack/react-router';
 
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible.tsx"
+} from '@/components/ui/collapsible.tsx';
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -15,31 +15,31 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/components/ui/sidebar.tsx"
+} from '@/components/ui/sidebar.tsx';
 
 export function NavMain({
   items,
 }: {
   items: {
-    title: string
-    url: string
-    icon?: LucideIcon
-    isActive?: boolean
+    title: string;
+    url: string;
+    icon?: LucideIcon;
+    isActive?: boolean;
     items?: {
-      title: string
-      url: string
-    }[]
-  }[]
+      title: string;
+      url: string;
+    }[];
+  }[];
 }) {
-  const pathname = useRouterState({ select: (s) => s.location.pathname })
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
-          const isActive = pathname === item.url || item.isActive
-          const hasChildren = !!item.items?.length
+          const isActive = pathname === item.url || item.isActive;
+          const hasChildren = !!item.items?.length;
 
           if (!hasChildren) {
             return (
@@ -51,7 +51,7 @@ export function NavMain({
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            )
+            );
           }
 
           return (
@@ -84,9 +84,9 @@ export function NavMain({
                 </CollapsibleContent>
               </SidebarMenuItem>
             </Collapsible>
-          )
+          );
         })}
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }

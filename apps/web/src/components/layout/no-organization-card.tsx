@@ -1,15 +1,15 @@
-import { Link } from '@tanstack/react-router'
-import { Building2 } from 'lucide-react'
+import { Link } from '@tanstack/react-router';
+import { Building2 } from 'lucide-react';
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function NoOrganizationCard({
   title = 'No active organization',
   description = 'Create or select an organization to continue.',
 }: {
-  title?: string
-  description?: string
+  title?: string;
+  description?: string;
 }) {
   return (
     <div className="flex flex-1 flex-col gap-4 p-4">
@@ -28,5 +28,5 @@ export function NoOrganizationCard({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

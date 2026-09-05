@@ -1,9 +1,9 @@
-import { Link } from '@tanstack/react-router'
-import { Building2 } from 'lucide-react'
+import { Link } from '@tanstack/react-router';
+import { Building2 } from 'lucide-react';
 
-import { AuthenticatedShell } from '@/components/layout/authenticated-shell'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { AuthenticatedShell } from '@/components/layout/authenticated-shell';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,15 +11,15 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { SidebarTrigger } from '@/components/ui/sidebar'
+} from '@/components/ui/breadcrumb';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 
 export function IntegrationsShell({
   children,
   noOrg = false,
 }: {
-  children?: React.ReactNode
-  noOrg?: boolean
+  children?: React.ReactNode;
+  noOrg?: boolean;
 }) {
   return (
     <AuthenticatedShell>
@@ -43,7 +43,9 @@ export function IntegrationsShell({
             <CardHeader className="text-center">
               <Building2 className="mx-auto size-8 text-muted-foreground" />
               <CardTitle>No active organization</CardTitle>
-              <CardDescription>Select an organization before connecting integrations.</CardDescription>
+              <CardDescription>
+                Select an organization before connecting integrations.
+              </CardDescription>
             </CardHeader>
             <CardContent className="flex justify-center">
               <Button asChild>
@@ -56,5 +58,5 @@ export function IntegrationsShell({
         )}
       </div>
     </AuthenticatedShell>
-  )
+  );
 }

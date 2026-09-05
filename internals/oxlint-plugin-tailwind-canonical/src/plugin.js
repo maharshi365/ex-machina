@@ -20,8 +20,8 @@
  * });
  * ```
  */
-import { eslintCompatPlugin } from "@oxlint/plugins";
-import { canonicalClassNames, PLUGIN_NAME, RULE_ID } from "./rule.js";
+import { eslintCompatPlugin } from '@oxlint/plugins';
+import { canonicalClassNames, PLUGIN_NAME, RULE_ID } from './rule.js';
 
 const plugin = eslintCompatPlugin({
   meta: { name: PLUGIN_NAME },

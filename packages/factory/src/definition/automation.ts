@@ -1,6 +1,6 @@
-import { z } from "zod";
-import { ExecutionOverridesSchema } from "../execution/index.js";
-import { GithubTriggerSchema } from "./github-trigger.js";
+import { z } from 'zod';
+import { ExecutionOverridesSchema } from '../execution/index.js';
+import { GithubTriggerSchema } from './github-trigger.js';
 
 export const FactoryTriggerSchema = GithubTriggerSchema;
 export type FactoryTrigger = z.infer<typeof FactoryTriggerSchema>;

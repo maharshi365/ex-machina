@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Bot, GalleryVerticalEnd, Plug, Sparkles } from "lucide-react";
-import { Link, useRouterState } from "@tanstack/react-router";
+import * as React from 'react';
+import { Bot, GalleryVerticalEnd, Plug, Sparkles } from 'lucide-react';
+import { Link, useRouterState } from '@tanstack/react-router';
 
-import { NavUser } from "@/components/nav-user.tsx";
-import { TeamSwitcher } from "@/components/team-switcher.tsx";
+import { NavUser } from '@/components/nav-user.tsx';
+import { TeamSwitcher } from '@/components/team-switcher.tsx';
 import {
   Sidebar,
   SidebarContent,
@@ -15,31 +15,31 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar.tsx";
-import { authClient } from "@/lib/auth/client.ts";
+} from '@/components/ui/sidebar.tsx';
+import { authClient } from '@/lib/auth/client.ts';
 
 const data = {
   teams: [
     {
-      name: "ex-machina",
+      name: 'ex-machina',
       logo: GalleryVerticalEnd,
-      plan: "Workspace",
+      plan: 'Workspace',
     },
   ],
   library: [
     {
-      title: "Agents",
-      url: "/library/agents",
+      title: 'Agents',
+      url: '/library/agents',
       icon: Bot,
     },
     {
-      title: "Skills",
-      url: "/library/skills",
+      title: 'Skills',
+      url: '/library/skills',
       icon: Sparkles,
     },
     {
-      title: "Integrations",
-      url: "/library/integrations",
+      title: 'Integrations',
+      url: '/library/integrations',
       icon: Plug,
     },
   ],
@@ -50,9 +50,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   const user = {
-    name: session?.user?.name ?? "User",
-    email: session?.user?.email ?? "user@example.com",
-    avatar: (session?.user as { image?: string } | undefined)?.image ?? "",
+    name: session?.user?.name ?? 'User',
+    email: session?.user?.email ?? 'user@example.com',
+    avatar: (session?.user as { image?: string } | undefined)?.image ?? '',
   };
 
   return (

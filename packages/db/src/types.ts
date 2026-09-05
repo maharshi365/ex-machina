@@ -1,6 +1,6 @@
-import { ObjectId } from "mongodb";
+import { ObjectId } from 'mongodb';
 
-export type { Document, OptionalId, WithId } from "mongodb";
+export type { Document, OptionalId, WithId } from 'mongodb';
 
 // ---------------------------------------------------------------------------
 // Shared mongo helpers
@@ -16,7 +16,7 @@ export type { Document, OptionalId, WithId } from "mongodb";
 // ---------------------------------------------------------------------------
 
 /** DTO-side document with `_id` exposed as a hex string. */
-export type WithStringId<T> = Omit<T, "_id"> & { _id: string };
+export type WithStringId<T> = Omit<T, '_id'> & { _id: string };
 
 export function toObjectId(id: string | ObjectId): ObjectId {
   return id instanceof ObjectId ? id : new ObjectId(id);

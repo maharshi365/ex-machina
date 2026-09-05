@@ -1,24 +1,24 @@
-import { useNavigate } from '@tanstack/react-router'
-import { useEffect } from 'react'
+import { useNavigate } from '@tanstack/react-router';
+import { useEffect } from 'react';
 
-import { authClient } from '@/lib/auth/client'
+import { authClient } from '@/lib/auth/client';
 
 export function LoginPage() {
-  const navigate = useNavigate()
-  const { data: session, isPending } = authClient.useSession()
+  const navigate = useNavigate();
+  const { data: session, isPending } = authClient.useSession();
 
   useEffect(() => {
     if (!isPending && session?.user) {
-      void navigate({ to: '/onboarding' })
+      void navigate({ to: '/onboarding' });
     }
-  }, [isPending, session, navigate])
+  }, [isPending, session, navigate]);
 
   if (isPending) {
     return (
       <main className="mx-auto flex min-h-screen max-w-md items-center justify-center px-6">
         <p className="text-sm text-muted-foreground">Loading...</p>
       </main>
-    )
+    );
   }
 
   if (session?.user) {
@@ -26,16 +26,20 @@ export function LoginPage() {
       <main className="mx-auto flex min-h-screen max-w-md items-center justify-center px-6">
         <p className="text-sm text-muted-foreground">Redirecting to onboarding…</p>
       </main>
-    )
+    );
   }
 
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6">
       <h1 className="text-2xl font-semibold">Sign in</h1>
-      <p className="mt-1 text-sm text-muted-foreground">Continue with Google to access ex-machina.</p>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Continue with Google to access ex-machina.
+      </p>
 
       <button
-        onClick={() => void authClient.signIn.social({ provider: 'google', callbackURL: '/onboarding' })}
+        onClick={() =>
+          void authClient.signIn.social({ provider: 'google', callbackURL: '/onboarding' })
+        }
         className="mt-6 inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border bg-white px-4 text-sm font-medium text-zinc-900 hover:bg-zinc-50"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
@@ -63,5 +67,5 @@ export function LoginPage() {
         By continuing you agree to our Terms.
       </p>
     </main>
-  )
+  );
 }

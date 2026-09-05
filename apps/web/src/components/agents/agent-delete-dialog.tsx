@@ -1,6 +1,6 @@
-import { Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react';
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
+} from '@/components/ui/dialog';
 
 export function AgentDeleteDialog({
   open,
@@ -18,12 +18,12 @@ export function AgentDeleteDialog({
   isPending,
   onConfirm,
 }: {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  agentName: string
-  organizationName: string
-  isPending: boolean
-  onConfirm: () => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  agentName: string;
+  organizationName: string;
+  isPending: boolean;
+  onConfirm: () => void;
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -45,5 +45,5 @@ export function AgentDeleteDialog({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

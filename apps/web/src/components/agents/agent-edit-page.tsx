@@ -1,11 +1,11 @@
-import { Link, useNavigate } from '@tanstack/react-router'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ArrowLeft, Bot, Loader2, Save, Trash2 } from 'lucide-react'
-import * as React from 'react'
-import { toast } from 'sonner'
+import { Link, useNavigate } from '@tanstack/react-router';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { ArrowLeft, Bot, Loader2, Save, Trash2 } from 'lucide-react';
+import * as React from 'react';
+import { toast } from 'sonner';
 
-import { AuthenticatedShell } from '@/components/layout/authenticated-shell'
-import { NoOrganizationCard } from '@/components/layout/no-organization-card'
+import { AuthenticatedShell } from '@/components/layout/authenticated-shell';
+import { NoOrganizationCard } from '@/components/layout/no-organization-card';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,9 +13,9 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+} from '@/components/ui/breadcrumb';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -23,29 +23,29 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Separator } from '@/components/ui/separator'
-import { SidebarTrigger } from '@/components/ui/sidebar'
-import { Skeleton } from '@/components/ui/skeleton'
-import { agentKeys, agentQueryOptions } from '@/lib/agents/queries'
-import { deleteAgentServerFn, updateAgentServerFn } from '@/lib/agents/server'
-import type { OrganizationDTO } from '@/lib/organizations/server'
+} from '@/components/ui/dialog';
+import { Separator } from '@/components/ui/separator';
+import { SidebarTrigger } from '@/components/ui/sidebar';
+import { Skeleton } from '@/components/ui/skeleton';
+import { agentKeys, agentQueryOptions } from '@/lib/agents/queries';
+import { deleteAgentServerFn, updateAgentServerFn } from '@/lib/agents/server';
+import type { OrganizationDTO } from '@/lib/organizations/server';
 
-import { AgentContentField, AgentDescriptionField, AgentNameField } from './agent-form-fields'
+import { AgentContentField, AgentDescriptionField, AgentNameField } from './agent-form-fields';
 
 export function AgentEditPage({
   activeOrg,
   agentId,
 }: {
-  activeOrg: OrganizationDTO | null
-  agentId: string
+  activeOrg: OrganizationDTO | null;
+  agentId: string;
 }) {
   if (!activeOrg) {
     return (
       <AuthenticatedShell>
         <NoOrganizationCard />
       </AuthenticatedShell>
-    )
+    );
   }
 
   return (
@@ -54,7 +54,7 @@ export function AgentEditPage({
       organizationName={activeOrg.name}
       agentId={agentId}
     />
-  )
+  );
 }
 
 function AgentEditManager({
@@ -62,46 +62,46 @@ function AgentEditManager({
   organizationName,
   agentId,
 }: {
-  organizationId: string
-  organizationName: string
-  agentId: string
+  organizationId: string;
+  organizationName: string;
+  agentId: string;
 }) {
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
-  const { data: agent, isLoading, error } = useQuery(agentQueryOptions(organizationId, agentId))
-  const [name, setName] = React.useState('')
-  const [desc, setDesc] = React.useState('')
-  const [content, setContent] = React.useState('')
-  const [deleteOpen, setDeleteOpen] = React.useState(false)
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { data: agent, isLoading, error } = useQuery(agentQueryOptions(organizationId, agentId));
+  const [name, setName] = React.useState('');
+  const [desc, setDesc] = React.useState('');
+  const [content, setContent] = React.useState('');
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (agent) {
-      setName(agent.name)
-      setDesc(agent.description)
-      setContent(agent.content)
+      setName(agent.name);
+      setDesc(agent.description);
+      setContent(agent.content);
     }
-  }, [agent])
+  }, [agent]);
 
   const updateMutation = useMutation({
     mutationFn: (data: { name: string; description: string; content: string }) =>
       updateAgentServerFn({ data: { id: agentId, ...data } }),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: agentKeys.list(organizationId) })
-      await queryClient.invalidateQueries({ queryKey: agentKeys.detail(organizationId, agentId) })
-      toast.success('Agent saved')
+      await queryClient.invalidateQueries({ queryKey: agentKeys.list(organizationId) });
+      await queryClient.invalidateQueries({ queryKey: agentKeys.detail(organizationId, agentId) });
+      toast.success('Agent saved');
     },
     onError: (e: unknown) => toast.error(e instanceof Error ? e.message : 'Failed to save'),
-  })
+  });
 
   const deleteMutation = useMutation({
     mutationFn: () => deleteAgentServerFn({ data: { id: agentId } }),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: agentKeys.list(organizationId) })
-      toast.success('Agent deleted')
-      void navigate({ to: '/library/agents' })
+      await queryClient.invalidateQueries({ queryKey: agentKeys.list(organizationId) });
+      toast.success('Agent deleted');
+      void navigate({ to: '/library/agents' });
     },
     onError: (e: unknown) => toast.error(e instanceof Error ? e.message : 'Failed to delete'),
-  })
+  });
 
   if (isLoading) {
     return (
@@ -111,7 +111,7 @@ function AgentEditManager({
           <Skeleton className="h-[60vh] w-full" />
         </div>
       </AuthenticatedShell>
-    )
+    );
   }
 
   if (error || !agent) {
@@ -137,10 +137,10 @@ function AgentEditManager({
           </Card>
         </div>
       </AuthenticatedShell>
-    )
+    );
   }
 
-  const canSave = name.trim() && desc.trim() && content.trim() && !updateMutation.isPending
+  const canSave = name.trim() && desc.trim() && content.trim() && !updateMutation.isPending;
 
   return (
     <AuthenticatedShell insetClassName="flex h-svh flex-col overflow-hidden">
@@ -246,5 +246,5 @@ function AgentEditManager({
         </Dialog>
       </div>
     </AuthenticatedShell>
-  )
+  );
 }

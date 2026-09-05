@@ -27,8 +27,8 @@ Shared configuration package for the monorepo.
 
 ```ts
 // oxlint.config.ts
-import { defineConfig } from "oxlint";
-import base from "./packages/configs/oxlint.base.json" with { type: "json" };
+import { defineConfig } from 'oxlint';
+import base from './packages/configs/oxlint.base.json' with { type: 'json' };
 // or from workspace package after install:
 // import base from "@ex-machina/configs/oxlint" with { type: "json" };
 
@@ -52,8 +52,8 @@ JSON alternative (file-path extends):
 
 ```ts
 // oxfmt.config.ts
-import { defineConfig } from "oxfmt";
-import base from "./packages/configs/oxfmt.base.json" with { type: "json" };
+import { defineConfig } from 'oxfmt';
+import base from './packages/configs/oxfmt.base.json' with { type: 'json' };
 
 export default defineConfig({
   ...base,

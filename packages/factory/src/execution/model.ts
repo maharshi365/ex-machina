@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const ModelDefinitionSchema = z.strictObject({
   provider: z.string().trim().min(1),

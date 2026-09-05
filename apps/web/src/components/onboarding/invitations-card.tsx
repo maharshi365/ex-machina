@@ -1,11 +1,11 @@
-import { Check, Loader2, Mail, X } from 'lucide-react'
+import { Check, Loader2, Mail, X } from 'lucide-react';
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
-import type { Invitation } from './types'
+import type { Invitation } from './types';
 
 export function InvitationsCard({
   invitations,
@@ -15,14 +15,14 @@ export function InvitationsCard({
   onAccept,
   onReject,
 }: {
-  invitations: Invitation[]
-  userEmail: string
-  acceptingId: string | null
-  rejectingId: string | null
-  onAccept: (id: string) => void
-  onReject: (id: string) => void
+  invitations: Invitation[];
+  userEmail: string;
+  acceptingId: string | null;
+  rejectingId: string | null;
+  onAccept: (id: string) => void;
+  onReject: (id: string) => void;
 }) {
-  const hasInvites = invitations.length > 0
+  const hasInvites = invitations.length > 0;
 
   return (
     <Card>
@@ -103,7 +103,7 @@ export function InvitationsCard({
         )}
       </CardContent>
     </Card>
-  )
+  );
 }
 
 export function NextStepsCard() {
@@ -118,5 +118,5 @@ export function NextStepsCard() {
         <p>• Once you have an organization you can go to the dashboard.</p>
       </CardContent>
     </Card>
-  )
+  );
 }

@@ -1,30 +1,30 @@
-import type { Collection, Db, ObjectId, WithId } from "mongodb";
-import { toObjectId } from "./types.js";
-import type { WithStringId } from "./types.js";
+import type { Collection, Db, ObjectId, WithId } from 'mongodb';
+import { toObjectId } from './types.js';
+import type { WithStringId } from './types.js';
 
-export const EXTERNAL_CONNECTIONS_COLLECTION = "external_connections";
+export const EXTERNAL_CONNECTIONS_COLLECTION = 'external_connections';
 
-export type ExternalConnectionStatus = "pending" | "active" | "suspended" | "error" | "revoked";
+export type ExternalConnectionStatus = 'pending' | 'active' | 'suspended' | 'error' | 'revoked';
 
 export type ExternalConnectionSchema = {
   organizationId: ObjectId;
-  provider: "github";
+  provider: 'github';
   version: 1;
   name: string;
   status: ExternalConnectionStatus;
   account: {
     externalId: string;
     login: string;
-    type: "user" | "organization";
+    type: 'user' | 'organization';
     avatarUrl?: string;
   };
   auth: {
-    strategy: "github_app";
+    strategy: 'github_app';
     installationId: string;
   };
   grants: {
-    repositorySelection: "all" | "selected";
-    permissions: Record<string, "read" | "write">;
+    repositorySelection: 'all' | 'selected';
+    permissions: Record<string, 'read' | 'write'>;
     events: string[];
   };
   lastSyncedAt?: Date;
@@ -39,13 +39,13 @@ export type ExternalConnection = WithId<ExternalConnectionSchema>;
 
 type ExternalConnectionDTOBase = Omit<
   ExternalConnectionSchema,
-  | "organizationId"
-  | "createdBy"
-  | "editedBy"
-  | "createdAt"
-  | "editedAt"
-  | "lastSyncedAt"
-  | "lastError"
+  | 'organizationId'
+  | 'createdBy'
+  | 'editedBy'
+  | 'createdAt'
+  | 'editedAt'
+  | 'lastSyncedAt'
+  | 'lastError'
 > & {
   organizationId: string;
   createdBy: string;
@@ -60,7 +60,7 @@ export type ExternalConnectionDTO = WithStringId<ExternalConnectionDTOBase>;
 
 export type UpsertVerifiedGitHubInstallationInput = Pick<
   ExternalConnectionSchema,
-  "name" | "account" | "grants"
+  'name' | 'account' | 'grants'
 > & {
   installationId: string;
   status?: ExternalConnectionStatus;
@@ -68,7 +68,7 @@ export type UpsertVerifiedGitHubInstallationInput = Pick<
 };
 
 export class InstallationAlreadyBoundError extends Error {
-  readonly code = "INSTALLATION_ALREADY_BOUND";
+  readonly code = 'INSTALLATION_ALREADY_BOUND';
 
   constructor(
     readonly installationId: string,
@@ -78,7 +78,7 @@ export class InstallationAlreadyBoundError extends Error {
       `GitHub installation ${installationId} is already bound to another organization`,
       options
     );
-    this.name = "InstallationAlreadyBoundError";
+    this.name = 'InstallationAlreadyBoundError';
   }
 }
 
@@ -124,19 +124,19 @@ export async function upsertVerifiedGitHubInstallation(
   input: UpsertVerifiedGitHubInstallationInput,
   ctx: { userId: string | ObjectId; organizationId: string | ObjectId }
 ): Promise<ExternalConnectionDTO> {
-  if (!input.installationId) throw new Error("installationId is required");
+  if (!input.installationId) throw new Error('installationId is required');
 
   const collection = getExternalConnectionsCollection(db);
   const organizationId = toObjectId(ctx.organizationId);
   const userId = toObjectId(ctx.userId);
   const installationFilter = {
-    provider: "github" as const,
-    "auth.installationId": input.installationId,
+    provider: 'github' as const,
+    'auth.installationId': input.installationId,
   };
   const now = new Date();
   const update = {
     name: input.name,
-    status: input.status ?? ("active" as const),
+    status: input.status ?? ('active' as const),
     account: input.account,
     grants: input.grants,
     ...(input.lastSyncedAt && { lastSyncedAt: input.lastSyncedAt }),
@@ -151,23 +151,23 @@ export async function upsertVerifiedGitHubInstallation(
     }
     const updated = await collection.findOneAndUpdate(
       { _id: existing._id, organizationId },
-      { $set: update, $unset: { lastError: "" } },
-      { returnDocument: "after" }
+      { $set: update, $unset: { lastError: '' } },
+      { returnDocument: 'after' }
     );
     if (!updated) {
-      throw new Error("External connection disappeared while updating");
+      throw new Error('External connection disappeared while updating');
     }
     return toExternalConnectionDTO(updated);
   }
 
   const doc: ExternalConnectionSchema = {
     organizationId,
-    provider: "github",
+    provider: 'github',
     version: 1,
     name: input.name,
-    status: input.status ?? "active",
+    status: input.status ?? 'active',
     account: input.account,
-    auth: { strategy: "github_app", installationId: input.installationId },
+    auth: { strategy: 'github_app', installationId: input.installationId },
     grants: input.grants,
     ...(input.lastSyncedAt && { lastSyncedAt: input.lastSyncedAt }),
     createdBy: userId,
@@ -180,18 +180,18 @@ export async function upsertVerifiedGitHubInstallation(
     const result = await collection.insertOne(doc);
     return toExternalConnectionDTO({ _id: result.insertedId, ...doc });
   } catch (error) {
-    if (!(error instanceof Error && "code" in error && error.code === 11000)) throw error;
+    if (!(error instanceof Error && 'code' in error && error.code === 11000)) throw error;
     const raced = await collection.findOne(installationFilter);
     if (!raced || !raced.organizationId.equals(organizationId)) {
       throw new InstallationAlreadyBoundError(input.installationId, { cause: error });
     }
     const updated = await collection.findOneAndUpdate(
       { _id: raced._id, organizationId },
-      { $set: update, $unset: { lastError: "" } },
-      { returnDocument: "after" }
+      { $set: update, $unset: { lastError: '' } },
+      { returnDocument: 'after' }
     );
     if (!updated) {
-      throw new Error("External connection disappeared while updating", { cause: error });
+      throw new Error('External connection disappeared while updating', { cause: error });
     }
     return toExternalConnectionDTO(updated);
   }

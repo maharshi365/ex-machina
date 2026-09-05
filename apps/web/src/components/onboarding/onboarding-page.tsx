@@ -1,103 +1,103 @@
-import { Link, useRouter } from '@tanstack/react-router'
-import { useState } from 'react'
-import { toast } from 'sonner'
+import { Link, useRouter } from '@tanstack/react-router';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
-import { authClient } from '@/lib/auth/client'
-import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
+import { authClient } from '@/lib/auth/client';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 
-import type { Invitation, Organization, OnboardingUser } from './types'
-import { slugify } from './utils'
-import { OnboardingHeader } from './onboarding-header'
-import { useOrganizationForm } from './create-organization-dialog'
-import { OrganizationsCard } from './organizations-card'
-import { InvitationsCard, NextStepsCard } from './invitations-card'
+import type { Invitation, Organization, OnboardingUser } from './types';
+import { slugify } from './utils';
+import { OnboardingHeader } from './onboarding-header';
+import { useOrganizationForm } from './create-organization-dialog';
+import { OrganizationsCard } from './organizations-card';
+import { InvitationsCard, NextStepsCard } from './invitations-card';
 
 export function OnboardingPage({
   organizations,
   invitations,
   user: initialUser,
 }: {
-  organizations: Organization[]
-  invitations: Invitation[]
-  user: OnboardingUser | null
+  organizations: Organization[];
+  invitations: Invitation[];
+  user: OnboardingUser | null;
 }) {
-  const router = useRouter()
-  const { data: session } = authClient.useSession()
-  const user = initialUser ?? session?.user
+  const router = useRouter();
+  const { data: session } = authClient.useSession();
+  const user = initialUser ?? session?.user;
 
-  const [createOpen, setCreateOpen] = useState(false)
-  const { orgName, orgSlug, setOrgName, setOrgSlug, reset } = useOrganizationForm()
-  const [isCreating, setIsCreating] = useState(false)
-  const [acceptingId, setAcceptingId] = useState<string | null>(null)
-  const [rejectingId, setRejectingId] = useState<string | null>(null)
+  const [createOpen, setCreateOpen] = useState(false);
+  const { orgName, orgSlug, setOrgName, setOrgSlug, reset } = useOrganizationForm();
+  const [isCreating, setIsCreating] = useState(false);
+  const [acceptingId, setAcceptingId] = useState<string | null>(null);
+  const [rejectingId, setRejectingId] = useState<string | null>(null);
 
-  const hasOrgs = organizations.length > 0
+  const hasOrgs = organizations.length > 0;
 
   async function handleCreateOrg(e: React.FormEvent) {
-    e.preventDefault()
-    const name = orgName.trim()
-    const slug = slugify(orgSlug || orgName)
-    if (!name || !slug) return
-    setIsCreating(true)
+    e.preventDefault();
+    const name = orgName.trim();
+    const slug = slugify(orgSlug || orgName);
+    if (!name || !slug) return;
+    setIsCreating(true);
     try {
-      const res = await authClient.organization.create({ name, slug })
+      const res = await authClient.organization.create({ name, slug });
       if ((res as { error?: { message?: string } })?.error) {
-        const msg = (res as { error: { message: string } }).error.message
-        throw new Error(msg)
+        const msg = (res as { error: { message: string } }).error.message;
+        throw new Error(msg);
       }
-      setCreateOpen(false)
-      reset()
-      await router.invalidate()
+      setCreateOpen(false);
+      reset();
+      await router.invalidate();
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to create organization'
+      const message = err instanceof Error ? err.message : 'Failed to create organization';
       try {
-        toast.error(message)
+        toast.error(message);
       } catch {
-        alert(message)
+        alert(message);
       }
     } finally {
-      setIsCreating(false)
+      setIsCreating(false);
     }
   }
 
   async function handleAccept(invitationId: string) {
-    setAcceptingId(invitationId)
+    setAcceptingId(invitationId);
     try {
-      const res = await authClient.organization.acceptInvitation({ invitationId })
+      const res = await authClient.organization.acceptInvitation({ invitationId });
       if ((res as { error?: { message?: string } })?.error) {
-        throw new Error((res as { error: { message: string } }).error.message)
+        throw new Error((res as { error: { message: string } }).error.message);
       }
-      await router.invalidate()
+      await router.invalidate();
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to accept invitation'
+      const message = err instanceof Error ? err.message : 'Failed to accept invitation';
       try {
-        toast.error(message)
+        toast.error(message);
       } catch {
-        alert(message)
+        alert(message);
       }
     } finally {
-      setAcceptingId(null)
+      setAcceptingId(null);
     }
   }
 
   async function handleReject(invitationId: string) {
-    setRejectingId(invitationId)
+    setRejectingId(invitationId);
     try {
-      const res = await authClient.organization.rejectInvitation({ invitationId })
+      const res = await authClient.organization.rejectInvitation({ invitationId });
       if ((res as { error?: { message?: string } })?.error) {
-        throw new Error((res as { error: { message: string } }).error.message)
+        throw new Error((res as { error: { message: string } }).error.message);
       }
-      await router.invalidate()
+      await router.invalidate();
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to reject invitation'
+      const message = err instanceof Error ? err.message : 'Failed to reject invitation';
       try {
-        toast.error(message)
+        toast.error(message);
       } catch {
-        alert(message)
+        alert(message);
       }
     } finally {
-      setRejectingId(null)
+      setRejectingId(null);
     }
   }
 
@@ -107,7 +107,7 @@ export function OnboardingPage({
         <Skeleton className="h-8 w-48" />
         <Skeleton className="mt-4 h-24 w-full" />
       </div>
-    )
+    );
   }
 
   return (
@@ -161,5 +161,5 @@ export function OnboardingPage({
         </div>
       </main>
     </div>
-  )
+  );
 }

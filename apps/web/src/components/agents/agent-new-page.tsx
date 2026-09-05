@@ -1,11 +1,11 @@
-import { Link, useNavigate } from '@tanstack/react-router'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { ArrowLeft, Bot, Loader2, Save } from 'lucide-react'
-import * as React from 'react'
-import { toast } from 'sonner'
+import { Link, useNavigate } from '@tanstack/react-router';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { ArrowLeft, Bot, Loader2, Save } from 'lucide-react';
+import * as React from 'react';
+import { toast } from 'sonner';
 
-import { AuthenticatedShell } from '@/components/layout/authenticated-shell'
-import { NoOrganizationCard } from '@/components/layout/no-organization-card'
+import { AuthenticatedShell } from '@/components/layout/authenticated-shell';
+import { NoOrganizationCard } from '@/components/layout/no-organization-card';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,16 +13,16 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
-import { SidebarTrigger } from '@/components/ui/sidebar'
-import { agentKeys } from '@/lib/agents/queries'
-import { createAgentServerFn } from '@/lib/agents/server'
-import type { OrganizationDTO } from '@/lib/organizations/server'
+} from '@/components/ui/breadcrumb';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { SidebarTrigger } from '@/components/ui/sidebar';
+import { agentKeys } from '@/lib/agents/queries';
+import { createAgentServerFn } from '@/lib/agents/server';
+import type { OrganizationDTO } from '@/lib/organizations/server';
 
-import { AgentContentField, AgentDescriptionField, AgentNameField } from './agent-form-fields'
+import { AgentContentField, AgentDescriptionField, AgentNameField } from './agent-form-fields';
 
 export function AgentNewPage({ activeOrg }: { activeOrg: OrganizationDTO | null }) {
   if (!activeOrg) {
@@ -30,37 +30,37 @@ export function AgentNewPage({ activeOrg }: { activeOrg: OrganizationDTO | null 
       <AuthenticatedShell>
         <NoOrganizationCard />
       </AuthenticatedShell>
-    )
+    );
   }
 
-  return <Form organizationId={activeOrg.id} organizationName={activeOrg.name} />
+  return <Form organizationId={activeOrg.id} organizationName={activeOrg.name} />;
 }
 
 function Form({
   organizationId,
   organizationName,
 }: {
-  organizationId: string
-  organizationName: string
+  organizationId: string;
+  organizationName: string;
 }) {
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
-  const [name, setName] = React.useState('')
-  const [desc, setDesc] = React.useState('')
-  const [content, setContent] = React.useState('')
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [name, setName] = React.useState('');
+  const [desc, setDesc] = React.useState('');
+  const [content, setContent] = React.useState('');
 
   const createMutation = useMutation({
     mutationFn: (data: { name: string; description: string; content: string }) =>
       createAgentServerFn({ data }),
     onSuccess: async (data) => {
-      await queryClient.invalidateQueries({ queryKey: agentKeys.list(organizationId) })
-      toast.success('Agent created')
-      navigate({ to: '/library/agents/$agentId', params: { agentId: data._id } })
+      await queryClient.invalidateQueries({ queryKey: agentKeys.list(organizationId) });
+      toast.success('Agent created');
+      navigate({ to: '/library/agents/$agentId', params: { agentId: data._id } });
     },
     onError: (e: unknown) => toast.error(e instanceof Error ? e.message : 'Failed to create'),
-  })
+  });
 
-  const canSubmit = name.trim() && desc.trim() && content.trim()
+  const canSubmit = name.trim() && desc.trim() && content.trim();
 
   return (
     <AuthenticatedShell insetClassName="flex h-svh flex-col overflow-hidden">
@@ -142,5 +142,5 @@ function Form({
         </div>
       </div>
     </AuthenticatedShell>
-  )
+  );
 }

@@ -1,9 +1,9 @@
 const SAFE_MESSAGES = new Set([
-  "Bad credentials",
-  "Not Found",
-  "Resource not accessible by integration",
-  "Validation Failed",
-  "Requires authentication",
+  'Bad credentials',
+  'Not Found',
+  'Resource not accessible by integration',
+  'Validation Failed',
+  'Requires authentication',
 ]);
 
 export class GitHubProviderError extends Error {
@@ -23,14 +23,14 @@ export class GitHubProviderError extends Error {
     const safeProviderMessage =
       input.providerMessage && SAFE_MESSAGES.has(input.providerMessage)
         ? `: ${input.providerMessage}`
-        : "";
+        : '';
     super(
-      `GitHub ${input.operation} failed${input.status ? ` (${input.status})` : ""}${safeProviderMessage}`,
+      `GitHub ${input.operation} failed${input.status ? ` (${input.status})` : ''}${safeProviderMessage}`,
       {
         cause: input.cause,
       }
     );
-    this.name = "GitHubProviderError";
+    this.name = 'GitHubProviderError';
     this.code = input.code;
     this.status = input.status;
     this.requestId = input.requestId;

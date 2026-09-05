@@ -1,7 +1,7 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const HarnessDefinitionSchema = z.strictObject({
-  type: z.literal("opencode"),
+  type: z.literal('opencode'),
   version: z.literal(1),
   config: z.record(z.string(), z.unknown()).optional(),
 });

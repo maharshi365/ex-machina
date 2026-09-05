@@ -1,27 +1,27 @@
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
-import { getRequest } from '@tanstack/react-start/server'
-import { auth } from '@/lib/auth/server'
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
+import { createServerFn } from '@tanstack/react-start';
+import { getRequest } from '@tanstack/react-start/server';
+import { auth } from '@/lib/auth/server';
 
 const getSession = createServerFn({ method: 'GET' }).handler(async () => {
-  const request = getRequest()
+  const request = getRequest();
   const session = await auth.api.getSession({
     headers: request.headers,
-  })
-  return session
-})
+  });
+  return session;
+});
 
 export const Route = createFileRoute('/_authenticated')({
   beforeLoad: async () => {
-    const session = await getSession()
+    const session = await getSession();
     if (!session?.user) {
-      throw redirect({ to: '/login' })
+      throw redirect({ to: '/login' });
     }
-    return { session }
+    return { session };
   },
   component: AuthenticatedLayout,
-})
+});
 
 function AuthenticatedLayout() {
-  return <Outlet />
+  return <Outlet />;
 }

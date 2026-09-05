@@ -14,14 +14,14 @@
     "build": "echo \"no build needed\" && exit 0",
     "clean": "echo \"no clean needed\" && exit 0"
   },
-  "devDependencies": {
-    "@ex-machina/configs": "workspace:*",
-    "@types/node": "^22.10.2"
-  },
   "dependencies": {
     "@oxlint/plugins": "^1.81.0",
     "@tailwindcss/node": "^4.1.18",
     "synckit": "^0.11.13",
     "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "@ex-machina/configs": "workspace:*",
+    "@types/node": "^22.10.2"
   }
 }

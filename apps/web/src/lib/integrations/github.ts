@@ -3,7 +3,7 @@ import {
   createExternalResourcesRepository,
   createInstallationIntentsRepository,
   ensureIntegrationIndexes,
-} from "@ex-machina/db";
+} from '@ex-machina/db';
 import {
   GitHubAppClient,
   buildGitHubAuthorizeUrl,
@@ -14,10 +14,10 @@ import {
   generateRandomState,
   githubAppConfigFromEnv,
   hashState,
-} from "@ex-machina/integrations/providers/github";
-import { getDb } from "@/lib/db/client";
+} from '@ex-machina/integrations/providers/github';
+import { getDb } from '@/lib/db/client';
 
-const DEFAULT_RETURN_TO = "/library/integrations";
+const DEFAULT_RETURN_TO = '/library/integrations';
 let indexesPromise: Promise<void> | undefined;
 
 function getConfig() {
@@ -33,14 +33,14 @@ function ensureIndexes() {
 }
 
 export function localReturnTo(value: string | null): string {
-  if (!value || !value.startsWith("/") || value.startsWith("//") || value.includes("\\")) {
+  if (!value || !value.startsWith('/') || value.startsWith('//') || value.includes('\\')) {
     return DEFAULT_RETURN_TO;
   }
   return value;
 }
 
 export function callbackUrl(path: string): string {
-  return new URL(path, process.env.BETTER_AUTH_URL ?? "http://localhost:3000").href;
+  return new URL(path, process.env.BETTER_AUTH_URL ?? 'http://localhost:3000').href;
 }
 
 export async function beginGitHubInstallation(input: {
@@ -79,12 +79,12 @@ export async function continueGitHubInstallation(input: {
     oauthStateHash: hashState(oauthState),
     pkceVerifierCiphertext: encryptPkceVerifier(pkce.verifier, config.applicationSecret),
   });
-  if (!intent) throw new Error("GitHub installation request is invalid or expired");
+  if (!intent) throw new Error('GitHub installation request is invalid or expired');
 
   return buildGitHubAuthorizeUrl(config, {
     state: oauthState,
     codeChallenge: pkce.challenge,
-    redirectUri: callbackUrl("/api/integrations/github/oauth/callback"),
+    redirectUri: callbackUrl('/api/integrations/github/oauth/callback'),
   }).href;
 }
 
@@ -100,7 +100,7 @@ export async function completeGitHubInstallation(input: {
   const intents = createInstallationIntentsRepository(db, input.organizationId, input.userId);
   const intent = await intents.claimInstallationOAuthState(hashState(input.state));
   if (!intent?.candidateInstallationId || !intent.pkceVerifierCiphertext) {
-    throw new Error("GitHub authorization request is invalid or expired");
+    throw new Error('GitHub authorization request is invalid or expired');
   }
 
   try {
@@ -109,7 +109,7 @@ export async function completeGitHubInstallation(input: {
     const userCredential = await client.exchangeOAuthCode({
       code: input.code,
       codeVerifier: verifier,
-      redirectUri: callbackUrl("/api/integrations/github/oauth/callback"),
+      redirectUri: callbackUrl('/api/integrations/github/oauth/callback'),
     });
     const installation = await client.verifyInstallation({
       userToken: userCredential.token,
@@ -123,7 +123,7 @@ export async function completeGitHubInstallation(input: {
         name: installation.account.login,
         account: installation.account,
         grants: installation.grants,
-        status: "pending",
+        status: 'pending',
       },
       input.userId
     );

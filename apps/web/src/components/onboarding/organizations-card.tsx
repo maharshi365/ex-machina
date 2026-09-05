@@ -1,12 +1,12 @@
-import { Link } from '@tanstack/react-router'
-import { Building2, Loader2, Plus, Users } from 'lucide-react'
+import { Link } from '@tanstack/react-router';
+import { Building2, Loader2, Plus, Users } from 'lucide-react';
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
-import type { Organization } from './types'
-import { CreateOrganizationDialog, OrganizationFormFields } from './create-organization-dialog'
+import type { Organization } from './types';
+import { CreateOrganizationDialog, OrganizationFormFields } from './create-organization-dialog';
 
 export function OrganizationsCard({
   organizations,
@@ -19,17 +19,17 @@ export function OrganizationsCard({
   isCreating,
   onCreate,
 }: {
-  organizations: Organization[]
-  createOpen: boolean
-  setCreateOpen: (open: boolean) => void
-  orgName: string
-  orgSlug: string
-  setOrgName: (v: string) => void
-  setOrgSlug: (v: string) => void
-  isCreating: boolean
-  onCreate: (e: React.FormEvent) => void
+  organizations: Organization[];
+  createOpen: boolean;
+  setCreateOpen: (open: boolean) => void;
+  orgName: string;
+  orgSlug: string;
+  setOrgName: (v: string) => void;
+  setOrgSlug: (v: string) => void;
+  isCreating: boolean;
+  onCreate: (e: React.FormEvent) => void;
 }) {
-  const hasOrgs = organizations.length > 0
+  const hasOrgs = organizations.length > 0;
 
   return (
     <Card>
@@ -87,7 +87,12 @@ export function OrganizationsCard({
 
             <div className="rounded-lg border border-dashed p-4 text-center">
               <p className="text-sm text-muted-foreground">Need another workspace?</p>
-              <Button variant="ghost" size="sm" className="mt-2" onClick={() => setCreateOpen(true)}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="mt-2"
+                onClick={() => setCreateOpen(true)}
+              >
                 <Plus className="size-4" />
                 Create organization
               </Button>
@@ -100,8 +105,8 @@ export function OrganizationsCard({
             </div>
             <h3 className="mt-4 text-sm font-semibold">No organizations yet</h3>
             <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
-              Create your first organization to start collaborating. You can also accept an invitation
-              if someone has invited you.
+              Create your first organization to start collaborating. You can also accept an
+              invitation if someone has invited you.
             </p>
 
             <form onSubmit={onCreate} className="mx-auto mt-6 max-w-sm space-y-3 text-left">
@@ -113,7 +118,11 @@ export function OrganizationsCard({
                 idPrefix="inline"
               />
               <Button type="submit" className="w-full" disabled={isCreating}>
-                {isCreating ? <Loader2 className="size-4 animate-spin" /> : <Plus className="size-4" />}
+                {isCreating ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <Plus className="size-4" />
+                )}
                 Create organization
               </Button>
             </form>
@@ -121,5 +130,5 @@ export function OrganizationsCard({
         )}
       </CardContent>
     </Card>
-  )
+  );
 }

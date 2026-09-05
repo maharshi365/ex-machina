@@ -1,13 +1,13 @@
-import { Link } from '@tanstack/react-router'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Bot, Pencil, Plus, Sparkles, Trash2 } from 'lucide-react'
-import * as React from 'react'
-import { toast } from 'sonner'
+import { Link } from '@tanstack/react-router';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Bot, Pencil, Plus, Sparkles, Trash2 } from 'lucide-react';
+import * as React from 'react';
+import { toast } from 'sonner';
 
-import { AuthenticatedShell } from '@/components/layout/authenticated-shell'
-import { LibraryTopBar } from '@/components/layout/library-top-bar'
-import { NoOrganizationCard } from '@/components/layout/no-organization-card'
-import { Badge } from '@/components/ui/badge'
+import { AuthenticatedShell } from '@/components/layout/authenticated-shell';
+import { LibraryTopBar } from '@/components/layout/library-top-bar';
+import { NoOrganizationCard } from '@/components/layout/no-organization-card';
+import { Badge } from '@/components/ui/badge';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,15 +15,22 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
-import { Skeleton } from '@/components/ui/skeleton'
-import { agentKeys, agentsQueryOptions, deleteAgentMutationOptions } from '@/lib/agents/queries'
-import type { OrganizationDTO } from '@/lib/organizations/server'
+} from '@/components/ui/breadcrumb';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty';
+import { Skeleton } from '@/components/ui/skeleton';
+import { agentKeys, agentsQueryOptions, deleteAgentMutationOptions } from '@/lib/agents/queries';
+import type { OrganizationDTO } from '@/lib/organizations/server';
 
-import { AgentDeleteDialog } from './agent-delete-dialog'
+import { AgentDeleteDialog } from './agent-delete-dialog';
 
 export function AgentsPage({ activeOrg }: { activeOrg: OrganizationDTO | null }) {
   if (!activeOrg) {
@@ -31,33 +38,33 @@ export function AgentsPage({ activeOrg }: { activeOrg: OrganizationDTO | null })
       <AuthenticatedShell>
         <NoOrganizationCard description="Create or select an organization to manage agents." />
       </AuthenticatedShell>
-    )
+    );
   }
 
-  return <AgentsManager organizationId={activeOrg.id} organizationName={activeOrg.name} />
+  return <AgentsManager organizationId={activeOrg.id} organizationName={activeOrg.name} />;
 }
 
 function AgentsManager({
   organizationId,
   organizationName,
 }: {
-  organizationId: string
-  organizationName: string
+  organizationId: string;
+  organizationName: string;
 }) {
-  const queryClient = useQueryClient()
-  const { data: agents, isLoading, error } = useQuery(agentsQueryOptions(organizationId))
+  const queryClient = useQueryClient();
+  const { data: agents, isLoading, error } = useQuery(agentsQueryOptions(organizationId));
 
-  const [deleting, setDeleting] = React.useState<{ _id: string; name: string } | null>(null)
+  const [deleting, setDeleting] = React.useState<{ _id: string; name: string } | null>(null);
 
   const deleteMutation = useMutation({
     ...deleteAgentMutationOptions(organizationId),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: agentKeys.list(organizationId) })
-      setDeleting(null)
-      toast.success('Agent deleted')
+      await queryClient.invalidateQueries({ queryKey: agentKeys.list(organizationId) });
+      setDeleting(null);
+      toast.success('Agent deleted');
     },
     onError: (e: unknown) => toast.error(e instanceof Error ? e.message : 'Failed to delete agent'),
-  })
+  });
 
   return (
     <AuthenticatedShell>
@@ -104,7 +111,9 @@ function AgentsManager({
           <Card className="border-destructive">
             <CardHeader>
               <CardTitle className="text-destructive">Failed to load agents</CardTitle>
-              <CardDescription>{error instanceof Error ? error.message : String(error)}</CardDescription>
+              <CardDescription>
+                {error instanceof Error ? error.message : String(error)}
+              </CardDescription>
             </CardHeader>
           </Card>
         ) : !agents || agents.length === 0 ? (
@@ -115,7 +124,8 @@ function AgentsManager({
               </EmptyMedia>
               <EmptyTitle>No agents yet</EmptyTitle>
               <EmptyDescription>
-                Create your first agent to automate workflows. Agents are scoped to {organizationName}.
+                Create your first agent to automate workflows. Agents are scoped to{' '}
+                {organizationName}.
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
@@ -199,5 +209,5 @@ function AgentsManager({
         )}
       </div>
     </AuthenticatedShell>
-  )
+  );
 }

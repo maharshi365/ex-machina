@@ -1,8 +1,8 @@
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
-import { SKILL_NAME_HINT } from './skill-validation'
+import { SKILL_NAME_HINT } from './skill-validation';
 
 export function SkillNameField({
   value,
@@ -10,10 +10,10 @@ export function SkillNameField({
   error,
   id = 'skill-name',
 }: {
-  value: string
-  onChange: (v: string) => void
-  error: string | null
-  id?: string
+  value: string;
+  onChange: (v: string) => void;
+  error: string | null;
+  id?: string;
 }) {
   return (
     <div className="space-y-2 shrink-0">
@@ -29,7 +29,7 @@ export function SkillNameField({
       {error && <p className="text-xs text-destructive">{error}</p>}
       {!error && value && <p className="text-xs text-emerald-600">✓ spec-compliant</p>}
     </div>
-  )
+  );
 }
 
 export function SkillDescriptionField({
@@ -37,11 +37,11 @@ export function SkillDescriptionField({
   onChange,
   id = 'skill-desc',
 }: {
-  value: string
-  onChange: (v: string) => void
-  id?: string
+  value: string;
+  onChange: (v: string) => void;
+  id?: string;
 }) {
-  const tooLong = value.length > 1024
+  const tooLong = value.length > 1024;
   return (
     <div className="space-y-2 shrink-0">
       <Label htmlFor={id}>Description *</Label>
@@ -63,7 +63,7 @@ export function SkillDescriptionField({
         <p className="text-xs text-destructive">No XML tags</p>
       )}
     </div>
-  )
+  );
 }
 
 export function SkillContentField({
@@ -72,10 +72,10 @@ export function SkillContentField({
   id = 'skill-content',
   minHeightClass = 'min-h-[260px]',
 }: {
-  value: string
-  onChange: (v: string) => void
-  id?: string
-  minHeightClass?: string
+  value: string;
+  onChange: (v: string) => void;
+  id?: string;
+  minHeightClass?: string;
 }) {
   return (
     <div className="flex flex-1 flex-col gap-2 min-h-0">
@@ -91,5 +91,5 @@ export function SkillContentField({
         {value.length} chars · fits in screen · scroll inside textarea
       </p>
     </div>
-  )
+  );
 }

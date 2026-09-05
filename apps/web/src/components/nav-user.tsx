@@ -9,15 +9,11 @@ import {
   Moon,
   Sparkles,
   Sun,
-} from "lucide-react"
-import { useTheme } from "next-themes"
-import { authClient } from "@/lib/auth/client.ts"
+} from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { authClient } from '@/lib/auth/client.ts';
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar.tsx"
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,25 +25,25 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu.tsx"
+} from '@/components/ui/dropdown-menu.tsx';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar.tsx"
+} from '@/components/ui/sidebar.tsx';
 
 export function NavUser({
   user,
 }: {
   user: {
-    name: string
-    email: string
-    avatar: string
-  }
+    name: string;
+    email: string;
+    avatar: string;
+  };
 }) {
-  const { isMobile } = useSidebar()
-  const { theme, setTheme } = useTheme()
+  const { isMobile } = useSidebar();
+  const { theme, setTheme } = useTheme();
 
   return (
     <SidebarMenu>
@@ -71,7 +67,7 @@ export function NavUser({
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
+            side={isMobile ? 'bottom' : 'right'}
             align="end"
             sideOffset={4}
           >
@@ -119,26 +115,26 @@ export function NavUser({
                 Theme
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent className="min-w-36">
-                <DropdownMenuItem onClick={() => setTheme("light")} className="justify-between">
+                <DropdownMenuItem onClick={() => setTheme('light')} className="justify-between">
                   <span className="flex items-center gap-2">
                     <Sun className="size-4" />
                     Light
                   </span>
-                  {theme === "light" && <Check className="size-4" />}
+                  {theme === 'light' && <Check className="size-4" />}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("dark")} className="justify-between">
+                <DropdownMenuItem onClick={() => setTheme('dark')} className="justify-between">
                   <span className="flex items-center gap-2">
                     <Moon className="size-4" />
                     Dark
                   </span>
-                  {theme === "dark" && <Check className="size-4" />}
+                  {theme === 'dark' && <Check className="size-4" />}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("system")} className="justify-between">
+                <DropdownMenuItem onClick={() => setTheme('system')} className="justify-between">
                   <span className="flex items-center gap-2">
                     <Monitor className="size-4" />
                     System
                   </span>
-                  {theme === "system" && <Check className="size-4" />}
+                  {theme === 'system' && <Check className="size-4" />}
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuSub>
@@ -151,5 +147,5 @@ export function NavUser({
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
+  );
 }

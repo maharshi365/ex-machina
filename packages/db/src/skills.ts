@@ -1,8 +1,8 @@
-import type { Collection, Db, ObjectId, WithId } from "mongodb";
-import { toObjectId } from "./types.js";
-import type { WithStringId } from "./types.js";
+import type { Collection, Db, ObjectId, WithId } from 'mongodb';
+import { toObjectId } from './types.js';
+import type { WithStringId } from './types.js';
 
-export const SKILLS_COLLECTION = "skills";
+export const SKILLS_COLLECTION = 'skills';
 
 // ---------------------------------------------------------------------------
 // Types — stored as ObjectId in DB, exposed as strings via DTO for FE safety
@@ -70,17 +70,17 @@ function getCollection(db: Db): Collection<SkillSchema> {
 }
 
 // Agent Skills spec validation
-const RESERVED_WORDS = new Set(["anthropic", "claude"]);
+const RESERVED_WORDS = new Set(['anthropic', 'claude']);
 
 export function validateSkillName(name: string): void {
-  if (typeof name !== "string") throw new Error("name must be a string");
-  if (name.length < 1 || name.length > 64) throw new Error("name must be 1-64 characters");
-  if (name.startsWith("-") || name.endsWith("-"))
-    throw new Error("name must not start or end with a hyphen");
-  if (name.includes("--")) throw new Error("name must not contain consecutive hyphens");
+  if (typeof name !== 'string') throw new Error('name must be a string');
+  if (name.length < 1 || name.length > 64) throw new Error('name must be 1-64 characters');
+  if (name.startsWith('-') || name.endsWith('-'))
+    throw new Error('name must not start or end with a hyphen');
+  if (name.includes('--')) throw new Error('name must not contain consecutive hyphens');
   if (!/^[a-z0-9-]+$/.test(name))
-    throw new Error("name must contain only lowercase letters (a-z), numbers (0-9), and hyphens");
-  if (name.includes("<") || name.includes(">")) throw new Error("name must not contain XML tags");
+    throw new Error('name must contain only lowercase letters (a-z), numbers (0-9), and hyphens');
+  if (name.includes('<') || name.includes('>')) throw new Error('name must not contain XML tags');
   const lower = name.toLowerCase();
   for (const w of RESERVED_WORDS) {
     if (lower.includes(w)) throw new Error(`name must not contain reserved word "${w}"`);
@@ -88,30 +88,30 @@ export function validateSkillName(name: string): void {
 }
 
 export function validateSkillDescription(description: string): void {
-  if (typeof description !== "string") throw new Error("description must be a string");
+  if (typeof description !== 'string') throw new Error('description must be a string');
   const trimmed = description.trim();
-  if (trimmed.length < 1) throw new Error("description must be non-empty");
-  if (description.length > 1024) throw new Error("description must be at most 1024 characters");
-  if (description.includes("<") || description.includes(">"))
-    throw new Error("description must not contain XML tags");
+  if (trimmed.length < 1) throw new Error('description must be non-empty');
+  if (description.length > 1024) throw new Error('description must be at most 1024 characters');
+  if (description.includes('<') || description.includes('>'))
+    throw new Error('description must not contain XML tags');
 }
 
 export function validateSkillContent(content: string): void {
-  if (typeof content !== "string") throw new Error("content must be a string");
+  if (typeof content !== 'string') throw new Error('content must be a string');
   // content is SKILL.md body (instructions) — no strict length, but ensure is string
 }
 
 function validateSkillInput(input: CreateSkillInput | UpdateSkillInput, partial = false): void {
   if (!partial || input.name !== undefined) {
-    if (input.name === undefined) throw new Error("name is required");
+    if (input.name === undefined) throw new Error('name is required');
     validateSkillName(input.name);
   }
   if (!partial || input.description !== undefined) {
-    if (input.description === undefined) throw new Error("description is required");
+    if (input.description === undefined) throw new Error('description is required');
     validateSkillDescription(input.description);
   }
   if (!partial || input.content !== undefined) {
-    if (input.content === undefined) throw new Error("content is required");
+    if (input.content === undefined) throw new Error('content is required');
     validateSkillContent(input.content);
   }
 }
@@ -184,7 +184,7 @@ export async function updateSkill(
   const result = await getCollection(db).findOneAndUpdate(
     { _id: toObjectId(id), organizationId: orgId },
     { $set: updateFields },
-    { returnDocument: "after" }
+    { returnDocument: 'after' }
   );
   return result ? toSkillDTO(result) : null;
 }

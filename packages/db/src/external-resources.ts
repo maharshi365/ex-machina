@@ -1,17 +1,17 @@
-import type { Collection, Db, ObjectId, WithId } from "mongodb";
-import { getExternalConnectionsCollection } from "./external-connections.js";
-import { toObjectId } from "./types.js";
-import type { WithStringId } from "./types.js";
+import type { Collection, Db, ObjectId, WithId } from 'mongodb';
+import { getExternalConnectionsCollection } from './external-connections.js';
+import { toObjectId } from './types.js';
+import type { WithStringId } from './types.js';
 
-export const EXTERNAL_RESOURCES_COLLECTION = "external_resources";
+export const EXTERNAL_RESOURCES_COLLECTION = 'external_resources';
 
 export type ExternalResourceSchema = {
   organizationId: ObjectId;
   connectionId: ObjectId;
-  provider: "github";
-  kind: "repository";
+  provider: 'github';
+  kind: 'repository';
   externalId: string;
-  status: "active" | "removed";
+  status: 'active' | 'removed';
   locator: { owner: string; name: string; fullName: string };
   display: { url: string; defaultBranch: string; private: boolean };
   permissions?: { admin: boolean; push: boolean; pull: boolean };
@@ -23,7 +23,7 @@ export type ExternalResource = WithId<ExternalResourceSchema>;
 
 type ExternalResourceDTOBase = Omit<
   ExternalResourceSchema,
-  "organizationId" | "connectionId" | "providerUpdatedAt" | "lastSyncedAt"
+  'organizationId' | 'connectionId' | 'providerUpdatedAt' | 'lastSyncedAt'
 > & {
   organizationId: string;
   connectionId: string;
@@ -35,7 +35,7 @@ export type ExternalResourceDTO = WithStringId<ExternalResourceDTOBase>;
 
 export type GitHubRepositoryResourceInput = Pick<
   ExternalResourceSchema,
-  "externalId" | "locator" | "display" | "permissions" | "providerUpdatedAt"
+  'externalId' | 'locator' | 'display' | 'permissions' | 'providerUpdatedAt'
 >;
 
 export function toExternalResourceDTO(resource: ExternalResource): ExternalResourceDTO {
@@ -71,7 +71,7 @@ export async function listExternalResources(
       organizationId: toObjectId(organizationId),
       connectionId: toObjectId(connectionId),
     })
-    .sort({ "locator.fullName": 1 })
+    .sort({ 'locator.fullName': 1 })
     .toArray();
   return resources.map(toExternalResourceDTO);
 }
@@ -88,14 +88,14 @@ export async function synchronizeGitHubRepositoryResources(
   const connection = await getExternalConnectionsCollection(db).findOne({
     _id: connId,
     organizationId: orgId,
-    provider: "github",
+    provider: 'github',
   });
-  if (!connection) throw new Error("External connection not found for organization");
+  if (!connection) throw new Error('External connection not found for organization');
 
   const collection = getExternalResourcesCollection(db);
   const externalIds = resources.map((resource) => resource.externalId);
   if (new Set(externalIds).size !== externalIds.length) {
-    throw new Error("Repository resource externalIds must be unique");
+    throw new Error('Repository resource externalIds must be unique');
   }
 
   if (resources.length > 0) {
@@ -105,14 +105,14 @@ export async function synchronizeGitHubRepositoryResources(
           filter: {
             organizationId: orgId,
             connectionId: connId,
-            kind: "repository" as const,
+            kind: 'repository' as const,
             externalId: resource.externalId,
           },
           update: {
             $set: {
               organizationId: orgId,
-              provider: "github" as const,
-              status: "active" as const,
+              provider: 'github' as const,
+              status: 'active' as const,
               locator: resource.locator,
               display: resource.display,
               ...(resource.permissions && { permissions: resource.permissions }),
@@ -121,13 +121,13 @@ export async function synchronizeGitHubRepositoryResources(
             },
             $setOnInsert: {
               connectionId: connId,
-              kind: "repository" as const,
+              kind: 'repository' as const,
               externalId: resource.externalId,
             },
             ...((!resource.permissions || !resource.providerUpdatedAt) && {
               $unset: {
-                ...(!resource.permissions && { permissions: "" }),
-                ...(!resource.providerUpdatedAt && { providerUpdatedAt: "" }),
+                ...(!resource.permissions && { permissions: '' }),
+                ...(!resource.providerUpdatedAt && { providerUpdatedAt: '' }),
               },
             }),
           },
@@ -142,10 +142,10 @@ export async function synchronizeGitHubRepositoryResources(
     {
       organizationId: orgId,
       connectionId: connId,
-      kind: "repository",
+      kind: 'repository',
       externalId: { $nin: externalIds },
     },
-    { $set: { status: "removed", lastSyncedAt: syncedAt } }
+    { $set: { status: 'removed', lastSyncedAt: syncedAt } }
   );
   return listExternalResources(db, orgId, connId);
 }

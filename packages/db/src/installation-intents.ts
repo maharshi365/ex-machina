@@ -1,19 +1,19 @@
-import type { Collection, Db, ObjectId, WithId } from "mongodb";
-import { toObjectId } from "./types.js";
-import type { WithStringId } from "./types.js";
+import type { Collection, Db, ObjectId, WithId } from 'mongodb';
+import { toObjectId } from './types.js';
+import type { WithStringId } from './types.js';
 
-export const INSTALLATION_INTENTS_COLLECTION = "installation_intents";
+export const INSTALLATION_INTENTS_COLLECTION = 'installation_intents';
 
 export type InstallationIntentStatus =
-  | "awaiting_setup"
-  | "awaiting_oauth"
-  | "processing"
-  | "completed"
-  | "failed"
-  | "expired";
+  | 'awaiting_setup'
+  | 'awaiting_oauth'
+  | 'processing'
+  | 'completed'
+  | 'failed'
+  | 'expired';
 
 export type InstallationIntentSchema = {
-  provider: "github";
+  provider: 'github';
   organizationId: ObjectId;
   userId: ObjectId;
   installStateHash: string;
@@ -30,7 +30,7 @@ export type InstallationIntent = WithId<InstallationIntentSchema>;
 
 type InstallationIntentDTOBase = Omit<
   InstallationIntentSchema,
-  "organizationId" | "userId" | "createdAt" | "expiresAt"
+  'organizationId' | 'userId' | 'createdAt' | 'expiresAt'
 > & {
   organizationId: string;
   userId: string;
@@ -83,8 +83,8 @@ export function getInstallationIntentsCollection(db: Db): Collection<Installatio
 }
 
 function validateLocalReturnTo(returnTo: string): void {
-  if (!returnTo.startsWith("/") || returnTo.startsWith("//") || returnTo.includes("\\")) {
-    throw new Error("returnTo must be a local absolute path");
+  if (!returnTo.startsWith('/') || returnTo.startsWith('//') || returnTo.includes('\\')) {
+    throw new Error('returnTo must be a local absolute path');
   }
 }
 
@@ -93,19 +93,19 @@ export async function createInstallationIntent(
   input: CreateInstallationIntentInput,
   ctx: InstallationIntentContext
 ): Promise<InstallationIntentDTO> {
-  if (!input.installStateHash) throw new Error("installStateHash is required");
+  if (!input.installStateHash) throw new Error('installStateHash is required');
   if (!(input.expiresAt instanceof Date) || input.expiresAt.getTime() <= Date.now()) {
-    throw new Error("expiresAt must be a future date");
+    throw new Error('expiresAt must be a future date');
   }
   validateLocalReturnTo(input.returnTo);
 
   const doc: InstallationIntentSchema = {
-    provider: "github",
+    provider: 'github',
     organizationId: toObjectId(ctx.organizationId),
     userId: toObjectId(ctx.userId),
     installStateHash: input.installStateHash,
     returnTo: input.returnTo,
-    status: "awaiting_setup",
+    status: 'awaiting_setup',
     createdAt: new Date(),
     expiresAt: input.expiresAt,
   };
@@ -121,11 +121,11 @@ export async function consumeInstallationSetupState(
 ): Promise<InstallationIntentDTO | null> {
   const intent = await getInstallationIntentsCollection(db).findOneAndUpdate(
     {
-      provider: "github",
+      provider: 'github',
       installStateHash,
       organizationId: toObjectId(ctx.organizationId),
       userId: toObjectId(ctx.userId),
-      status: "awaiting_setup",
+      status: 'awaiting_setup',
       expiresAt: { $gt: new Date() },
     },
     {
@@ -133,10 +133,10 @@ export async function consumeInstallationSetupState(
         candidateInstallationId: input.candidateInstallationId,
         oauthStateHash: input.oauthStateHash,
         pkceVerifierCiphertext: input.pkceVerifierCiphertext,
-        status: "awaiting_oauth",
+        status: 'awaiting_oauth',
       },
     },
-    { returnDocument: "after" }
+    { returnDocument: 'after' }
   );
   return intent ? toInstallationIntentDTO(intent) : null;
 }
@@ -148,15 +148,15 @@ export async function claimInstallationOAuthState(
 ): Promise<InstallationIntentDTO | null> {
   const intent = await getInstallationIntentsCollection(db).findOneAndUpdate(
     {
-      provider: "github",
+      provider: 'github',
       oauthStateHash,
       organizationId: toObjectId(ctx.organizationId),
       userId: toObjectId(ctx.userId),
-      status: "awaiting_oauth",
+      status: 'awaiting_oauth',
       expiresAt: { $gt: new Date() },
     },
-    { $set: { status: "processing" } },
-    { returnDocument: "after" }
+    { $set: { status: 'processing' } },
+    { returnDocument: 'after' }
   );
   return intent ? toInstallationIntentDTO(intent) : null;
 }
@@ -164,23 +164,23 @@ export async function claimInstallationOAuthState(
 async function markInstallationIntent(
   db: Db,
   id: string | ObjectId,
-  status: "completed" | "failed",
+  status: 'completed' | 'failed',
   ctx: InstallationIntentContext
 ): Promise<InstallationIntentDTO | null> {
   const currentStatus =
-    status === "completed"
-      ? "processing"
-      : { $in: ["awaiting_setup", "awaiting_oauth", "processing"] as InstallationIntentStatus[] };
+    status === 'completed'
+      ? 'processing'
+      : { $in: ['awaiting_setup', 'awaiting_oauth', 'processing'] as InstallationIntentStatus[] };
   const intent = await getInstallationIntentsCollection(db).findOneAndUpdate(
     {
       _id: toObjectId(id),
-      provider: "github",
+      provider: 'github',
       organizationId: toObjectId(ctx.organizationId),
       userId: toObjectId(ctx.userId),
       status: currentStatus,
     },
-    { $set: { status }, $unset: { pkceVerifierCiphertext: "" } },
-    { returnDocument: "after" }
+    { $set: { status }, $unset: { pkceVerifierCiphertext: '' } },
+    { returnDocument: 'after' }
   );
   return intent ? toInstallationIntentDTO(intent) : null;
 }
@@ -190,7 +190,7 @@ export function markInstallationIntentComplete(
   id: string | ObjectId,
   ctx: InstallationIntentContext
 ): Promise<InstallationIntentDTO | null> {
-  return markInstallationIntent(db, id, "completed", ctx);
+  return markInstallationIntent(db, id, 'completed', ctx);
 }
 
 export function markInstallationIntentFailed(
@@ -198,7 +198,7 @@ export function markInstallationIntentFailed(
   id: string | ObjectId,
   ctx: InstallationIntentContext
 ): Promise<InstallationIntentDTO | null> {
-  return markInstallationIntent(db, id, "failed", ctx);
+  return markInstallationIntent(db, id, 'failed', ctx);
 }
 
 export function createInstallationIntentsRepository(

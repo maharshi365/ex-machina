@@ -1,11 +1,11 @@
-import { Link, useNavigate } from '@tanstack/react-router'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { ArrowLeft, Loader2, Save, Sparkles } from 'lucide-react'
-import * as React from 'react'
-import { toast } from 'sonner'
+import { Link, useNavigate } from '@tanstack/react-router';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { ArrowLeft, Loader2, Save, Sparkles } from 'lucide-react';
+import * as React from 'react';
+import { toast } from 'sonner';
 
-import { AuthenticatedShell } from '@/components/layout/authenticated-shell'
-import { NoOrganizationCard } from '@/components/layout/no-organization-card'
+import { AuthenticatedShell } from '@/components/layout/authenticated-shell';
+import { NoOrganizationCard } from '@/components/layout/no-organization-card';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,17 +13,17 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
-import { SidebarTrigger } from '@/components/ui/sidebar'
-import type { OrganizationDTO } from '@/lib/organizations/server'
-import { createSkillServerFn } from '@/lib/skills/server'
-import { skillKeys } from '@/lib/skills/queries'
+} from '@/components/ui/breadcrumb';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { SidebarTrigger } from '@/components/ui/sidebar';
+import type { OrganizationDTO } from '@/lib/organizations/server';
+import { createSkillServerFn } from '@/lib/skills/server';
+import { skillKeys } from '@/lib/skills/queries';
 
-import { SkillContentField, SkillDescriptionField, SkillNameField } from './skill-form-fields'
-import { validateSkillName } from './skill-validation'
+import { SkillContentField, SkillDescriptionField, SkillNameField } from './skill-form-fields';
+import { validateSkillName } from './skill-validation';
 
 export function SkillNewPage({ activeOrg }: { activeOrg: OrganizationDTO | null }) {
   if (!activeOrg) {
@@ -31,39 +31,39 @@ export function SkillNewPage({ activeOrg }: { activeOrg: OrganizationDTO | null 
       <AuthenticatedShell>
         <NoOrganizationCard />
       </AuthenticatedShell>
-    )
+    );
   }
-  return <Form organizationId={activeOrg.id} organizationName={activeOrg.name} />
+  return <Form organizationId={activeOrg.id} organizationName={activeOrg.name} />;
 }
 
 function Form({
   organizationId,
   organizationName,
 }: {
-  organizationId: string
-  organizationName: string
+  organizationId: string;
+  organizationName: string;
 }) {
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
-  const [name, setName] = React.useState('')
-  const [desc, setDesc] = React.useState('')
-  const [content, setContent] = React.useState('')
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [name, setName] = React.useState('');
+  const [desc, setDesc] = React.useState('');
+  const [content, setContent] = React.useState('');
 
-  const nameError = React.useMemo(() => validateSkillName(name), [name])
-  const descTooLong = desc.length > 1024
+  const nameError = React.useMemo(() => validateSkillName(name), [name]);
+  const descTooLong = desc.length > 1024;
 
   const createMutation = useMutation({
     mutationFn: (data: { name: string; description: string; content: string }) =>
       createSkillServerFn({ data }),
     onSuccess: async (data) => {
-      await queryClient.invalidateQueries({ queryKey: skillKeys.list(organizationId) })
-      toast.success('Skill created')
-      navigate({ to: '/library/skills/$skillId', params: { skillId: data._id } })
+      await queryClient.invalidateQueries({ queryKey: skillKeys.list(organizationId) });
+      toast.success('Skill created');
+      navigate({ to: '/library/skills/$skillId', params: { skillId: data._id } });
     },
     onError: (e: unknown) => toast.error(e instanceof Error ? e.message : 'Failed to create'),
-  })
+  });
 
-  const canSubmit = name.trim() && desc.trim() && content.trim() && !nameError && !descTooLong
+  const canSubmit = name.trim() && desc.trim() && content.trim() && !nameError && !descTooLong;
 
   return (
     <AuthenticatedShell insetClassName="flex h-svh flex-col overflow-hidden">
@@ -142,5 +142,5 @@ function Form({
         </div>
       </div>
     </AuthenticatedShell>
-  )
+  );
 }

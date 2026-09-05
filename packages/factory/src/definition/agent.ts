@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { ExecutionOverridesSchema } from "../execution/index.js";
+import { z } from 'zod';
+import { ExecutionOverridesSchema } from '../execution/index.js';
 
 export const FactoryAgentSchema = z.strictObject({
   key: z.string().trim().min(1),

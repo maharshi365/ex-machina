@@ -10,8 +10,8 @@
  * server's `suggestCanonicalClasses` lint and the `tailwindcss canonicalize`
  * CLI are built on.
  */
-import { runAsWorker } from "synckit";
-import { __unstable__loadDesignSystem } from "@tailwindcss/node";
+import { runAsWorker } from 'synckit';
+import { __unstable__loadDesignSystem } from '@tailwindcss/node';
 
 /** @type {Map<string, any>} */
 const designSystems = new Map();
@@ -22,10 +22,10 @@ runAsWorker(
    *   { type: "canonicalize", key: string, candidates: string[], rem: number }} job
    */
   async (job) => {
-    if (job.type === "load") {
+    if (job.type === 'load') {
       designSystems.set(
         job.key,
-        await __unstable__loadDesignSystem(job.cssContent, { base: job.base }),
+        await __unstable__loadDesignSystem(job.cssContent, { base: job.base })
       );
       return { ok: true };
     }
@@ -37,5 +37,5 @@ runAsWorker(
     // 1:1 spelling canonicalization only — no `collapse`, no sorting.
     // (Sorting/dedup is the formatter's job: oxfmt `sortTailwindcss`.)
     return designSystem.canonicalizeCandidates(job.candidates, { rem: job.rem });
-  },
+  }
 );

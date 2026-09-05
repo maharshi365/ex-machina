@@ -6,11 +6,11 @@ server's `suggestCanonicalClasses` diagnostic (the _"The class `X` can be
 written as `Y`"_ quick-fixes in your editor), but applied repo-wide via
 `bun run lint:fix` instead of one click at a time.
 
-| Non-canonical              | Canonical        |
-| -------------------------- | ---------------- |
-| `mt-[16px]`                | `mt-4`           |
-| `[color:red]/50`           | `text-[red]/50`  |
-| `[@media_print]:flex`      | `print:flex`     |
+| Non-canonical         | Canonical       |
+| --------------------- | --------------- |
+| `mt-[16px]`           | `mt-4`          |
+| `[color:red]/50`      | `text-[red]/50` |
+| `[@media_print]:flex` | `print:flex`    |
 
 ## How it works (and why it doesn't spawn the LSP)
 
@@ -43,11 +43,11 @@ In `oxlint.config.ts`:
 
 ```ts
 export default defineConfig({
-  jsPlugins: ["./internals/oxlint-plugin-tailwind-canonical/src/plugin.js"],
+  jsPlugins: ['./internals/oxlint-plugin-tailwind-canonical/src/plugin.js'],
   rules: {
-    "tailwind-canonical/canonical-class-names": [
-      "warn",
-      { cssPath: "./apps/web/src/styles.css", rootFontSize: 16 },
+    'tailwind-canonical/canonical-class-names': [
+      'warn',
+      { cssPath: './apps/web/src/styles.css', rootFontSize: 16 },
     ],
   },
 });

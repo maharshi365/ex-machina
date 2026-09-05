@@ -1,9 +1,9 @@
-import { FactoryDefinitionSchema, type FactoryDefinition } from "./definition/index.js";
+import { FactoryDefinitionSchema, type FactoryDefinition } from './definition/index.js';
 
 export class FactoryValidationError extends Error {
   constructor(readonly issues: string[]) {
-    super(`Invalid factory definition:\n- ${issues.join("\n- ")}`);
-    this.name = "FactoryValidationError";
+    super(`Invalid factory definition:\n- ${issues.join('\n- ')}`);
+    this.name = 'FactoryValidationError';
   }
 }
 
@@ -11,14 +11,14 @@ export function validateFactoryDefinition(definition: FactoryDefinition): void {
   const shape = FactoryDefinitionSchema.safeParse(definition);
   if (!shape.success) {
     throw new FactoryValidationError(
-      shape.error.issues.map((issue) => `${issue.path.join(".") || "definition"}: ${issue.message}`)
+      shape.error.issues.map((issue) => `${issue.path.join('.') || 'definition'}: ${issue.message}`)
     );
   }
   const issues: string[] = [];
 
-  const repositoryKeys = collectKeys(definition.repositories, "repository", issues);
-  const agentKeys = collectKeys(definition.agents, "agent", issues);
-  collectKeys(definition.automations, "automation", issues);
+  const repositoryKeys = collectKeys(definition.repositories, 'repository', issues);
+  const agentKeys = collectKeys(definition.agents, 'agent', issues);
+  collectKeys(definition.automations, 'automation', issues);
 
   for (const repository of definition.repositories) {
     requireText(repository.connectionId, `repositories.${repository.key}.connectionId`, issues);
@@ -78,10 +78,10 @@ export function validateFactoryForActivation(definition: FactoryDefinition): voi
   validateFactoryDefinition(definition);
   const issues: string[] = [];
 
-  if (!definition.repositories.length) issues.push("at least one repository is required");
-  if (!definition.agents.length) issues.push("at least one assigned agent is required");
+  if (!definition.repositories.length) issues.push('at least one repository is required');
+  if (!definition.agents.length) issues.push('at least one assigned agent is required');
   if (!definition.automations.some((automation) => automation.enabled)) {
-    issues.push("at least one enabled automation is required");
+    issues.push('at least one enabled automation is required');
   }
 
   for (const automation of definition.automations) {

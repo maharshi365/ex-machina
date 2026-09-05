@@ -8,15 +8,15 @@
  * `canonicalizeCandidates` de-duplicates its output, so inputs must be
  * unique to keep the result aligned).
  */
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import { createSyncFn } from "synckit";
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createSyncFn } from 'synckit';
 
-const workerPath = fileURLToPath(new URL("./worker.js", import.meta.url));
+const workerPath = fileURLToPath(new URL('./worker.js', import.meta.url));
 
 /** Fallback stylesheet used when the rule is configured without `cssPath`. */
-export const DEFAULT_CSS_PATH = "apps/web/src/styles.css";
+export const DEFAULT_CSS_PATH = 'apps/web/src/styles.css';
 
 /** @type {ReturnType<typeof createSyncFn> | null} */
 let syncCall = null;
@@ -57,9 +57,9 @@ export function ensureDesignSystem(cssFile) {
   if (loadedSystems.get(cssFile) === stat.mtimeMs) {
     return cssFile;
   }
-  const cssContent = fs.readFileSync(cssFile, "utf8");
+  const cssContent = fs.readFileSync(cssFile, 'utf8');
   getSyncCall()({
-    type: "load",
+    type: 'load',
     key: cssFile,
     cssContent,
     base: path.dirname(cssFile),
@@ -81,7 +81,7 @@ export function canonicalizeTokens(key, tokens, rem) {
     return new Map();
   }
   const canonical = getSyncCall()({
-    type: "canonicalize",
+    type: 'canonicalize',
     key,
     candidates: tokens,
     rem,

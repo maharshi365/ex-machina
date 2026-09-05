@@ -1,11 +1,11 @@
-import { Link, useNavigate } from '@tanstack/react-router'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ArrowLeft, Loader2, Save, Sparkles, Trash2 } from 'lucide-react'
-import * as React from 'react'
-import { toast } from 'sonner'
+import { Link, useNavigate } from '@tanstack/react-router';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { ArrowLeft, Loader2, Save, Sparkles, Trash2 } from 'lucide-react';
+import * as React from 'react';
+import { toast } from 'sonner';
 
-import { AuthenticatedShell } from '@/components/layout/authenticated-shell'
-import { NoOrganizationCard } from '@/components/layout/no-organization-card'
+import { AuthenticatedShell } from '@/components/layout/authenticated-shell';
+import { NoOrganizationCard } from '@/components/layout/no-organization-card';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,9 +13,9 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+} from '@/components/ui/breadcrumb';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -23,30 +23,30 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Separator } from '@/components/ui/separator'
-import { SidebarTrigger } from '@/components/ui/sidebar'
-import { Skeleton } from '@/components/ui/skeleton'
-import type { OrganizationDTO } from '@/lib/organizations/server'
-import { deleteSkillServerFn, updateSkillServerFn } from '@/lib/skills/server'
-import { skillKeys, skillQueryOptions } from '@/lib/skills/queries'
+} from '@/components/ui/dialog';
+import { Separator } from '@/components/ui/separator';
+import { SidebarTrigger } from '@/components/ui/sidebar';
+import { Skeleton } from '@/components/ui/skeleton';
+import type { OrganizationDTO } from '@/lib/organizations/server';
+import { deleteSkillServerFn, updateSkillServerFn } from '@/lib/skills/server';
+import { skillKeys, skillQueryOptions } from '@/lib/skills/queries';
 
-import { SkillContentField, SkillDescriptionField, SkillNameField } from './skill-form-fields'
-import { validateSkillName } from './skill-validation'
+import { SkillContentField, SkillDescriptionField, SkillNameField } from './skill-form-fields';
+import { validateSkillName } from './skill-validation';
 
 export function SkillEditPage({
   activeOrg,
   skillId,
 }: {
-  activeOrg: OrganizationDTO | null
-  skillId: string
+  activeOrg: OrganizationDTO | null;
+  skillId: string;
 }) {
   if (!activeOrg) {
     return (
       <AuthenticatedShell>
         <NoOrganizationCard />
       </AuthenticatedShell>
-    )
+    );
   }
 
   return (
@@ -55,7 +55,7 @@ export function SkillEditPage({
       organizationName={activeOrg.name}
       skillId={skillId}
     />
-  )
+  );
 }
 
 function SkillEditManager({
@@ -63,50 +63,50 @@ function SkillEditManager({
   organizationName,
   skillId,
 }: {
-  organizationId: string
-  organizationName: string
-  skillId: string
+  organizationId: string;
+  organizationName: string;
+  skillId: string;
 }) {
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
-  const { data: skill, isLoading, error } = useQuery(skillQueryOptions(organizationId, skillId))
-  const [name, setName] = React.useState('')
-  const [desc, setDesc] = React.useState('')
-  const [content, setContent] = React.useState('')
-  const [deleteOpen, setDeleteOpen] = React.useState(false)
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { data: skill, isLoading, error } = useQuery(skillQueryOptions(organizationId, skillId));
+  const [name, setName] = React.useState('');
+  const [desc, setDesc] = React.useState('');
+  const [content, setContent] = React.useState('');
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (skill) {
-      setName(skill.name)
-      setDesc(skill.description)
-      setContent(skill.content)
+      setName(skill.name);
+      setDesc(skill.description);
+      setContent(skill.content);
     }
-  }, [skill])
+  }, [skill]);
 
-  const nameError = React.useMemo(() => validateSkillName(name), [name])
-  const descTooLong = desc.length > 1024
-  const canSave = name.trim() && desc.trim() && content.trim() && !nameError && !descTooLong
+  const nameError = React.useMemo(() => validateSkillName(name), [name]);
+  const descTooLong = desc.length > 1024;
+  const canSave = name.trim() && desc.trim() && content.trim() && !nameError && !descTooLong;
 
   const updateMutation = useMutation({
     mutationFn: (data: { name: string; description: string; content: string }) =>
       updateSkillServerFn({ data: { id: skillId, ...data } }),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: skillKeys.list(organizationId) })
-      await queryClient.invalidateQueries({ queryKey: skillKeys.detail(organizationId, skillId) })
-      toast.success('Skill saved')
+      await queryClient.invalidateQueries({ queryKey: skillKeys.list(organizationId) });
+      await queryClient.invalidateQueries({ queryKey: skillKeys.detail(organizationId, skillId) });
+      toast.success('Skill saved');
     },
     onError: (e: unknown) => toast.error(e instanceof Error ? e.message : 'Failed to save'),
-  })
+  });
 
   const deleteMutation = useMutation({
     mutationFn: () => deleteSkillServerFn({ data: { id: skillId } }),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: skillKeys.list(organizationId) })
-      toast.success('Skill deleted')
-      void navigate({ to: '/library/skills' })
+      await queryClient.invalidateQueries({ queryKey: skillKeys.list(organizationId) });
+      toast.success('Skill deleted');
+      void navigate({ to: '/library/skills' });
     },
     onError: (e: unknown) => toast.error(e instanceof Error ? e.message : 'Failed to delete'),
-  })
+  });
 
   if (isLoading) {
     return (
@@ -116,7 +116,7 @@ function SkillEditManager({
           <Skeleton className="h-[60vh] w-full" />
         </div>
       </AuthenticatedShell>
-    )
+    );
   }
 
   if (error || !skill) {
@@ -142,7 +142,7 @@ function SkillEditManager({
           </Card>
         </div>
       </AuthenticatedShell>
-    )
+    );
   }
 
   return (
@@ -248,5 +248,5 @@ function SkillEditManager({
         </Dialog>
       </div>
     </AuthenticatedShell>
-  )
+  );
 }

@@ -1,15 +1,19 @@
-import { useQuery } from '@tanstack/react-query'
-import { Github, Plug, Server } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query';
+import { Github, Plug, Server } from 'lucide-react';
 
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
-import { integrationsQueryOptions } from '@/lib/integrations/queries'
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { integrationsQueryOptions } from '@/lib/integrations/queries';
 
 export function ConnectedInstallations({ organizationId }: { organizationId: string }) {
-  const { data: connections, isLoading, error } = useQuery(integrationsQueryOptions(organizationId))
+  const {
+    data: connections,
+    isLoading,
+    error,
+  } = useQuery(integrationsQueryOptions(organizationId));
   const githubConnections =
-    connections?.filter((connection) => connection.provider === 'github') ?? []
+    connections?.filter((connection) => connection.provider === 'github') ?? [];
 
   return (
     <div>
@@ -23,7 +27,9 @@ export function ConnectedInstallations({ organizationId }: { organizationId: str
         <Card className="border-destructive">
           <CardHeader>
             <CardTitle className="text-destructive">Failed to load integrations</CardTitle>
-            <CardDescription>{error instanceof Error ? error.message : String(error)}</CardDescription>
+            <CardDescription>
+              {error instanceof Error ? error.message : String(error)}
+            </CardDescription>
           </CardHeader>
         </Card>
       ) : githubConnections.length === 0 ? (
@@ -37,8 +43,8 @@ export function ConnectedInstallations({ organizationId }: { organizationId: str
         <div className="grid gap-3 md:grid-cols-2">
           {githubConnections.map((connection) => {
             const activeRepositories = connection.resources.filter(
-              (resource) => resource.status === 'active',
-            )
+              (resource) => resource.status === 'active'
+            );
             return (
               <Card key={connection._id}>
                 <CardHeader>
@@ -68,10 +74,10 @@ export function ConnectedInstallations({ organizationId }: { organizationId: str
                   )}
                 </CardContent>
               </Card>
-            )
+            );
           })}
         </div>
       )}
     </div>
-  )
+  );
 }

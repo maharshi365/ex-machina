@@ -1,7 +1,7 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const SandboxDefinitionSchema = z.strictObject({
-  provider: z.literal("aws"),
+  provider: z.literal('aws'),
   version: z.literal(1),
   image: z.strictObject({
     id: z.string().trim().min(1),

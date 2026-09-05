@@ -75,8 +75,8 @@ Or via relative path: `"extends": "../../packages/configs/tsconfig.base.json"`
 
 ```ts
 // packages/my-lib/oxlint.config.ts
-import { defineConfig } from "oxlint";
-import base from "@ex-machina/configs/oxlint" with { type: "json" };
+import { defineConfig } from 'oxlint';
+import base from '@ex-machina/configs/oxlint' with { type: 'json' };
 export default defineConfig({ extends: [base] });
 ```
 
@@ -84,8 +84,8 @@ export default defineConfig({ extends: [base] });
 
 ```ts
 // packages/my-lib/oxfmt.config.ts
-import { defineConfig } from "oxfmt";
-import base from "@ex-machina/configs/oxfmt" with { type: "json" };
+import { defineConfig } from 'oxfmt';
+import base from '@ex-machina/configs/oxfmt' with { type: 'json' };
 export default defineConfig({ ...base });
 ```
 

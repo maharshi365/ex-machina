@@ -1,6 +1,6 @@
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 export function AgentNameField({
   value,
@@ -8,17 +8,22 @@ export function AgentNameField({
   id = 'agent-name',
   placeholder = 'Jarvis',
 }: {
-  value: string
-  onChange: (v: string) => void
-  id?: string
-  placeholder?: string
+  value: string;
+  onChange: (v: string) => void;
+  id?: string;
+  placeholder?: string;
 }) {
   return (
     <div className="space-y-2">
       <Label htmlFor={id}>Name</Label>
-      <Input id={id} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} />
+      <Input
+        id={id}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+      />
     </div>
-  )
+  );
 }
 
 export function AgentDescriptionField({
@@ -27,10 +32,10 @@ export function AgentDescriptionField({
   id = 'agent-desc',
   placeholder = 'Helpful assistant...',
 }: {
-  value: string
-  onChange: (v: string) => void
-  id?: string
-  placeholder?: string
+  value: string;
+  onChange: (v: string) => void;
+  id?: string;
+  placeholder?: string;
 }) {
   return (
     <div className="space-y-2">
@@ -42,7 +47,7 @@ export function AgentDescriptionField({
         placeholder={placeholder}
       />
     </div>
-  )
+  );
 }
 
 export function AgentContentField({
@@ -50,9 +55,9 @@ export function AgentContentField({
   onChange,
   id = 'agent-content',
 }: {
-  value: string
-  onChange: (v: string) => void
-  id?: string
+  value: string;
+  onChange: (v: string) => void;
+  id?: string;
 }) {
   return (
     <div className="flex flex-1 flex-col gap-2 min-h-0">
@@ -68,5 +73,5 @@ export function AgentContentField({
         {value.length} chars · fits in viewport · scroll inside textarea
       </p>
     </div>
-  )
+  );
 }

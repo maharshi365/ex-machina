@@ -61,6 +61,6 @@ export function summarizeChanges(changes) {
   return {
     original: first.original,
     canonical: first.canonical,
-    suffix: changes.length > 1 ? ` (+${changes.length - 1} more in this string)` : "",
+    suffix: changes.length > 1 ? ` (+${changes.length - 1} more in this string)` : '',
   };
 }

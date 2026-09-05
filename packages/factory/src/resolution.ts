@@ -1,6 +1,6 @@
-import type { FactoryAutomation, FactoryDefinition } from "./definition/index.js";
-import type { ExecutionDefinition } from "./execution/index.js";
-import { FactoryValidationError } from "./validation.js";
+import type { FactoryAutomation, FactoryDefinition } from './definition/index.js';
+import type { ExecutionDefinition } from './execution/index.js';
+import { FactoryValidationError } from './validation.js';
 
 export function resolveAutomationExecution(
   definition: FactoryDefinition,

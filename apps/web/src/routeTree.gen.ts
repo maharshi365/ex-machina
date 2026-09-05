@@ -8,169 +8,161 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
-import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
-import { Route as AuthenticatedLibraryAgentsIndexRouteImport } from './routes/_authenticated/library/agents/index'
-import { Route as AuthenticatedLibraryAgentsAgentIdRouteImport } from './routes/_authenticated/library/agents/$agentId'
-import { Route as AuthenticatedLibraryAgentsNewRouteImport } from './routes/_authenticated/library/agents/new'
-import { Route as AuthenticatedLibraryIntegrationsIndexRouteImport } from './routes/_authenticated/library/integrations/index'
-import { Route as AuthenticatedLibrarySkillsIndexRouteImport } from './routes/_authenticated/library/skills/index'
-import { Route as AuthenticatedLibrarySkillsSkillIdRouteImport } from './routes/_authenticated/library/skills/$skillId'
-import { Route as AuthenticatedLibrarySkillsNewRouteImport } from './routes/_authenticated/library/skills/new'
-import { Route as ApiIntegrationsGithubInstallRouteImport } from './routes/api/integrations/github/install'
-import { Route as ApiIntegrationsGithubSetupRouteImport } from './routes/api/integrations/github/setup'
-import { Route as ApiIntegrationsGithubOauthCallbackRouteImport } from './routes/api/integrations/github/oauth/callback'
+import { Route as rootRouteImport } from './routes/__root';
+import { Route as IndexRouteImport } from './routes/index';
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated';
+import { Route as LoginRouteImport } from './routes/login';
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard';
+import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding';
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$';
+import { Route as AuthenticatedLibraryAgentsIndexRouteImport } from './routes/_authenticated/library/agents/index';
+import { Route as AuthenticatedLibraryAgentsAgentIdRouteImport } from './routes/_authenticated/library/agents/$agentId';
+import { Route as AuthenticatedLibraryAgentsNewRouteImport } from './routes/_authenticated/library/agents/new';
+import { Route as AuthenticatedLibraryIntegrationsIndexRouteImport } from './routes/_authenticated/library/integrations/index';
+import { Route as AuthenticatedLibrarySkillsIndexRouteImport } from './routes/_authenticated/library/skills/index';
+import { Route as AuthenticatedLibrarySkillsSkillIdRouteImport } from './routes/_authenticated/library/skills/$skillId';
+import { Route as AuthenticatedLibrarySkillsNewRouteImport } from './routes/_authenticated/library/skills/new';
+import { Route as ApiIntegrationsGithubInstallRouteImport } from './routes/api/integrations/github/install';
+import { Route as ApiIntegrationsGithubSetupRouteImport } from './routes/api/integrations/github/setup';
+import { Route as ApiIntegrationsGithubOauthCallbackRouteImport } from './routes/api/integrations/github/oauth/callback';
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
-} as any)
+} as any);
 const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
   getParentRoute: () => AuthenticatedRoute,
-} as any)
+} as any);
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedLibraryAgentsIndexRoute =
-  AuthenticatedLibraryAgentsIndexRouteImport.update({
-    id: '/library/agents/',
-    path: '/library/agents/',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
-const AuthenticatedLibraryAgentsAgentIdRoute =
-  AuthenticatedLibraryAgentsAgentIdRouteImport.update({
-    id: '/library/agents/$agentId',
-    path: '/library/agents/$agentId',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
-const AuthenticatedLibraryAgentsNewRoute =
-  AuthenticatedLibraryAgentsNewRouteImport.update({
-    id: '/library/agents/new',
-    path: '/library/agents/new',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
+} as any);
+const AuthenticatedLibraryAgentsIndexRoute = AuthenticatedLibraryAgentsIndexRouteImport.update({
+  id: '/library/agents/',
+  path: '/library/agents/',
+  getParentRoute: () => AuthenticatedRoute,
+} as any);
+const AuthenticatedLibraryAgentsAgentIdRoute = AuthenticatedLibraryAgentsAgentIdRouteImport.update({
+  id: '/library/agents/$agentId',
+  path: '/library/agents/$agentId',
+  getParentRoute: () => AuthenticatedRoute,
+} as any);
+const AuthenticatedLibraryAgentsNewRoute = AuthenticatedLibraryAgentsNewRouteImport.update({
+  id: '/library/agents/new',
+  path: '/library/agents/new',
+  getParentRoute: () => AuthenticatedRoute,
+} as any);
 const AuthenticatedLibraryIntegrationsIndexRoute =
   AuthenticatedLibraryIntegrationsIndexRouteImport.update({
     id: '/library/integrations/',
     path: '/library/integrations/',
     getParentRoute: () => AuthenticatedRoute,
-  } as any)
-const AuthenticatedLibrarySkillsIndexRoute =
-  AuthenticatedLibrarySkillsIndexRouteImport.update({
-    id: '/library/skills/',
-    path: '/library/skills/',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
-const AuthenticatedLibrarySkillsSkillIdRoute =
-  AuthenticatedLibrarySkillsSkillIdRouteImport.update({
-    id: '/library/skills/$skillId',
-    path: '/library/skills/$skillId',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
-const AuthenticatedLibrarySkillsNewRoute =
-  AuthenticatedLibrarySkillsNewRouteImport.update({
-    id: '/library/skills/new',
-    path: '/library/skills/new',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
-const ApiIntegrationsGithubInstallRoute =
-  ApiIntegrationsGithubInstallRouteImport.update({
-    id: '/api/integrations/github/install',
-    path: '/api/integrations/github/install',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiIntegrationsGithubSetupRoute =
-  ApiIntegrationsGithubSetupRouteImport.update({
-    id: '/api/integrations/github/setup',
-    path: '/api/integrations/github/setup',
-    getParentRoute: () => rootRouteImport,
-  } as any)
+  } as any);
+const AuthenticatedLibrarySkillsIndexRoute = AuthenticatedLibrarySkillsIndexRouteImport.update({
+  id: '/library/skills/',
+  path: '/library/skills/',
+  getParentRoute: () => AuthenticatedRoute,
+} as any);
+const AuthenticatedLibrarySkillsSkillIdRoute = AuthenticatedLibrarySkillsSkillIdRouteImport.update({
+  id: '/library/skills/$skillId',
+  path: '/library/skills/$skillId',
+  getParentRoute: () => AuthenticatedRoute,
+} as any);
+const AuthenticatedLibrarySkillsNewRoute = AuthenticatedLibrarySkillsNewRouteImport.update({
+  id: '/library/skills/new',
+  path: '/library/skills/new',
+  getParentRoute: () => AuthenticatedRoute,
+} as any);
+const ApiIntegrationsGithubInstallRoute = ApiIntegrationsGithubInstallRouteImport.update({
+  id: '/api/integrations/github/install',
+  path: '/api/integrations/github/install',
+  getParentRoute: () => rootRouteImport,
+} as any);
+const ApiIntegrationsGithubSetupRoute = ApiIntegrationsGithubSetupRouteImport.update({
+  id: '/api/integrations/github/setup',
+  path: '/api/integrations/github/setup',
+  getParentRoute: () => rootRouteImport,
+} as any);
 const ApiIntegrationsGithubOauthCallbackRoute =
   ApiIntegrationsGithubOauthCallbackRouteImport.update({
     id: '/api/integrations/github/oauth/callback',
     path: '/api/integrations/github/oauth/callback',
     getParentRoute: () => rootRouteImport,
-  } as any)
+  } as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/login': typeof LoginRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
-  '/onboarding': typeof AuthenticatedOnboardingRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
-  '/library/agents/$agentId': typeof AuthenticatedLibraryAgentsAgentIdRoute
-  '/library/agents/new': typeof AuthenticatedLibraryAgentsNewRoute
-  '/library/skills/$skillId': typeof AuthenticatedLibrarySkillsSkillIdRoute
-  '/library/skills/new': typeof AuthenticatedLibrarySkillsNewRoute
-  '/api/integrations/github/install': typeof ApiIntegrationsGithubInstallRoute
-  '/api/integrations/github/setup': typeof ApiIntegrationsGithubSetupRoute
-  '/library/agents/': typeof AuthenticatedLibraryAgentsIndexRoute
-  '/library/integrations/': typeof AuthenticatedLibraryIntegrationsIndexRoute
-  '/library/skills/': typeof AuthenticatedLibrarySkillsIndexRoute
-  '/api/integrations/github/oauth/callback': typeof ApiIntegrationsGithubOauthCallbackRoute
+  '/': typeof IndexRoute;
+  '/login': typeof LoginRoute;
+  '/dashboard': typeof AuthenticatedDashboardRoute;
+  '/onboarding': typeof AuthenticatedOnboardingRoute;
+  '/api/auth/$': typeof ApiAuthSplatRoute;
+  '/library/agents/$agentId': typeof AuthenticatedLibraryAgentsAgentIdRoute;
+  '/library/agents/new': typeof AuthenticatedLibraryAgentsNewRoute;
+  '/library/skills/$skillId': typeof AuthenticatedLibrarySkillsSkillIdRoute;
+  '/library/skills/new': typeof AuthenticatedLibrarySkillsNewRoute;
+  '/api/integrations/github/install': typeof ApiIntegrationsGithubInstallRoute;
+  '/api/integrations/github/setup': typeof ApiIntegrationsGithubSetupRoute;
+  '/library/agents/': typeof AuthenticatedLibraryAgentsIndexRoute;
+  '/library/integrations/': typeof AuthenticatedLibraryIntegrationsIndexRoute;
+  '/library/skills/': typeof AuthenticatedLibrarySkillsIndexRoute;
+  '/api/integrations/github/oauth/callback': typeof ApiIntegrationsGithubOauthCallbackRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/login': typeof LoginRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
-  '/onboarding': typeof AuthenticatedOnboardingRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
-  '/library/agents/$agentId': typeof AuthenticatedLibraryAgentsAgentIdRoute
-  '/library/agents/new': typeof AuthenticatedLibraryAgentsNewRoute
-  '/library/skills/$skillId': typeof AuthenticatedLibrarySkillsSkillIdRoute
-  '/library/skills/new': typeof AuthenticatedLibrarySkillsNewRoute
-  '/api/integrations/github/install': typeof ApiIntegrationsGithubInstallRoute
-  '/api/integrations/github/setup': typeof ApiIntegrationsGithubSetupRoute
-  '/library/agents': typeof AuthenticatedLibraryAgentsIndexRoute
-  '/library/integrations': typeof AuthenticatedLibraryIntegrationsIndexRoute
-  '/library/skills': typeof AuthenticatedLibrarySkillsIndexRoute
-  '/api/integrations/github/oauth/callback': typeof ApiIntegrationsGithubOauthCallbackRoute
+  '/': typeof IndexRoute;
+  '/login': typeof LoginRoute;
+  '/dashboard': typeof AuthenticatedDashboardRoute;
+  '/onboarding': typeof AuthenticatedOnboardingRoute;
+  '/api/auth/$': typeof ApiAuthSplatRoute;
+  '/library/agents/$agentId': typeof AuthenticatedLibraryAgentsAgentIdRoute;
+  '/library/agents/new': typeof AuthenticatedLibraryAgentsNewRoute;
+  '/library/skills/$skillId': typeof AuthenticatedLibrarySkillsSkillIdRoute;
+  '/library/skills/new': typeof AuthenticatedLibrarySkillsNewRoute;
+  '/api/integrations/github/install': typeof ApiIntegrationsGithubInstallRoute;
+  '/api/integrations/github/setup': typeof ApiIntegrationsGithubSetupRoute;
+  '/library/agents': typeof AuthenticatedLibraryAgentsIndexRoute;
+  '/library/integrations': typeof AuthenticatedLibraryIntegrationsIndexRoute;
+  '/library/skills': typeof AuthenticatedLibrarySkillsIndexRoute;
+  '/api/integrations/github/oauth/callback': typeof ApiIntegrationsGithubOauthCallbackRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/_authenticated': typeof AuthenticatedRouteWithChildren
-  '/login': typeof LoginRoute
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
-  '/_authenticated/library/agents/$agentId': typeof AuthenticatedLibraryAgentsAgentIdRoute
-  '/_authenticated/library/agents/new': typeof AuthenticatedLibraryAgentsNewRoute
-  '/_authenticated/library/skills/$skillId': typeof AuthenticatedLibrarySkillsSkillIdRoute
-  '/_authenticated/library/skills/new': typeof AuthenticatedLibrarySkillsNewRoute
-  '/api/integrations/github/install': typeof ApiIntegrationsGithubInstallRoute
-  '/api/integrations/github/setup': typeof ApiIntegrationsGithubSetupRoute
-  '/_authenticated/library/agents/': typeof AuthenticatedLibraryAgentsIndexRoute
-  '/_authenticated/library/integrations/': typeof AuthenticatedLibraryIntegrationsIndexRoute
-  '/_authenticated/library/skills/': typeof AuthenticatedLibrarySkillsIndexRoute
-  '/api/integrations/github/oauth/callback': typeof ApiIntegrationsGithubOauthCallbackRoute
+  __root__: typeof rootRouteImport;
+  '/': typeof IndexRoute;
+  '/_authenticated': typeof AuthenticatedRouteWithChildren;
+  '/login': typeof LoginRoute;
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute;
+  '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute;
+  '/api/auth/$': typeof ApiAuthSplatRoute;
+  '/_authenticated/library/agents/$agentId': typeof AuthenticatedLibraryAgentsAgentIdRoute;
+  '/_authenticated/library/agents/new': typeof AuthenticatedLibraryAgentsNewRoute;
+  '/_authenticated/library/skills/$skillId': typeof AuthenticatedLibrarySkillsSkillIdRoute;
+  '/_authenticated/library/skills/new': typeof AuthenticatedLibrarySkillsNewRoute;
+  '/api/integrations/github/install': typeof ApiIntegrationsGithubInstallRoute;
+  '/api/integrations/github/setup': typeof ApiIntegrationsGithubSetupRoute;
+  '/_authenticated/library/agents/': typeof AuthenticatedLibraryAgentsIndexRoute;
+  '/_authenticated/library/integrations/': typeof AuthenticatedLibraryIntegrationsIndexRoute;
+  '/_authenticated/library/skills/': typeof AuthenticatedLibrarySkillsIndexRoute;
+  '/api/integrations/github/oauth/callback': typeof ApiIntegrationsGithubOauthCallbackRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
     | '/'
     | '/login'
@@ -186,8 +178,8 @@ export interface FileRouteTypes {
     | '/library/agents/'
     | '/library/integrations/'
     | '/library/skills/'
-    | '/api/integrations/github/oauth/callback'
-  fileRoutesByTo: FileRoutesByTo
+    | '/api/integrations/github/oauth/callback';
+  fileRoutesByTo: FileRoutesByTo;
   to:
     | '/'
     | '/login'
@@ -203,7 +195,7 @@ export interface FileRouteTypes {
     | '/library/agents'
     | '/library/integrations'
     | '/library/skills'
-    | '/api/integrations/github/oauth/callback'
+    | '/api/integrations/github/oauth/callback';
   id:
     | '__root__'
     | '/'
@@ -221,166 +213,163 @@ export interface FileRouteTypes {
     | '/_authenticated/library/agents/'
     | '/_authenticated/library/integrations/'
     | '/_authenticated/library/skills/'
-    | '/api/integrations/github/oauth/callback'
-  fileRoutesById: FileRoutesById
+    | '/api/integrations/github/oauth/callback';
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
-  LoginRoute: typeof LoginRoute
-  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  ApiIntegrationsGithubInstallRoute: typeof ApiIntegrationsGithubInstallRoute
-  ApiIntegrationsGithubSetupRoute: typeof ApiIntegrationsGithubSetupRoute
-  ApiIntegrationsGithubOauthCallbackRoute: typeof ApiIntegrationsGithubOauthCallbackRoute
+  IndexRoute: typeof IndexRoute;
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren;
+  LoginRoute: typeof LoginRoute;
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute;
+  ApiIntegrationsGithubInstallRoute: typeof ApiIntegrationsGithubInstallRoute;
+  ApiIntegrationsGithubSetupRoute: typeof ApiIntegrationsGithubSetupRoute;
+  ApiIntegrationsGithubOauthCallbackRoute: typeof ApiIntegrationsGithubOauthCallbackRoute;
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/_authenticated';
+      path: '';
+      fullPath: '/';
+      preLoaderRoute: typeof AuthenticatedRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/login';
+      path: '/login';
+      fullPath: '/login';
+      preLoaderRoute: typeof LoginRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
+      id: '/_authenticated/dashboard';
+      path: '/dashboard';
+      fullPath: '/dashboard';
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport;
+      parentRoute: typeof AuthenticatedRoute;
+    };
     '/_authenticated/onboarding': {
-      id: '/_authenticated/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
+      id: '/_authenticated/onboarding';
+      path: '/onboarding';
+      fullPath: '/onboarding';
+      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport;
+      parentRoute: typeof AuthenticatedRoute;
+    };
     '/api/auth/$': {
-      id: '/api/auth/$'
-      path: '/api/auth/$'
-      fullPath: '/api/auth/$'
-      preLoaderRoute: typeof ApiAuthSplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/api/auth/$';
+      path: '/api/auth/$';
+      fullPath: '/api/auth/$';
+      preLoaderRoute: typeof ApiAuthSplatRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/_authenticated/library/agents/': {
-      id: '/_authenticated/library/agents/'
-      path: '/library/agents'
-      fullPath: '/library/agents/'
-      preLoaderRoute: typeof AuthenticatedLibraryAgentsIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
+      id: '/_authenticated/library/agents/';
+      path: '/library/agents';
+      fullPath: '/library/agents/';
+      preLoaderRoute: typeof AuthenticatedLibraryAgentsIndexRouteImport;
+      parentRoute: typeof AuthenticatedRoute;
+    };
     '/_authenticated/library/agents/$agentId': {
-      id: '/_authenticated/library/agents/$agentId'
-      path: '/library/agents/$agentId'
-      fullPath: '/library/agents/$agentId'
-      preLoaderRoute: typeof AuthenticatedLibraryAgentsAgentIdRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
+      id: '/_authenticated/library/agents/$agentId';
+      path: '/library/agents/$agentId';
+      fullPath: '/library/agents/$agentId';
+      preLoaderRoute: typeof AuthenticatedLibraryAgentsAgentIdRouteImport;
+      parentRoute: typeof AuthenticatedRoute;
+    };
     '/_authenticated/library/agents/new': {
-      id: '/_authenticated/library/agents/new'
-      path: '/library/agents/new'
-      fullPath: '/library/agents/new'
-      preLoaderRoute: typeof AuthenticatedLibraryAgentsNewRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
+      id: '/_authenticated/library/agents/new';
+      path: '/library/agents/new';
+      fullPath: '/library/agents/new';
+      preLoaderRoute: typeof AuthenticatedLibraryAgentsNewRouteImport;
+      parentRoute: typeof AuthenticatedRoute;
+    };
     '/_authenticated/library/integrations/': {
-      id: '/_authenticated/library/integrations/'
-      path: '/library/integrations'
-      fullPath: '/library/integrations/'
-      preLoaderRoute: typeof AuthenticatedLibraryIntegrationsIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
+      id: '/_authenticated/library/integrations/';
+      path: '/library/integrations';
+      fullPath: '/library/integrations/';
+      preLoaderRoute: typeof AuthenticatedLibraryIntegrationsIndexRouteImport;
+      parentRoute: typeof AuthenticatedRoute;
+    };
     '/_authenticated/library/skills/': {
-      id: '/_authenticated/library/skills/'
-      path: '/library/skills'
-      fullPath: '/library/skills/'
-      preLoaderRoute: typeof AuthenticatedLibrarySkillsIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
+      id: '/_authenticated/library/skills/';
+      path: '/library/skills';
+      fullPath: '/library/skills/';
+      preLoaderRoute: typeof AuthenticatedLibrarySkillsIndexRouteImport;
+      parentRoute: typeof AuthenticatedRoute;
+    };
     '/_authenticated/library/skills/$skillId': {
-      id: '/_authenticated/library/skills/$skillId'
-      path: '/library/skills/$skillId'
-      fullPath: '/library/skills/$skillId'
-      preLoaderRoute: typeof AuthenticatedLibrarySkillsSkillIdRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
+      id: '/_authenticated/library/skills/$skillId';
+      path: '/library/skills/$skillId';
+      fullPath: '/library/skills/$skillId';
+      preLoaderRoute: typeof AuthenticatedLibrarySkillsSkillIdRouteImport;
+      parentRoute: typeof AuthenticatedRoute;
+    };
     '/_authenticated/library/skills/new': {
-      id: '/_authenticated/library/skills/new'
-      path: '/library/skills/new'
-      fullPath: '/library/skills/new'
-      preLoaderRoute: typeof AuthenticatedLibrarySkillsNewRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
+      id: '/_authenticated/library/skills/new';
+      path: '/library/skills/new';
+      fullPath: '/library/skills/new';
+      preLoaderRoute: typeof AuthenticatedLibrarySkillsNewRouteImport;
+      parentRoute: typeof AuthenticatedRoute;
+    };
     '/api/integrations/github/install': {
-      id: '/api/integrations/github/install'
-      path: '/api/integrations/github/install'
-      fullPath: '/api/integrations/github/install'
-      preLoaderRoute: typeof ApiIntegrationsGithubInstallRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/api/integrations/github/install';
+      path: '/api/integrations/github/install';
+      fullPath: '/api/integrations/github/install';
+      preLoaderRoute: typeof ApiIntegrationsGithubInstallRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/api/integrations/github/setup': {
-      id: '/api/integrations/github/setup'
-      path: '/api/integrations/github/setup'
-      fullPath: '/api/integrations/github/setup'
-      preLoaderRoute: typeof ApiIntegrationsGithubSetupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/api/integrations/github/setup';
+      path: '/api/integrations/github/setup';
+      fullPath: '/api/integrations/github/setup';
+      preLoaderRoute: typeof ApiIntegrationsGithubSetupRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/api/integrations/github/oauth/callback': {
-      id: '/api/integrations/github/oauth/callback'
-      path: '/api/integrations/github/oauth/callback'
-      fullPath: '/api/integrations/github/oauth/callback'
-      preLoaderRoute: typeof ApiIntegrationsGithubOauthCallbackRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/api/integrations/github/oauth/callback';
+      path: '/api/integrations/github/oauth/callback';
+      fullPath: '/api/integrations/github/oauth/callback';
+      preLoaderRoute: typeof ApiIntegrationsGithubOauthCallbackRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
-  AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
-  AuthenticatedLibraryAgentsAgentIdRoute: typeof AuthenticatedLibraryAgentsAgentIdRoute
-  AuthenticatedLibraryAgentsNewRoute: typeof AuthenticatedLibraryAgentsNewRoute
-  AuthenticatedLibrarySkillsSkillIdRoute: typeof AuthenticatedLibrarySkillsSkillIdRoute
-  AuthenticatedLibrarySkillsNewRoute: typeof AuthenticatedLibrarySkillsNewRoute
-  AuthenticatedLibraryAgentsIndexRoute: typeof AuthenticatedLibraryAgentsIndexRoute
-  AuthenticatedLibraryIntegrationsIndexRoute: typeof AuthenticatedLibraryIntegrationsIndexRoute
-  AuthenticatedLibrarySkillsIndexRoute: typeof AuthenticatedLibrarySkillsIndexRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute;
+  AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute;
+  AuthenticatedLibraryAgentsAgentIdRoute: typeof AuthenticatedLibraryAgentsAgentIdRoute;
+  AuthenticatedLibraryAgentsNewRoute: typeof AuthenticatedLibraryAgentsNewRoute;
+  AuthenticatedLibrarySkillsSkillIdRoute: typeof AuthenticatedLibrarySkillsSkillIdRoute;
+  AuthenticatedLibrarySkillsNewRoute: typeof AuthenticatedLibrarySkillsNewRoute;
+  AuthenticatedLibraryAgentsIndexRoute: typeof AuthenticatedLibraryAgentsIndexRoute;
+  AuthenticatedLibraryIntegrationsIndexRoute: typeof AuthenticatedLibraryIntegrationsIndexRoute;
+  AuthenticatedLibrarySkillsIndexRoute: typeof AuthenticatedLibrarySkillsIndexRoute;
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
-  AuthenticatedLibraryAgentsAgentIdRoute:
-    AuthenticatedLibraryAgentsAgentIdRoute,
+  AuthenticatedLibraryAgentsAgentIdRoute: AuthenticatedLibraryAgentsAgentIdRoute,
   AuthenticatedLibraryAgentsNewRoute: AuthenticatedLibraryAgentsNewRoute,
-  AuthenticatedLibrarySkillsSkillIdRoute:
-    AuthenticatedLibrarySkillsSkillIdRoute,
+  AuthenticatedLibrarySkillsSkillIdRoute: AuthenticatedLibrarySkillsSkillIdRoute,
   AuthenticatedLibrarySkillsNewRoute: AuthenticatedLibrarySkillsNewRoute,
   AuthenticatedLibraryAgentsIndexRoute: AuthenticatedLibraryAgentsIndexRoute,
-  AuthenticatedLibraryIntegrationsIndexRoute:
-    AuthenticatedLibraryIntegrationsIndexRoute,
+  AuthenticatedLibraryIntegrationsIndexRoute: AuthenticatedLibraryIntegrationsIndexRoute,
   AuthenticatedLibrarySkillsIndexRoute: AuthenticatedLibrarySkillsIndexRoute,
-}
+};
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
-  AuthenticatedRouteChildren,
-)
+  AuthenticatedRouteChildren
+);
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -389,18 +378,17 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiIntegrationsGithubInstallRoute: ApiIntegrationsGithubInstallRoute,
   ApiIntegrationsGithubSetupRoute: ApiIntegrationsGithubSetupRoute,
-  ApiIntegrationsGithubOauthCallbackRoute:
-    ApiIntegrationsGithubOauthCallbackRoute,
-}
+  ApiIntegrationsGithubOauthCallbackRoute: ApiIntegrationsGithubOauthCallbackRoute,
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
+import type { getRouter } from './router.tsx';
+import type { createStart } from '@tanstack/react-start';
 declare module '@tanstack/react-start' {
   interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
+    ssr: true;
+    router: Awaited<ReturnType<typeof getRouter>>;
   }
 }

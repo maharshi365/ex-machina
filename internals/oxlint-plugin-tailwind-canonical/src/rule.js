@@ -28,19 +28,15 @@
  *   reuses one context across files); module-level caches are keyed by
  *   stylesheet path + mtime.
  */
-import { defineRule } from "@oxlint/plugins";
-import { rewriteClassValue, summarizeChanges, uniqueTokens } from "./candidates.js";
-import {
-  canonicalizeTokens,
-  ensureDesignSystem,
-  resolveCssPath,
-} from "./design-system.js";
+import { defineRule } from '@oxlint/plugins';
+import { rewriteClassValue, summarizeChanges, uniqueTokens } from './candidates.js';
+import { canonicalizeTokens, ensureDesignSystem, resolveCssPath } from './design-system.js';
 
-export const PLUGIN_NAME = "tailwind-canonical";
-export const RULE_ID = "canonical-class-names";
+export const PLUGIN_NAME = 'tailwind-canonical';
+export const RULE_ID = 'canonical-class-names';
 
-const DEFAULT_ATTRIBUTES = ["class", "className"];
-const DEFAULT_CALLEE_FUNCTIONS = ["cn", "clsx", "cva", "twMerge", "tw", "classNames", "cx"];
+const DEFAULT_ATTRIBUTES = ['class', 'className'];
+const DEFAULT_CALLEE_FUNCTIONS = ['cn', 'clsx', 'cva', 'twMerge', 'tw', 'classNames', 'cx'];
 const DEFAULT_ROOT_FONT_SIZE = 16;
 
 /**
@@ -49,26 +45,26 @@ const DEFAULT_ROOT_FONT_SIZE = 16;
 
 /** @type {import("@oxlint/plugins").RuleOptionsSchema} */
 const OPTIONS_SCHEMA = {
-  type: "object",
+  type: 'object',
   properties: {
     cssPath: {
-      type: "string",
+      type: 'string',
       description:
-        "Path to the Tailwind v4 entry CSS (absolute, or relative to the working directory).",
+        'Path to the Tailwind v4 entry CSS (absolute, or relative to the working directory).',
     },
     rootFontSize: {
-      type: "number",
-      description: "Root font size in px used for rem<->px normalization.",
+      type: 'number',
+      description: 'Root font size in px used for rem<->px normalization.',
     },
     attributes: {
-      type: "array",
-      items: { type: "string" },
-      description: "JSX attribute names treated as class lists.",
+      type: 'array',
+      items: { type: 'string' },
+      description: 'JSX attribute names treated as class lists.',
     },
     calleeFunctions: {
-      type: "array",
-      items: { type: "string" },
-      description: "Function names whose string arguments are treated as class lists.",
+      type: 'array',
+      items: { type: 'string' },
+      description: 'Function names whose string arguments are treated as class lists.',
     },
   },
   additionalProperties: false,
@@ -76,15 +72,15 @@ const OPTIONS_SCHEMA = {
 
 export const canonicalClassNames = defineRule({
   meta: {
-    type: "suggestion",
+    type: 'suggestion',
     docs: {
       description:
         "Enforce canonical Tailwind CSS class spellings (same source of truth as the Tailwind language server's suggestCanonicalClasses).",
     },
-    fixable: "code",
+    fixable: 'code',
     messages: {
       nonCanonical: "Tailwind class '{{original}}' can be written as '{{canonical}}'.{{suffix}}",
-      cssNotFound: "Could not load Tailwind CSS entry file: {{path}}",
+      cssNotFound: 'Could not load Tailwind CSS entry file: {{path}}',
     },
     schema: [OPTIONS_SCHEMA],
   },
@@ -99,7 +95,7 @@ export const canonicalClassNames = defineRule({
     /** @type {number} */
     let rem = DEFAULT_ROOT_FONT_SIZE;
     /** @type {string} */
-    let cssFile = "";
+    let cssFile = '';
     /** @type {string | false | null} Resolved design key; null = not attempted, false = failed. */
     let designKey = null;
     /** @type {boolean} */
@@ -113,7 +109,7 @@ export const canonicalClassNames = defineRule({
       try {
         cssFile = resolveCssPath(options.cssPath);
       } catch {
-        cssFile = options.cssPath ?? "";
+        cssFile = options.cssPath ?? '';
       }
       designKey = null;
       initialized = true;
@@ -133,10 +129,10 @@ export const canonicalClassNames = defineRule({
 
     /** @returns {string} first quote char (`'`, `"`, or backtick) */
     function getQuoteChar(
-      /** @type {import("@oxlint/plugins").ESTree.StringLiteral | import("@oxlint/plugins").ESTree.TemplateLiteral} */ node,
+      /** @type {import("@oxlint/plugins").ESTree.StringLiteral | import("@oxlint/plugins").ESTree.TemplateLiteral} */ node
     ) {
       const first = context.sourceCode.getText(node)[0];
-      return first === "'" || first === '"' || first === "`" ? first : '"';
+      return first === "'" || first === '"' || first === '`' ? first : '"';
     }
 
     /**
@@ -145,14 +141,14 @@ export const canonicalClassNames = defineRule({
      */
     function checkStringNode(
       /** @type {import("@oxlint/plugins").ESTree.StringLiteral | import("@oxlint/plugins").ESTree.TemplateLiteral} */ node,
-      /** @type {string} */ value,
+      /** @type {string} */ value
     ) {
       const tokens = uniqueTokens(value);
       if (tokens.length === 0) return;
 
       const key = getDesignKey();
       if (key === null) {
-        context.report({ node, messageId: "cssNotFound", data: { path: cssFile } });
+        context.report({ node, messageId: 'cssNotFound', data: { path: cssFile } });
         return;
       }
 
@@ -168,7 +164,7 @@ export const canonicalClassNames = defineRule({
       const summary = summarizeChanges(changes);
       context.report({
         node,
-        messageId: "nonCanonical",
+        messageId: 'nonCanonical',
         data: summary,
         fix(fixer) {
           const quote = getQuoteChar(node);
@@ -178,12 +174,12 @@ export const canonicalClassNames = defineRule({
     }
 
     function checkExpression(
-      /** @type {import("@oxlint/plugins").ESTree.Expression | import("@oxlint/plugins").ESTree.JSXEmptyExpression} */ node,
+      /** @type {import("@oxlint/plugins").ESTree.Expression | import("@oxlint/plugins").ESTree.JSXEmptyExpression} */ node
     ) {
-      if (node.type === "Literal" && typeof node.value === "string") {
+      if (node.type === 'Literal' && typeof node.value === 'string') {
         checkStringNode(node, node.value);
       } else if (
-        node.type === "TemplateLiteral" &&
+        node.type === 'TemplateLiteral' &&
         node.expressions.length === 0 &&
         node.quasis.length === 1
       ) {
@@ -201,22 +197,22 @@ export const canonicalClassNames = defineRule({
         // only for a configured callee — both appear literally in source.
         const text = context.sourceCode.text;
         for (const name of attributes) {
-          if (name !== "" && text.includes(name)) return;
+          if (name !== '' && text.includes(name)) return;
         }
         for (const name of callees) {
-          if (name !== "" && text.includes(name)) return;
+          if (name !== '' && text.includes(name)) return;
         }
         return false;
       },
 
       JSXAttribute(node) {
         if (!initialized) initFile();
-        if (node.name.type !== "JSXIdentifier" || !attributes.has(node.name.name)) return;
+        if (node.name.type !== 'JSXIdentifier' || !attributes.has(node.name.name)) return;
         const value = node.value;
         if (!value) return;
-        if (value.type === "Literal" && typeof value.value === "string") {
+        if (value.type === 'Literal' && typeof value.value === 'string') {
           checkStringNode(value, value.value);
-        } else if (value.type === "JSXExpressionContainer") {
+        } else if (value.type === 'JSXExpressionContainer') {
           checkExpression(value.expression);
         }
       },
@@ -226,18 +222,18 @@ export const canonicalClassNames = defineRule({
         const callee = node.callee;
         /** @type {string | null} */
         let name = null;
-        if (callee.type === "Identifier") {
+        if (callee.type === 'Identifier') {
           name = callee.name;
         } else if (
-          callee.type === "MemberExpression" &&
+          callee.type === 'MemberExpression' &&
           !callee.computed &&
-          callee.property.type === "Identifier"
+          callee.property.type === 'Identifier'
         ) {
           name = callee.property.name;
         }
         if (name === null || !callees.has(name)) return;
         for (const arg of node.arguments) {
-          if (arg.type === "Literal" || arg.type === "TemplateLiteral") {
+          if (arg.type === 'Literal' || arg.type === 'TemplateLiteral') {
             checkExpression(arg);
           }
         }

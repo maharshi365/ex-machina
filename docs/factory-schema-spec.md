@@ -52,7 +52,7 @@ type FactoryRepository = {
   key: string;
   connectionId: string;
   source: {
-    provider: "github";
+    provider: 'github';
     version: 1;
     repositoryId: string;
   };
@@ -97,12 +97,12 @@ type ExecutionDefinition = {
     config?: Record<string, unknown>;
   };
   harness: {
-    type: "opencode";
+    type: 'opencode';
     version: 1;
     config?: Record<string, unknown>;
   };
   sandbox: {
-    provider: "aws";
+    provider: 'aws';
     version: 1;
     image: { id: string };
     config?: Record<string, unknown>;
@@ -118,24 +118,24 @@ An image is a platform catalog ID such as `typescript` or `python`, not an arbit
 type GithubTrigger = {
   key: string;
   source: {
-    provider: "github";
+    provider: 'github';
     version: 1;
     connectionId: string;
   };
   event:
-    | "issues.opened"
-    | "issues.closed"
-    | "issues.labeled"
-    | "pull_request.opened"
-    | "pull_request.closed"
-    | "pull_request.merged"
-    | "pull_request.ready_for_review"
-    | "pull_request.reopened"
-    | "pull_request.synchronize"
-    | "pull_request.labeled"
-    | "pull_request.review_submitted"
-    | "push"
-    | "workflow_run.completed";
+    | 'issues.opened'
+    | 'issues.closed'
+    | 'issues.labeled'
+    | 'pull_request.opened'
+    | 'pull_request.closed'
+    | 'pull_request.merged'
+    | 'pull_request.ready_for_review'
+    | 'pull_request.reopened'
+    | 'pull_request.synchronize'
+    | 'pull_request.labeled'
+    | 'pull_request.review_submitted'
+    | 'push'
+    | 'workflow_run.completed';
   repositoryKeys: string[];
   filters?: {
     branches?: string[];
@@ -158,7 +158,7 @@ Provider and version form a discriminant. New providers add union members rather
 type StoredFactory = {
   _id: ObjectId;
   organizationId: ObjectId;
-  status: "draft" | "active" | "disabled";
+  status: 'draft' | 'active' | 'disabled';
   revision: number;
   definition: FactoryDefinition; // portable and persistence-agnostic
   createdBy: ObjectId;
@@ -199,54 +199,54 @@ The authoritative connection and webhook models are defined in
 ## Example As Code
 
 ```ts
-import { defineFactory } from "@ex-machina/factory";
+import { defineFactory } from '@ex-machina/factory';
 
 export default defineFactory({
-  name: "Payments PR review",
-  description: "Reviews pull requests for the payments services",
+  name: 'Payments PR review',
+  description: 'Reviews pull requests for the payments services',
   executionDefaults: {
-    model: { provider: "openai", modelId: "gpt-5" },
-    harness: { type: "opencode", version: 1 },
-    sandbox: { provider: "aws", version: 1, image: { id: "typescript" } },
+    model: { provider: 'openai', modelId: 'gpt-5' },
+    harness: { type: 'opencode', version: 1 },
+    sandbox: { provider: 'aws', version: 1, image: { id: 'typescript' } },
   },
   repositories: [
     {
-      key: "api",
-      connectionId: "github-installation-1",
-      source: { provider: "github", version: 1, repositoryId: "987654" },
-      display: { owner: "acme", name: "payments-api", defaultBranch: "main" },
+      key: 'api',
+      connectionId: 'github-installation-1',
+      source: { provider: 'github', version: 1, repositoryId: '987654' },
+      display: { owner: 'acme', name: 'payments-api', defaultBranch: 'main' },
     },
   ],
   agents: [
     {
-      key: "reviewer",
-      name: "Payments reviewer",
-      agentId: "library-agent-123",
-      skillIds: ["library-skill-security", "library-skill-typescript"],
+      key: 'reviewer',
+      name: 'Payments reviewer',
+      agentId: 'library-agent-123',
+      skillIds: ['library-skill-security', 'library-skill-typescript'],
     },
   ],
   automations: [
     {
-      key: "review-pr",
-      name: "Review new pull requests",
+      key: 'review-pr',
+      name: 'Review new pull requests',
       enabled: true,
-      agentKey: "reviewer",
-      repositoryKeys: ["api"],
-      initialPrompt: "Review this pull request and post actionable findings.",
+      agentKey: 'reviewer',
+      repositoryKeys: ['api'],
+      initialPrompt: 'Review this pull request and post actionable findings.',
       triggers: [
         {
-          key: "opened",
-          source: { provider: "github", version: 1, connectionId: "github-installation-1" },
-          event: "pull_request.opened",
-          repositoryKeys: ["api"],
-          filters: { baseBranches: ["main"], draft: false },
+          key: 'opened',
+          source: { provider: 'github', version: 1, connectionId: 'github-installation-1' },
+          event: 'pull_request.opened',
+          repositoryKeys: ['api'],
+          filters: { baseBranches: ['main'], draft: false },
         },
         {
-          key: "ready",
-          source: { provider: "github", version: 1, connectionId: "github-installation-1" },
-          event: "pull_request.ready_for_review",
-          repositoryKeys: ["api"],
-          filters: { baseBranches: ["main"] },
+          key: 'ready',
+          source: { provider: 'github', version: 1, connectionId: 'github-installation-1' },
+          event: 'pull_request.ready_for_review',
+          repositoryKeys: ['api'],
+          filters: { baseBranches: ['main'] },
         },
       ],
     },

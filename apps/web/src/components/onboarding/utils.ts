@@ -4,5 +4,5 @@ export function slugify(input: string) {
     .trim()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '')
-    .slice(0, 48)
+    .slice(0, 48);
 }

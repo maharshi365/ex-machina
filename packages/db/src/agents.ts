@@ -1,8 +1,8 @@
-import type { Collection, Db, ObjectId, WithId } from "mongodb";
-import { toObjectId } from "./types.js";
-import type { WithStringId } from "./types.js";
+import type { Collection, Db, ObjectId, WithId } from 'mongodb';
+import { toObjectId } from './types.js';
+import type { WithStringId } from './types.js';
 
-export const AGENTS_COLLECTION = "agents";
+export const AGENTS_COLLECTION = 'agents';
 
 // ---------------------------------------------------------------------------
 // Types — stored as ObjectId in DB, exposed as strings via DTO for FE safety
@@ -71,16 +71,16 @@ function getCollection(db: Db): Collection<AgentSchema> {
 
 function validateAgentInput(input: CreateAgentInput | UpdateAgentInput, partial = false): void {
   const check = (field: keyof CreateAgentInput, value: unknown) => {
-    if (value !== undefined && typeof value !== "string") {
+    if (value !== undefined && typeof value !== 'string') {
       throw new Error(`${field} must be a string`);
     }
     if (!partial && value === undefined) {
       throw new Error(`${field} is required`);
     }
   };
-  check("name", (input as CreateAgentInput).name);
-  check("description", (input as CreateAgentInput).description);
-  check("content", (input as CreateAgentInput).content);
+  check('name', (input as CreateAgentInput).name);
+  check('description', (input as CreateAgentInput).description);
+  check('content', (input as CreateAgentInput).content);
 }
 
 // ---------------------------------------------------------------------------
@@ -157,7 +157,7 @@ export async function updateAgent(
   const result = await getCollection(db).findOneAndUpdate(
     { _id: toObjectId(id), organizationId: orgId },
     { $set: updateFields },
-    { returnDocument: "after" }
+    { returnDocument: 'after' }
   );
 
   return result ? toDTO(result) : null;

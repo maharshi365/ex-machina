@@ -1,13 +1,13 @@
 export type GitHubAccount = {
   externalId: string;
   login: string;
-  type: "user" | "organization";
+  type: 'user' | 'organization';
   avatarUrl?: string;
 };
 
 export type GitHubGrants = {
-  repositorySelection: "all" | "selected";
-  permissions: Record<string, "read" | "write">;
+  repositorySelection: 'all' | 'selected';
+  permissions: Record<string, 'read' | 'write'>;
   events: string[];
 };
 
@@ -15,12 +15,12 @@ export type VerifiedGitHubInstallation = {
   installationId: string;
   account: GitHubAccount;
   grants: GitHubGrants;
-  status: "active" | "suspended";
+  status: 'active' | 'suspended';
 };
 
 export type GitHubRepository = {
-  provider: "github";
-  kind: "repository";
+  provider: 'github';
+  kind: 'repository';
   externalId: string;
   locator: {
     owner: string;
@@ -40,7 +40,7 @@ export type GitHubRepository = {
   providerUpdatedAt?: Date;
 };
 
-export type GitHubPermissionLevel = "read" | "write";
+export type GitHubPermissionLevel = 'read' | 'write';
 
 export type GitHubInstallationCredential = {
   token: string;

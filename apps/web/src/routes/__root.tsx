@@ -1,11 +1,11 @@
-import { QueryClientProvider } from '@tanstack/react-query'
-import { HeadContent, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
-import type { QueryClient } from '@tanstack/react-query'
-import { ThemeProvider } from 'next-themes'
-import { Toaster } from '@/components/ui/sonner'
-import { createQueryClient } from '@/lib/query/client'
+import { QueryClientProvider } from '@tanstack/react-query';
+import { HeadContent, Scripts, createRootRouteWithContext } from '@tanstack/react-router';
+import type { QueryClient } from '@tanstack/react-query';
+import { ThemeProvider } from 'next-themes';
+import { Toaster } from '@/components/ui/sonner';
+import { createQueryClient } from '@/lib/query/client';
 
-import appCss from '../styles.css?url'
+import appCss from '../styles.css?url';
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
@@ -17,17 +17,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [{ rel: 'stylesheet', href: appCss }],
   }),
   shellComponent: RootDocument,
-})
+});
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  let queryClient: QueryClient | undefined
+  let queryClient: QueryClient | undefined;
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    queryClient = Route.useRouteContext()?.queryClient
+    queryClient = Route.useRouteContext()?.queryClient;
   } catch {
-    queryClient = undefined
+    queryClient = undefined;
   }
-  const client = queryClient ?? createQueryClient()
+  const client = queryClient ?? createQueryClient();
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -36,7 +36,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <QueryClientProvider client={client}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
             {children}
             <Toaster />
           </ThemeProvider>
@@ -44,5 +49,5 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <Scripts />
       </body>
     </html>
-  )
+  );
 }

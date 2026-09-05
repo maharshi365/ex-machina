@@ -1,6 +1,6 @@
-import { LayoutDashboard } from 'lucide-react'
+import { LayoutDashboard } from 'lucide-react';
 
-import { AuthenticatedShell } from '@/components/layout/authenticated-shell'
+import { AuthenticatedShell } from '@/components/layout/authenticated-shell';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,10 +8,16 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
-import { Separator } from '@/components/ui/separator'
-import { SidebarTrigger } from '@/components/ui/sidebar'
+} from '@/components/ui/breadcrumb';
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty';
+import { Separator } from '@/components/ui/separator';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 
 export function DashboardPage() {
   return (
@@ -47,5 +53,5 @@ export function DashboardPage() {
         </Empty>
       </div>
     </AuthenticatedShell>
-  )
+  );
 }

@@ -1,15 +1,15 @@
-import { Check, ExternalLink, Github, LockKeyhole } from 'lucide-react'
+import { Check, ExternalLink, Github, LockKeyhole } from 'lucide-react';
 
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function GitHubConnectCard({
   canManage,
   hasConnections,
 }: {
-  canManage: boolean
-  hasConnections: boolean
+  canManage: boolean;
+  hasConnections: boolean;
 }) {
   return (
     <Card className="overflow-hidden border-neutral-800 bg-neutral-950 text-white shadow-xl dark:border-neutral-700">
@@ -31,8 +31,8 @@ export function GitHubConnectCard({
       </CardHeader>
       <CardContent className="space-y-5">
         <p className="max-w-2xl text-sm leading-6 text-neutral-300">
-          Install the ex-machina GitHub App, choose repository access, and return here automatically.
-          Access tokens are short-lived and are never stored.
+          Install the ex-machina GitHub App, choose repository access, and return here
+          automatically. Access tokens are short-lived and are never stored.
         </p>
         <div className="grid gap-2 text-sm text-neutral-300 sm:grid-cols-3">
           <span className="flex items-center gap-2">
@@ -61,11 +61,13 @@ export function GitHubConnectCard({
           </Button>
         </form>
         {!canManage && (
-          <p className="text-xs text-neutral-400">An organization owner or admin must connect GitHub.</p>
+          <p className="text-xs text-neutral-400">
+            An organization owner or admin must connect GitHub.
+          </p>
         )}
       </CardContent>
     </Card>
-  )
+  );
 }
 
 export function InstallationSecurityCard() {
@@ -83,5 +85,5 @@ export function InstallationSecurityCard() {
         <p>Only repositories selected during GitHub installation are synchronized.</p>
       </CardContent>
     </Card>
-  )
+  );
 }

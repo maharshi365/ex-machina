@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import { Loader2, Plus } from 'lucide-react'
+import { useState } from 'react';
+import { Loader2, Plus } from 'lucide-react';
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -10,11 +10,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
-import { slugify } from './utils'
+import { slugify } from './utils';
 
 export function OrganizationFormFields({
   orgName,
@@ -23,11 +23,11 @@ export function OrganizationFormFields({
   setOrgSlug,
   idPrefix,
 }: {
-  orgName: string
-  orgSlug: string
-  setOrgName: (v: string) => void
-  setOrgSlug: (v: string) => void
-  idPrefix: string
+  orgName: string;
+  orgSlug: string;
+  setOrgName: (v: string) => void;
+  setOrgSlug: (v: string) => void;
+  idPrefix: string;
 }) {
   return (
     <>
@@ -38,9 +38,9 @@ export function OrganizationFormFields({
           placeholder="Acme Inc."
           value={orgName}
           onChange={(e) => {
-            setOrgName(e.target.value)
+            setOrgName(e.target.value);
             if (!orgSlug || orgSlug === slugify(orgName)) {
-              setOrgSlug(slugify(e.target.value))
+              setOrgSlug(slugify(e.target.value));
             }
           }}
           required
@@ -62,7 +62,7 @@ export function OrganizationFormFields({
         )}
       </div>
     </>
-  )
+  );
 }
 
 export function CreateOrganizationDialog({
@@ -75,14 +75,14 @@ export function CreateOrganizationDialog({
   isCreating,
   onSubmit,
 }: {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  orgName: string
-  orgSlug: string
-  setOrgName: (v: string) => void
-  setOrgSlug: (v: string) => void
-  isCreating: boolean
-  onSubmit: (e: React.FormEvent) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  orgName: string;
+  orgSlug: string;
+  setOrgName: (v: string) => void;
+  setOrgSlug: (v: string) => void;
+  isCreating: boolean;
+  onSubmit: (e: React.FormEvent) => void;
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -117,15 +117,15 @@ export function CreateOrganizationDialog({
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
 export function useOrganizationForm() {
-  const [orgName, setOrgName] = useState('')
-  const [orgSlug, setOrgSlug] = useState('')
+  const [orgName, setOrgName] = useState('');
+  const [orgSlug, setOrgSlug] = useState('');
   const reset = () => {
-    setOrgName('')
-    setOrgSlug('')
-  }
-  return { orgName, orgSlug, setOrgName, setOrgSlug, reset }
+    setOrgName('');
+    setOrgSlug('');
+  };
+  return { orgName, orgSlug, setOrgName, setOrgSlug, reset };
 }

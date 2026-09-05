@@ -1,13 +1,13 @@
-import { Link } from '@tanstack/react-router'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Pencil, Plus, Sparkles, Trash2 } from 'lucide-react'
-import * as React from 'react'
-import { toast } from 'sonner'
+import { Link } from '@tanstack/react-router';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Pencil, Plus, Sparkles, Trash2 } from 'lucide-react';
+import * as React from 'react';
+import { toast } from 'sonner';
 
-import { AuthenticatedShell } from '@/components/layout/authenticated-shell'
-import { LibraryTopBar } from '@/components/layout/library-top-bar'
-import { NoOrganizationCard } from '@/components/layout/no-organization-card'
-import { Badge } from '@/components/ui/badge'
+import { AuthenticatedShell } from '@/components/layout/authenticated-shell';
+import { LibraryTopBar } from '@/components/layout/library-top-bar';
+import { NoOrganizationCard } from '@/components/layout/no-organization-card';
+import { Badge } from '@/components/ui/badge';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,15 +15,22 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
-import { Skeleton } from '@/components/ui/skeleton'
-import type { OrganizationDTO } from '@/lib/organizations/server'
-import { deleteSkillMutationOptions, skillKeys, skillsQueryOptions } from '@/lib/skills/queries'
+} from '@/components/ui/breadcrumb';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty';
+import { Skeleton } from '@/components/ui/skeleton';
+import type { OrganizationDTO } from '@/lib/organizations/server';
+import { deleteSkillMutationOptions, skillKeys, skillsQueryOptions } from '@/lib/skills/queries';
 
-import { SkillDeleteDialog } from './skill-delete-dialog'
+import { SkillDeleteDialog } from './skill-delete-dialog';
 
 export function SkillsPage({ activeOrg }: { activeOrg: OrganizationDTO | null }) {
   if (!activeOrg) {
@@ -31,33 +38,33 @@ export function SkillsPage({ activeOrg }: { activeOrg: OrganizationDTO | null })
       <AuthenticatedShell>
         <NoOrganizationCard description="Create or select an organization to manage skills." />
       </AuthenticatedShell>
-    )
+    );
   }
 
-  return <SkillsManager organizationId={activeOrg.id} organizationName={activeOrg.name} />
+  return <SkillsManager organizationId={activeOrg.id} organizationName={activeOrg.name} />;
 }
 
 function SkillsManager({
   organizationId,
   organizationName,
 }: {
-  organizationId: string
-  organizationName: string
+  organizationId: string;
+  organizationName: string;
 }) {
-  const queryClient = useQueryClient()
-  const { data: skills, isLoading, error } = useQuery(skillsQueryOptions(organizationId))
+  const queryClient = useQueryClient();
+  const { data: skills, isLoading, error } = useQuery(skillsQueryOptions(organizationId));
 
-  const [deleting, setDeleting] = React.useState<{ _id: string; name: string } | null>(null)
+  const [deleting, setDeleting] = React.useState<{ _id: string; name: string } | null>(null);
 
   const deleteMutation = useMutation({
     ...deleteSkillMutationOptions(organizationId),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: skillKeys.list(organizationId) })
-      setDeleting(null)
-      toast.success('Skill deleted')
+      await queryClient.invalidateQueries({ queryKey: skillKeys.list(organizationId) });
+      setDeleting(null);
+      toast.success('Skill deleted');
     },
     onError: (e: unknown) => toast.error(e instanceof Error ? e.message : 'Failed to delete skill'),
-  })
+  });
 
   return (
     <AuthenticatedShell>
@@ -104,7 +111,9 @@ function SkillsManager({
           <Card className="border-destructive">
             <CardHeader>
               <CardTitle className="text-destructive">Failed to load skills</CardTitle>
-              <CardDescription>{error instanceof Error ? error.message : String(error)}</CardDescription>
+              <CardDescription>
+                {error instanceof Error ? error.message : String(error)}
+              </CardDescription>
             </CardHeader>
           </Card>
         ) : !skills || skills.length === 0 ? (
@@ -199,5 +208,5 @@ function SkillsManager({
         )}
       </div>
     </AuthenticatedShell>
-  )
+  );
 }

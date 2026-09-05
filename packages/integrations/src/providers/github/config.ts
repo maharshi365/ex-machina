@@ -1,4 +1,4 @@
-import { createPrivateKey } from "node:crypto";
+import { createPrivateKey } from 'node:crypto';
 
 export type GitHubAppConfig = Readonly<{
   appId: string;
@@ -25,7 +25,7 @@ export type GitHubAppConfigInput = {
 export type GitHubAppEnvironment = Record<string, string | undefined>;
 
 function requiredString(value: unknown, name: string): string {
-  if (typeof value !== "string" || value.trim() === "") {
+  if (typeof value !== 'string' || value.trim() === '') {
     throw new Error(`Invalid GitHub App configuration: ${name} is required`);
   }
   return value.trim();
@@ -40,7 +40,7 @@ function baseUrl(value: unknown, name: string, fallback: string): string {
     throw new Error(`Invalid GitHub App configuration: ${name} must be an absolute URL`);
   }
   if (
-    parsed.protocol !== "https:" ||
+    parsed.protocol !== 'https:' ||
     parsed.username ||
     parsed.password ||
     parsed.search ||
@@ -50,46 +50,46 @@ function baseUrl(value: unknown, name: string, fallback: string): string {
       `Invalid GitHub App configuration: ${name} must be a credential-free HTTPS URL`
     );
   }
-  return parsed.href.replace(/\/$/, "");
+  return parsed.href.replace(/\/$/, '');
 }
 
 export function validateGitHubAppConfig(input: GitHubAppConfigInput): GitHubAppConfig {
-  const appId = requiredString(input.appId, "appId");
+  const appId = requiredString(input.appId, 'appId');
   if (!/^\d+$/.test(appId)) {
-    throw new Error("Invalid GitHub App configuration: appId must be numeric");
+    throw new Error('Invalid GitHub App configuration: appId must be numeric');
   }
 
-  const appSlug = requiredString(input.appSlug, "appSlug");
+  const appSlug = requiredString(input.appSlug, 'appSlug');
   if (!/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(appSlug)) {
-    throw new Error("Invalid GitHub App configuration: appSlug is invalid");
+    throw new Error('Invalid GitHub App configuration: appSlug is invalid');
   }
 
-  const applicationSecret = requiredString(input.applicationSecret, "applicationSecret");
-  if (Buffer.byteLength(applicationSecret, "utf8") < 32) {
+  const applicationSecret = requiredString(input.applicationSecret, 'applicationSecret');
+  if (Buffer.byteLength(applicationSecret, 'utf8') < 32) {
     throw new Error(
-      "Invalid GitHub App configuration: applicationSecret must be at least 32 bytes"
+      'Invalid GitHub App configuration: applicationSecret must be at least 32 bytes'
     );
   }
 
-  const privateKey = requiredString(input.privateKey, "privateKey").replace(/\\n/g, "\n");
+  const privateKey = requiredString(input.privateKey, 'privateKey').replace(/\\n/g, '\n');
   try {
     const key = createPrivateKey(privateKey);
-    if (key.asymmetricKeyType !== "rsa") {
-      throw new Error("not RSA");
+    if (key.asymmetricKeyType !== 'rsa') {
+      throw new Error('not RSA');
     }
   } catch {
-    throw new Error("Invalid GitHub App configuration: privateKey must be an RSA private key");
+    throw new Error('Invalid GitHub App configuration: privateKey must be an RSA private key');
   }
 
   return Object.freeze({
     appId,
-    clientId: requiredString(input.clientId, "clientId"),
-    clientSecret: requiredString(input.clientSecret, "clientSecret"),
+    clientId: requiredString(input.clientId, 'clientId'),
+    clientSecret: requiredString(input.clientSecret, 'clientSecret'),
     privateKey,
     appSlug,
     applicationSecret,
-    apiBaseUrl: baseUrl(input.apiBaseUrl, "apiBaseUrl", "https://api.github.com"),
-    webBaseUrl: baseUrl(input.webBaseUrl, "webBaseUrl", "https://github.com"),
+    apiBaseUrl: baseUrl(input.apiBaseUrl, 'apiBaseUrl', 'https://api.github.com'),
+    webBaseUrl: baseUrl(input.webBaseUrl, 'webBaseUrl', 'https://github.com'),
   });
 }
 
