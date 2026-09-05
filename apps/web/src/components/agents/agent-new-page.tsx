@@ -1,0 +1,146 @@
+import { Link, useNavigate } from '@tanstack/react-router'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { ArrowLeft, Bot, Loader2, Save } from 'lucide-react'
+import * as React from 'react'
+import { toast } from 'sonner'
+
+import { AuthenticatedShell } from '#/components/layout/authenticated-shell'
+import { NoOrganizationCard } from '#/components/layout/no-organization-card'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '#/components/ui/breadcrumb'
+import { Button } from '#/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
+import { Separator } from '#/components/ui/separator'
+import { SidebarTrigger } from '#/components/ui/sidebar'
+import { agentKeys } from '#/lib/agents/queries'
+import { createAgentServerFn } from '#/lib/agents/server'
+import type { OrganizationDTO } from '#/lib/organizations/server'
+
+import { AgentContentField, AgentDescriptionField, AgentNameField } from './agent-form-fields'
+
+export function AgentNewPage({ activeOrg }: { activeOrg: OrganizationDTO | null }) {
+  if (!activeOrg) {
+    return (
+      <AuthenticatedShell>
+        <NoOrganizationCard />
+      </AuthenticatedShell>
+    )
+  }
+
+  return <Form organizationId={activeOrg.id} organizationName={activeOrg.name} />
+}
+
+function Form({
+  organizationId,
+  organizationName,
+}: {
+  organizationId: string
+  organizationName: string
+}) {
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+  const [name, setName] = React.useState('')
+  const [desc, setDesc] = React.useState('')
+  const [content, setContent] = React.useState('')
+
+  const createMutation = useMutation({
+    mutationFn: (data: { name: string; description: string; content: string }) =>
+      createAgentServerFn({ data }),
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: agentKeys.list(organizationId) })
+      toast.success('Agent created')
+      navigate({ to: '/library/agents/$agentId', params: { agentId: data._id } })
+    },
+    onError: (e: unknown) => toast.error(e instanceof Error ? e.message : 'Failed to create'),
+  })
+
+  const canSubmit = name.trim() && desc.trim() && content.trim()
+
+  return (
+    <AuthenticatedShell insetClassName="flex h-svh flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col gap-0 min-h-0 overflow-hidden">
+        <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-2 border-b bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex min-w-0 items-center gap-2">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink asChild>
+                    <Link to="/library/agents">Agents</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>New</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+            <span className="hidden items-center gap-2 md:flex">
+              <span className="text-muted-foreground">·</span>
+              <Bot className="size-4 text-muted-foreground" />
+              <span className="truncate text-sm font-medium">{organizationName}</span>
+            </span>
+          </div>
+          <div className="flex shrink-0 items-center gap-2">
+            <Button variant="ghost" asChild>
+              <Link to="/library/agents">
+                <ArrowLeft className="size-4" />
+                Back
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link to="/library/agents">Cancel</Link>
+            </Button>
+            <Button
+              onClick={() =>
+                createMutation.mutate({
+                  name: name.trim(),
+                  description: desc.trim(),
+                  content: content.trim(),
+                })
+              }
+              disabled={!canSubmit || createMutation.isPending}
+            >
+              {createMutation.isPending ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Save className="size-4" />
+              )}
+              Create
+            </Button>
+          </div>
+        </div>
+
+        <div className="flex flex-1 flex-col gap-4 overflow-auto p-4">
+          <Card className="flex flex-1 flex-col overflow-hidden">
+            <CardHeader className="shrink-0">
+              <CardTitle>New agent</CardTitle>
+              <CardDescription>
+                Content fills remaining height — page fits in viewport, no extra scroll.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-1 flex-col gap-4 min-h-0 overflow-hidden p-4">
+              <div className="grid gap-4 sm:grid-cols-2 shrink-0">
+                <AgentNameField value={name} onChange={setName} id="new-name" />
+                <AgentDescriptionField
+                  value={desc}
+                  onChange={setDesc}
+                  id="new-desc"
+                  placeholder="Helpful assistant for workflows"
+                />
+              </div>
+              <AgentContentField value={content} onChange={setContent} id="new-content" />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </AuthenticatedShell>
+  )
+}
