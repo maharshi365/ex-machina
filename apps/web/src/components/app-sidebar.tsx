@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Bot, GalleryVerticalEnd, Plug, Sparkles } from 'lucide-react';
+import { Bot, Plug, Sparkles } from 'lucide-react';
 import { Link, useRouterState } from '@tanstack/react-router';
 
 import { NavUser } from '@/components/nav-user.tsx';
@@ -19,13 +19,6 @@ import {
 import { authClient } from '@/lib/auth/client.ts';
 
 const data = {
-  teams: [
-    {
-      name: 'ex-machina',
-      logo: GalleryVerticalEnd,
-      plan: 'Workspace',
-    },
-  ],
   library: [
     {
       title: 'Agents',
@@ -58,7 +51,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>

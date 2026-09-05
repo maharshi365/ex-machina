@@ -11,6 +11,37 @@ export const auth = betterAuth({
   database: mongodbAdapter(db, {
     client,
   }),
+  databaseHooks: {
+    session: {
+      create: {
+        // Auto-set active org on new sessions (login) so
+        // session.activeOrganizationId is never null for users with an org.
+        before: async (session) => {
+          const existing = (session as { activeOrganizationId?: string | null })
+            ?.activeOrganizationId;
+          if (existing) return;
+          try {
+            const hookDb = getDb();
+            const member = (await hookDb
+              .collection('member')
+              .findOne(
+                { userId: (session as { userId?: string }).userId },
+                { projection: { organizationId: 1 } }
+              )) as { organizationId?: string } | null;
+            const organizationId = member?.organizationId;
+            if (organizationId) {
+              return {
+                data: { ...session, activeOrganizationId: organizationId },
+              };
+            }
+          } catch {
+            // fall through — session stays without active org
+          }
+          return;
+        },
+      },
+    },
+  },
   emailAndPassword: {
     enabled: false,
   },

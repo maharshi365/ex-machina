@@ -17,6 +17,8 @@ export async function requireIntegrationSession(
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session?.user) throw new Error('Unauthorized');
 
+  // Active org is guaranteed by the top-level `_authenticated` beforeLoad
+  // (ensureActiveOrganization) + session-create hook. Fail fast here.
   const organizationId = (session.session as { activeOrganizationId?: string | null })
     .activeOrganizationId;
   if (!organizationId) throw new Error('No active organization');

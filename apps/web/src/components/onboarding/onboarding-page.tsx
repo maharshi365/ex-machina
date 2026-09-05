@@ -46,6 +46,8 @@ export function OnboardingPage({
         const msg = (res as { error: { message: string } }).error.message;
         throw new Error(msg);
       }
+      // create() makes the new org active by default; the `_authenticated`
+      // beforeLoad also guarantees it on next load.
       setCreateOpen(false);
       reset();
       await router.invalidate();
@@ -68,6 +70,7 @@ export function OnboardingPage({
       if ((res as { error?: { message?: string } })?.error) {
         throw new Error((res as { error: { message: string } }).error.message);
       }
+      // Active org is ensured top-level on next load.
       await router.invalidate();
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to accept invitation';
