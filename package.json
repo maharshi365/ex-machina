@@ -5,7 +5,8 @@
   "description": "ex-machina - Bun monorepo",
   "workspaces": [
     "packages/*",
-    "apps/*"
+    "apps/*",
+    "internals/*"
   ],
   "type": "module",
   "scripts": {

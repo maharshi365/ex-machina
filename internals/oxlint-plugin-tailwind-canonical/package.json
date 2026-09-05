@@ -1,0 +1,27 @@
+{
+  "name": "@ex-machina/oxlint-plugin-tailwind-canonical",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Oxlint JS plugin enforcing canonical Tailwind CSS class spellings (same source of truth as the Tailwind language server)",
+  "type": "module",
+  "main": "./src/plugin.js",
+  "exports": {
+    ".": "./src/plugin.js"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "bun test --pass-with-no-tests --only-failures",
+    "build": "echo \"no build needed\" && exit 0",
+    "clean": "echo \"no clean needed\" && exit 0"
+  },
+  "devDependencies": {
+    "@ex-machina/configs": "workspace:*",
+    "@types/node": "^22.10.2"
+  },
+  "dependencies": {
+    "@oxlint/plugins": "^1.81.0",
+    "@tailwindcss/node": "^4.1.18",
+    "synckit": "^0.11.13",
+    "tailwindcss": "^4.1.18"
+  }
+}
