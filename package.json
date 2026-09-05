@@ -10,6 +10,7 @@
   ],
   "type": "module",
   "scripts": {
+    "dev": "bun run --cwd apps/web dev",
     "lint": "oxlint . --no-error-on-unmatched-pattern",
     "lint:fix": "oxlint --fix . --no-error-on-unmatched-pattern",
     "format": "oxfmt .",
