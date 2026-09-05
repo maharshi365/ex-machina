@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { beginGitHubInstallation } from "#/lib/integrations/github";
-import { requireIntegrationSession } from "#/lib/integrations/session";
+import { beginGitHubInstallation } from "@/lib/integrations/github";
+import { requireIntegrationSession } from "@/lib/integrations/session";
 
 export const Route = createFileRoute("/api/integrations/github/install")({
   server: {

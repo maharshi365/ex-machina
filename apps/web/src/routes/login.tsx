@@ -2,8 +2,8 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
 
-import { LoginPage } from '#/components/auth/login-page'
-import { auth } from '#/lib/auth/server'
+import { LoginPage } from '@/components/auth/login-page'
+import { auth } from '@/lib/auth/server'
 
 const getSession = createServerFn({ method: 'GET' }).handler(async () => {
   const request = getRequest()

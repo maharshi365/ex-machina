@@ -1,8 +1,8 @@
 import { Link } from '@tanstack/react-router'
 import { Building2, LogOut } from 'lucide-react'
 
-import { authClient } from '#/lib/auth/client'
-import { Button } from '#/components/ui/button'
+import { authClient } from '@/lib/auth/client'
+import { Button } from '@/components/ui/button'
 
 import type { OnboardingUser } from './types'
 

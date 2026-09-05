@@ -4,8 +4,8 @@ import { ArrowLeft, Bot, Loader2, Save } from 'lucide-react'
 import * as React from 'react'
 import { toast } from 'sonner'
 
-import { AuthenticatedShell } from '#/components/layout/authenticated-shell'
-import { NoOrganizationCard } from '#/components/layout/no-organization-card'
+import { AuthenticatedShell } from '@/components/layout/authenticated-shell'
+import { NoOrganizationCard } from '@/components/layout/no-organization-card'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,14 +13,14 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '#/components/ui/breadcrumb'
-import { Button } from '#/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
-import { Separator } from '#/components/ui/separator'
-import { SidebarTrigger } from '#/components/ui/sidebar'
-import { agentKeys } from '#/lib/agents/queries'
-import { createAgentServerFn } from '#/lib/agents/server'
-import type { OrganizationDTO } from '#/lib/organizations/server'
+} from '@/components/ui/breadcrumb'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import { SidebarTrigger } from '@/components/ui/sidebar'
+import { agentKeys } from '@/lib/agents/queries'
+import { createAgentServerFn } from '@/lib/agents/server'
+import type { OrganizationDTO } from '@/lib/organizations/server'
 
 import { AgentContentField, AgentDescriptionField, AgentNameField } from './agent-form-fields'
 

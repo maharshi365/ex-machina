@@ -1,6 +1,6 @@
 import { Loader2 } from 'lucide-react'
 
-import { Button } from '#/components/ui/button'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '#/components/ui/dialog'
+} from '@/components/ui/dialog'
 
 export function SkillDeleteDialog({
   open,

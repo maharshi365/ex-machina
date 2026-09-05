@@ -1,9 +1,9 @@
 import { Link } from '@tanstack/react-router'
 import { Building2, Loader2, Plus, Users } from 'lucide-react'
 
-import { Button } from '#/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
-import { Badge } from '#/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 
 import type { Organization } from './types'
 import { CreateOrganizationDialog, OrganizationFormFields } from './create-organization-dialog'

@@ -11,13 +11,13 @@ import {
   Sun,
 } from "lucide-react"
 import { useTheme } from "next-themes"
-import { authClient } from "#/lib/auth/client.ts"
+import { authClient } from "@/lib/auth/client.ts"
 
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "#/components/ui/avatar.tsx"
+} from "@/components/ui/avatar.tsx"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,13 +29,13 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "#/components/ui/dropdown-menu.tsx"
+} from "@/components/ui/dropdown-menu.tsx"
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "#/components/ui/sidebar.tsx"
+} from "@/components/ui/sidebar.tsx"
 
 export function NavUser({
   user,

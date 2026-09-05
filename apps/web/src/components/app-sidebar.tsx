@@ -2,8 +2,8 @@ import * as React from "react";
 import { Bot, GalleryVerticalEnd, Plug, Sparkles } from "lucide-react";
 import { Link, useRouterState } from "@tanstack/react-router";
 
-import { NavUser } from "#/components/nav-user.tsx";
-import { TeamSwitcher } from "#/components/team-switcher.tsx";
+import { NavUser } from "@/components/nav-user.tsx";
+import { TeamSwitcher } from "@/components/team-switcher.tsx";
 import {
   Sidebar,
   SidebarContent,
@@ -15,8 +15,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "#/components/ui/sidebar.tsx";
-import { authClient } from "#/lib/auth/client.ts";
+} from "@/components/ui/sidebar.tsx";
+import { authClient } from "@/lib/auth/client.ts";
 
 const data = {
   teams: [

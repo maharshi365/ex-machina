@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 import * as React from 'react'
 import { toast } from 'sonner'
 
-import type { OrganizationDTO } from '#/lib/organizations/server'
-import { integrationsQueryOptions } from '#/lib/integrations/queries'
+import type { OrganizationDTO } from '@/lib/organizations/server'
+import { integrationsQueryOptions } from '@/lib/integrations/queries'
 
 import { GitHubConnectCard, InstallationSecurityCard } from './github-cards'
 import { ConnectedInstallations } from './connected-installations'

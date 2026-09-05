@@ -15,7 +15,7 @@ import {
   githubAppConfigFromEnv,
   hashState,
 } from "@ex-machina/integrations/providers/github";
-import { getDb } from "#/lib/db/client";
+import { getDb } from "@/lib/db/client";
 
 const DEFAULT_RETURN_TO = "/library/integrations";
 let indexesPromise: Promise<void> | undefined;

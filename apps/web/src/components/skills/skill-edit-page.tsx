@@ -4,8 +4,8 @@ import { ArrowLeft, Loader2, Save, Sparkles, Trash2 } from 'lucide-react'
 import * as React from 'react'
 import { toast } from 'sonner'
 
-import { AuthenticatedShell } from '#/components/layout/authenticated-shell'
-import { NoOrganizationCard } from '#/components/layout/no-organization-card'
+import { AuthenticatedShell } from '@/components/layout/authenticated-shell'
+import { NoOrganizationCard } from '@/components/layout/no-organization-card'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,9 +13,9 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '#/components/ui/breadcrumb'
-import { Button } from '#/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
+} from '@/components/ui/breadcrumb'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,
@@ -23,13 +23,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '#/components/ui/dialog'
-import { Separator } from '#/components/ui/separator'
-import { SidebarTrigger } from '#/components/ui/sidebar'
-import { Skeleton } from '#/components/ui/skeleton'
-import type { OrganizationDTO } from '#/lib/organizations/server'
-import { deleteSkillServerFn, updateSkillServerFn } from '#/lib/skills/server'
-import { skillKeys, skillQueryOptions } from '#/lib/skills/queries'
+} from '@/components/ui/dialog'
+import { Separator } from '@/components/ui/separator'
+import { SidebarTrigger } from '@/components/ui/sidebar'
+import { Skeleton } from '@/components/ui/skeleton'
+import type { OrganizationDTO } from '@/lib/organizations/server'
+import { deleteSkillServerFn, updateSkillServerFn } from '@/lib/skills/server'
+import { skillKeys, skillQueryOptions } from '@/lib/skills/queries'
 
 import { SkillContentField, SkillDescriptionField, SkillNameField } from './skill-form-fields'
 import { validateSkillName } from './skill-validation'

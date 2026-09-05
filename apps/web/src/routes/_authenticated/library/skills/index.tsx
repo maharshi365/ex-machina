@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { SkillsPage } from '#/components/skills/skills-page'
-import { getActiveOrganizationServerFn } from '#/lib/organizations/server'
-import { skillsQueryOptions } from '#/lib/skills/queries'
+import { SkillsPage } from '@/components/skills/skills-page'
+import { getActiveOrganizationServerFn } from '@/lib/organizations/server'
+import { skillsQueryOptions } from '@/lib/skills/queries'
 
 export const Route = createFileRoute('/_authenticated/library/skills/')({
   loader: async ({ context }) => {

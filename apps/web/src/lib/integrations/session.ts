@@ -1,4 +1,4 @@
-import { auth } from "#/lib/auth/server";
+import { auth } from "@/lib/auth/server";
 
 export type IntegrationSession = {
   userId: string;

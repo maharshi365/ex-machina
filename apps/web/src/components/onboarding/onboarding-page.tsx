@@ -2,9 +2,9 @@ import { Link, useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { authClient } from '#/lib/auth/client'
-import { Button } from '#/components/ui/button'
-import { Skeleton } from '#/components/ui/skeleton'
+import { authClient } from '@/lib/auth/client'
+import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
 
 import type { Invitation, Organization, OnboardingUser } from './types'
 import { slugify } from './utils'

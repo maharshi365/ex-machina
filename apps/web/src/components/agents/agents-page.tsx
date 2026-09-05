@@ -4,10 +4,10 @@ import { Bot, Pencil, Plus, Sparkles, Trash2 } from 'lucide-react'
 import * as React from 'react'
 import { toast } from 'sonner'
 
-import { AuthenticatedShell } from '#/components/layout/authenticated-shell'
-import { LibraryTopBar } from '#/components/layout/library-top-bar'
-import { NoOrganizationCard } from '#/components/layout/no-organization-card'
-import { Badge } from '#/components/ui/badge'
+import { AuthenticatedShell } from '@/components/layout/authenticated-shell'
+import { LibraryTopBar } from '@/components/layout/library-top-bar'
+import { NoOrganizationCard } from '@/components/layout/no-organization-card'
+import { Badge } from '@/components/ui/badge'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,13 +15,13 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '#/components/ui/breadcrumb'
-import { Button } from '#/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '#/components/ui/empty'
-import { Skeleton } from '#/components/ui/skeleton'
-import { agentKeys, agentsQueryOptions, deleteAgentMutationOptions } from '#/lib/agents/queries'
-import type { OrganizationDTO } from '#/lib/organizations/server'
+} from '@/components/ui/breadcrumb'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
+import { Skeleton } from '@/components/ui/skeleton'
+import { agentKeys, agentsQueryOptions, deleteAgentMutationOptions } from '@/lib/agents/queries'
+import type { OrganizationDTO } from '@/lib/organizations/server'
 
 import { AgentDeleteDialog } from './agent-delete-dialog'
 

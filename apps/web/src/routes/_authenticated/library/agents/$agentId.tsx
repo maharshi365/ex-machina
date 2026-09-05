@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { AgentEditPage } from '#/components/agents/agent-edit-page'
-import { agentQueryOptions } from '#/lib/agents/queries'
-import { getAgentServerFn } from '#/lib/agents/server'
-import { getActiveOrganizationServerFn } from '#/lib/organizations/server'
+import { AgentEditPage } from '@/components/agents/agent-edit-page'
+import { agentQueryOptions } from '@/lib/agents/queries'
+import { getAgentServerFn } from '@/lib/agents/server'
+import { getActiveOrganizationServerFn } from '@/lib/organizations/server'
 
 export const Route = createFileRoute('/_authenticated/library/agents/$agentId')({
   loader: async ({ context, params }) => {

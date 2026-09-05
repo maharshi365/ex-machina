@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { SidebarTrigger } from '#/components/ui/sidebar'
+import { SidebarTrigger } from '@/components/ui/sidebar'
 
 export function LibraryTopBar({
   breadcrumb,

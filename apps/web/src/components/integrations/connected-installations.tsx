@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import { Github, Plug, Server } from 'lucide-react'
 
-import { Badge } from '#/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
-import { Skeleton } from '#/components/ui/skeleton'
-import { integrationsQueryOptions } from '#/lib/integrations/queries'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
+import { integrationsQueryOptions } from '@/lib/integrations/queries'
 
 export function ConnectedInstallations({ organizationId }: { organizationId: string }) {
   const { data: connections, isLoading, error } = useQuery(integrationsQueryOptions(organizationId))

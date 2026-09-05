@@ -1,9 +1,9 @@
 import { Link } from '@tanstack/react-router'
 import { Building2 } from 'lucide-react'
 
-import { AuthenticatedShell } from '#/components/layout/authenticated-shell'
-import { Button } from '#/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
+import { AuthenticatedShell } from '@/components/layout/authenticated-shell'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,8 +11,8 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '#/components/ui/breadcrumb'
-import { SidebarTrigger } from '#/components/ui/sidebar'
+} from '@/components/ui/breadcrumb'
+import { SidebarTrigger } from '@/components/ui/sidebar'
 
 export function IntegrationsShell({
   children,

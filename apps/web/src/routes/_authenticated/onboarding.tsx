@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { OnboardingPage } from '#/components/onboarding/onboarding-page'
-import { getOnboardingData } from '#/components/onboarding/onboarding-data'
+import { OnboardingPage } from '@/components/onboarding/onboarding-page'
+import { getOnboardingData } from '@/components/onboarding/onboarding-data'
 
 export const Route = createFileRoute('/_authenticated/onboarding')({
   loader: async () => await getOnboardingData(),

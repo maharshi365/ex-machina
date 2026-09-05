@@ -2,8 +2,8 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { HeadContent, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import type { QueryClient } from '@tanstack/react-query'
 import { ThemeProvider } from 'next-themes'
-import { Toaster } from '#/components/ui/sonner'
-import { createQueryClient } from '#/lib/query/client'
+import { Toaster } from '@/components/ui/sonner'
+import { createQueryClient } from '@/lib/query/client'
 
 import appCss from '../styles.css?url'
 

@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { IntegrationsPage } from "#/components/integrations/integrations-page";
-import { integrationsQueryOptions } from "#/lib/integrations/queries";
-import { canManageIntegrationsServerFn } from "#/lib/integrations/server";
-import { getActiveOrganizationServerFn } from "#/lib/organizations/server";
+import { IntegrationsPage } from "@/components/integrations/integrations-page";
+import { integrationsQueryOptions } from "@/lib/integrations/queries";
+import { canManageIntegrationsServerFn } from "@/lib/integrations/server";
+import { getActiveOrganizationServerFn } from "@/lib/organizations/server";
 
 type IntegrationSearch = { github?: "connected" | "error"; message?: string };
 

@@ -1,5 +1,5 @@
 import { getRequest } from '@tanstack/react-start/server'
-import { auth } from '#/lib/auth/server'
+import { auth } from '@/lib/auth/server'
 
 export async function requireSessionAndOrg() {
   const request = getRequest()

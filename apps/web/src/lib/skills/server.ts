@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
-import { requireSessionAndOrg } from '#/lib/auth/session'
-import { getDb } from '#/lib/db/client'
+import { requireSessionAndOrg } from '@/lib/auth/session'
+import { getDb } from '@/lib/db/client'
 import {
   createSkill as dbCreateSkill,
   deleteSkill as dbDeleteSkill,

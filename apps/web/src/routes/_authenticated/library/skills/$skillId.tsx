@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { SkillEditPage } from '#/components/skills/skill-edit-page'
-import { getActiveOrganizationServerFn } from '#/lib/organizations/server'
-import { getSkillServerFn } from '#/lib/skills/server'
-import { skillQueryOptions } from '#/lib/skills/queries'
+import { SkillEditPage } from '@/components/skills/skill-edit-page'
+import { getActiveOrganizationServerFn } from '@/lib/organizations/server'
+import { getSkillServerFn } from '@/lib/skills/server'
+import { skillQueryOptions } from '@/lib/skills/queries'
 
 export const Route = createFileRoute('/_authenticated/library/skills/$skillId')({
   loader: async ({ context, params }) => {
