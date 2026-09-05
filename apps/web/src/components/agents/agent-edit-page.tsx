@@ -158,7 +158,7 @@ function AgentEditManager({
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="font-mono text-xs truncate max-w-[180px]">
+                  <BreadcrumbPage className="font-mono text-xs truncate max-w-45">
                     {agent.name}
                   </BreadcrumbPage>
                 </BreadcrumbItem>

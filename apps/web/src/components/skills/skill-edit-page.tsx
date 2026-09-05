@@ -148,7 +148,7 @@ function SkillEditManager({
   return (
     <AuthenticatedShell insetClassName="flex h-svh flex-col overflow-hidden">
       <div className="flex flex-1 flex-col min-h-0 overflow-hidden">
-        <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-2 border-b bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-2 border-b bg-background/95 px-4 py-3 backdrop-blur supports-backdrop-filter:bg-background/60">
           <div className="flex min-w-0 items-center gap-2">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
@@ -161,7 +161,7 @@ function SkillEditManager({
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="font-mono text-xs truncate max-w-[160px]">
+                  <BreadcrumbPage className="font-mono text-xs truncate max-w-40">
                     {skill.name}
                   </BreadcrumbPage>
                 </BreadcrumbItem>

@@ -50,7 +50,7 @@ export function SkillDescriptionField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Extract text and tables from PDFs... Use when working with PDFs."
-        className="min-h-[80px]"
+        className="min-h-20"
         maxLength={1024}
       />
       <div className="flex justify-between text-xs">

@@ -62,7 +62,7 @@ export function AgentContentField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="You are a helpful agent..."
-        className="flex-1 min-h-[280px] overflow-auto font-mono text-sm leading-relaxed"
+        className="flex-1 min-h-70 overflow-auto font-mono text-sm leading-relaxed"
       />
       <p className="text-xs text-muted-foreground shrink-0">
         {value.length} chars · fits in viewport · scroll inside textarea
