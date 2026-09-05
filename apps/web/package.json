@@ -12,7 +12,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "test": "bun test --pass-with-no-tests",
+    "test": "bun test --pass-with-no-tests --only-failures",
     "clean": "rm -rf dist .tanstack"
   },
   "dependencies": {

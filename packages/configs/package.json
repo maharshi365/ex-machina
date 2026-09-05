@@ -19,7 +19,7 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test": "bun test --pass-with-no-tests",
+    "test": "bun test --pass-with-no-tests --only-failures",
     "build": "echo \"no build needed for @ex-machina/configs\" && exit 0",
     "clean": "echo \"no clean needed\" && exit 0"
   }

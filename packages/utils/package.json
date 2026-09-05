@@ -7,7 +7,7 @@
   "main": "./src/index.ts",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test": "bun test --pass-with-no-tests",
+    "test": "bun test --pass-with-no-tests --only-failures",
     "build": "echo \"no build needed\" && exit 0",
     "clean": "rm -rf dist"
   },
