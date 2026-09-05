@@ -1,0 +1,27 @@
+{
+  "name": "@ex-machina/integrations",
+  "version": "0.0.0",
+  "private": true,
+  "description": "External provider protocol implementations",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./providers/github": "./src/providers/github/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "bun test --pass-with-no-tests",
+    "build": "echo \"no build needed\" && exit 0",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@octokit/auth-app": "^8.3.1",
+    "@octokit/request": "^10.0.16"
+  },
+  "devDependencies": {
+    "@ex-machina/configs": "workspace:*",
+    "@types/bun": "^1.2.22",
+    "typescript": "^6.0.2"
+  }
+}

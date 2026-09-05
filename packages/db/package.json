@@ -10,7 +10,11 @@
     "./client": "./src/client.ts",
     "./types": "./src/types.ts",
     "./agents": "./src/agents.ts",
-    "./skills": "./src/skills.ts"
+    "./skills": "./src/skills.ts",
+    "./external-connections": "./src/external-connections.ts",
+    "./external-resources": "./src/external-resources.ts",
+    "./installation-intents": "./src/installation-intents.ts",
+    "./integration-indexes": "./src/integration-indexes.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

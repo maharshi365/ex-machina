@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@ex-machina/db": "workspace:*",
+    "@ex-machina/integrations": "workspace:*",
     "@ex-machina/utils": "workspace:*",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "latest",

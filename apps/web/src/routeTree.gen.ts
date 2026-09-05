@@ -18,9 +18,13 @@ import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AuthenticatedLibraryAgentsIndexRouteImport } from './routes/_authenticated/library/agents/index'
 import { Route as AuthenticatedLibraryAgentsAgentIdRouteImport } from './routes/_authenticated/library/agents/$agentId'
 import { Route as AuthenticatedLibraryAgentsNewRouteImport } from './routes/_authenticated/library/agents/new'
+import { Route as AuthenticatedLibraryIntegrationsIndexRouteImport } from './routes/_authenticated/library/integrations/index'
 import { Route as AuthenticatedLibrarySkillsIndexRouteImport } from './routes/_authenticated/library/skills/index'
 import { Route as AuthenticatedLibrarySkillsSkillIdRouteImport } from './routes/_authenticated/library/skills/$skillId'
 import { Route as AuthenticatedLibrarySkillsNewRouteImport } from './routes/_authenticated/library/skills/new'
+import { Route as ApiIntegrationsGithubInstallRouteImport } from './routes/api/integrations/github/install'
+import { Route as ApiIntegrationsGithubSetupRouteImport } from './routes/api/integrations/github/setup'
+import { Route as ApiIntegrationsGithubOauthCallbackRouteImport } from './routes/api/integrations/github/oauth/callback'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -69,6 +73,12 @@ const AuthenticatedLibraryAgentsNewRoute =
     path: '/library/agents/new',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedLibraryIntegrationsIndexRoute =
+  AuthenticatedLibraryIntegrationsIndexRouteImport.update({
+    id: '/library/integrations/',
+    path: '/library/integrations/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedLibrarySkillsIndexRoute =
   AuthenticatedLibrarySkillsIndexRouteImport.update({
     id: '/library/skills/',
@@ -87,6 +97,24 @@ const AuthenticatedLibrarySkillsNewRoute =
     path: '/library/skills/new',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const ApiIntegrationsGithubInstallRoute =
+  ApiIntegrationsGithubInstallRouteImport.update({
+    id: '/api/integrations/github/install',
+    path: '/api/integrations/github/install',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiIntegrationsGithubSetupRoute =
+  ApiIntegrationsGithubSetupRouteImport.update({
+    id: '/api/integrations/github/setup',
+    path: '/api/integrations/github/setup',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiIntegrationsGithubOauthCallbackRoute =
+  ApiIntegrationsGithubOauthCallbackRouteImport.update({
+    id: '/api/integrations/github/oauth/callback',
+    path: '/api/integrations/github/oauth/callback',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -98,8 +126,12 @@ export interface FileRoutesByFullPath {
   '/library/agents/new': typeof AuthenticatedLibraryAgentsNewRoute
   '/library/skills/$skillId': typeof AuthenticatedLibrarySkillsSkillIdRoute
   '/library/skills/new': typeof AuthenticatedLibrarySkillsNewRoute
+  '/api/integrations/github/install': typeof ApiIntegrationsGithubInstallRoute
+  '/api/integrations/github/setup': typeof ApiIntegrationsGithubSetupRoute
   '/library/agents/': typeof AuthenticatedLibraryAgentsIndexRoute
+  '/library/integrations/': typeof AuthenticatedLibraryIntegrationsIndexRoute
   '/library/skills/': typeof AuthenticatedLibrarySkillsIndexRoute
+  '/api/integrations/github/oauth/callback': typeof ApiIntegrationsGithubOauthCallbackRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -111,8 +143,12 @@ export interface FileRoutesByTo {
   '/library/agents/new': typeof AuthenticatedLibraryAgentsNewRoute
   '/library/skills/$skillId': typeof AuthenticatedLibrarySkillsSkillIdRoute
   '/library/skills/new': typeof AuthenticatedLibrarySkillsNewRoute
+  '/api/integrations/github/install': typeof ApiIntegrationsGithubInstallRoute
+  '/api/integrations/github/setup': typeof ApiIntegrationsGithubSetupRoute
   '/library/agents': typeof AuthenticatedLibraryAgentsIndexRoute
+  '/library/integrations': typeof AuthenticatedLibraryIntegrationsIndexRoute
   '/library/skills': typeof AuthenticatedLibrarySkillsIndexRoute
+  '/api/integrations/github/oauth/callback': typeof ApiIntegrationsGithubOauthCallbackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -126,8 +162,12 @@ export interface FileRoutesById {
   '/_authenticated/library/agents/new': typeof AuthenticatedLibraryAgentsNewRoute
   '/_authenticated/library/skills/$skillId': typeof AuthenticatedLibrarySkillsSkillIdRoute
   '/_authenticated/library/skills/new': typeof AuthenticatedLibrarySkillsNewRoute
+  '/api/integrations/github/install': typeof ApiIntegrationsGithubInstallRoute
+  '/api/integrations/github/setup': typeof ApiIntegrationsGithubSetupRoute
   '/_authenticated/library/agents/': typeof AuthenticatedLibraryAgentsIndexRoute
+  '/_authenticated/library/integrations/': typeof AuthenticatedLibraryIntegrationsIndexRoute
   '/_authenticated/library/skills/': typeof AuthenticatedLibrarySkillsIndexRoute
+  '/api/integrations/github/oauth/callback': typeof ApiIntegrationsGithubOauthCallbackRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -141,8 +181,12 @@ export interface FileRouteTypes {
     | '/library/agents/new'
     | '/library/skills/$skillId'
     | '/library/skills/new'
+    | '/api/integrations/github/install'
+    | '/api/integrations/github/setup'
     | '/library/agents/'
+    | '/library/integrations/'
     | '/library/skills/'
+    | '/api/integrations/github/oauth/callback'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -154,8 +198,12 @@ export interface FileRouteTypes {
     | '/library/agents/new'
     | '/library/skills/$skillId'
     | '/library/skills/new'
+    | '/api/integrations/github/install'
+    | '/api/integrations/github/setup'
     | '/library/agents'
+    | '/library/integrations'
     | '/library/skills'
+    | '/api/integrations/github/oauth/callback'
   id:
     | '__root__'
     | '/'
@@ -168,8 +216,12 @@ export interface FileRouteTypes {
     | '/_authenticated/library/agents/new'
     | '/_authenticated/library/skills/$skillId'
     | '/_authenticated/library/skills/new'
+    | '/api/integrations/github/install'
+    | '/api/integrations/github/setup'
     | '/_authenticated/library/agents/'
+    | '/_authenticated/library/integrations/'
     | '/_authenticated/library/skills/'
+    | '/api/integrations/github/oauth/callback'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -177,6 +229,9 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   LoginRoute: typeof LoginRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiIntegrationsGithubInstallRoute: typeof ApiIntegrationsGithubInstallRoute
+  ApiIntegrationsGithubSetupRoute: typeof ApiIntegrationsGithubSetupRoute
+  ApiIntegrationsGithubOauthCallbackRoute: typeof ApiIntegrationsGithubOauthCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -244,6 +299,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLibraryAgentsNewRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/library/integrations/': {
+      id: '/_authenticated/library/integrations/'
+      path: '/library/integrations'
+      fullPath: '/library/integrations/'
+      preLoaderRoute: typeof AuthenticatedLibraryIntegrationsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/library/skills/': {
       id: '/_authenticated/library/skills/'
       path: '/library/skills'
@@ -265,6 +327,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLibrarySkillsNewRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/api/integrations/github/install': {
+      id: '/api/integrations/github/install'
+      path: '/api/integrations/github/install'
+      fullPath: '/api/integrations/github/install'
+      preLoaderRoute: typeof ApiIntegrationsGithubInstallRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/integrations/github/setup': {
+      id: '/api/integrations/github/setup'
+      path: '/api/integrations/github/setup'
+      fullPath: '/api/integrations/github/setup'
+      preLoaderRoute: typeof ApiIntegrationsGithubSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/integrations/github/oauth/callback': {
+      id: '/api/integrations/github/oauth/callback'
+      path: '/api/integrations/github/oauth/callback'
+      fullPath: '/api/integrations/github/oauth/callback'
+      preLoaderRoute: typeof ApiIntegrationsGithubOauthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -276,6 +359,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedLibrarySkillsSkillIdRoute: typeof AuthenticatedLibrarySkillsSkillIdRoute
   AuthenticatedLibrarySkillsNewRoute: typeof AuthenticatedLibrarySkillsNewRoute
   AuthenticatedLibraryAgentsIndexRoute: typeof AuthenticatedLibraryAgentsIndexRoute
+  AuthenticatedLibraryIntegrationsIndexRoute: typeof AuthenticatedLibraryIntegrationsIndexRoute
   AuthenticatedLibrarySkillsIndexRoute: typeof AuthenticatedLibrarySkillsIndexRoute
 }
 
@@ -289,6 +373,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
     AuthenticatedLibrarySkillsSkillIdRoute,
   AuthenticatedLibrarySkillsNewRoute: AuthenticatedLibrarySkillsNewRoute,
   AuthenticatedLibraryAgentsIndexRoute: AuthenticatedLibraryAgentsIndexRoute,
+  AuthenticatedLibraryIntegrationsIndexRoute:
+    AuthenticatedLibraryIntegrationsIndexRoute,
   AuthenticatedLibrarySkillsIndexRoute: AuthenticatedLibrarySkillsIndexRoute,
 }
 
@@ -301,6 +387,10 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiIntegrationsGithubInstallRoute: ApiIntegrationsGithubInstallRoute,
+  ApiIntegrationsGithubSetupRoute: ApiIntegrationsGithubSetupRoute,
+  ApiIntegrationsGithubOauthCallbackRoute:
+    ApiIntegrationsGithubOauthCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
