@@ -20,9 +20,9 @@ import { Label } from '#/components/ui/label'
 import { Separator } from '#/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '#/components/ui/sidebar'
 import { Textarea } from '#/components/ui/textarea'
-import { agentKeys } from '#/lib/agents.queries'
-import { createAgentServerFn } from '#/lib/agents-api'
-import { getActiveOrganizationServerFn } from '#/lib/org-api'
+import { agentKeys } from '#/lib/agents/queries'
+import { createAgentServerFn } from '#/lib/agents/server'
+import { getActiveOrganizationServerFn } from '#/lib/organizations/server'
 
 export const Route = createFileRoute('/_authenticated/library/agents/new')({
   loader: async () => {

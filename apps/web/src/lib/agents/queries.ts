@@ -5,7 +5,7 @@ import {
   getAgentServerFn,
   listAgentsServerFn,
   updateAgentServerFn,
-} from './agents-api.js'
+} from './server.js'
 
 // ---------------------------------------------------------------------------
 // Query Key Factory — org-scoped for better caching & isolation

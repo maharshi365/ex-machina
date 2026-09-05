@@ -18,9 +18,9 @@ import { Button } from "#/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "#/components/ui/card";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "#/components/ui/sidebar";
 import { Skeleton } from "#/components/ui/skeleton";
-import { canManageIntegrationsServerFn } from "#/lib/integrations-api";
-import { integrationsQueryOptions } from "#/lib/integrations.queries";
-import { getActiveOrganizationServerFn } from "#/lib/org-api";
+import { canManageIntegrationsServerFn } from "#/lib/integrations/server";
+import { integrationsQueryOptions } from "#/lib/integrations/queries";
+import { getActiveOrganizationServerFn } from "#/lib/organizations/server";
 
 type IntegrationSearch = { github?: "connected" | "error"; message?: string };
 

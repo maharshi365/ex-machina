@@ -11,7 +11,7 @@ import {
   Sun,
 } from "lucide-react"
 import { useTheme } from "next-themes"
-import { authClient } from "#/lib/auth-client.ts"
+import { authClient } from "#/lib/auth/client.ts"
 
 import {
   Avatar,

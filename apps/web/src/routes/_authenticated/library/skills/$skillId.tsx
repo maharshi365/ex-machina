@@ -29,9 +29,9 @@ import { Separator } from '#/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '#/components/ui/sidebar'
 import { Skeleton } from '#/components/ui/skeleton'
 import { Textarea } from '#/components/ui/textarea'
-import { getActiveOrganizationServerFn } from '#/lib/org-api'
-import { deleteSkillServerFn, getSkillServerFn, updateSkillServerFn } from '#/lib/skills-api'
-import { skillKeys, skillQueryOptions } from '#/lib/skills.queries'
+import { getActiveOrganizationServerFn } from '#/lib/organizations/server'
+import { deleteSkillServerFn, getSkillServerFn, updateSkillServerFn } from '#/lib/skills/server'
+import { skillKeys, skillQueryOptions } from '#/lib/skills/queries'
 
 export const Route = createFileRoute('/_authenticated/library/skills/$skillId')({
   loader: async ({ context, params }) => {

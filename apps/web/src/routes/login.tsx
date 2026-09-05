@@ -2,8 +2,8 @@ import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
 import { useEffect } from 'react'
-import { auth } from '#/lib/auth'
-import { authClient } from '#/lib/auth-client'
+import { auth } from '#/lib/auth/server'
+import { authClient } from '#/lib/auth/client'
 
 const getSession = createServerFn({ method: 'GET' }).handler(async () => {
   const request = getRequest()

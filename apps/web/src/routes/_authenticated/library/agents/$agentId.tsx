@@ -29,9 +29,9 @@ import { Separator } from '#/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '#/components/ui/sidebar'
 import { Skeleton } from '#/components/ui/skeleton'
 import { Textarea } from '#/components/ui/textarea'
-import { agentKeys, agentQueryOptions } from '#/lib/agents.queries'
-import { deleteAgentServerFn, getAgentServerFn, updateAgentServerFn } from '#/lib/agents-api'
-import { getActiveOrganizationServerFn } from '#/lib/org-api'
+import { agentKeys, agentQueryOptions } from '#/lib/agents/queries'
+import { deleteAgentServerFn, getAgentServerFn, updateAgentServerFn } from '#/lib/agents/server'
+import { getActiveOrganizationServerFn } from '#/lib/organizations/server'
 
 export const Route = createFileRoute('/_authenticated/library/agents/$agentId')({
   loader: async ({ context, params }) => {

@@ -1,5 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
-import { listIntegrationsServerFn } from "./integrations-api.js";
+import { listIntegrationsServerFn } from "./server.js";
 
 export const integrationKeys = {
   all: ["integrations"] as const,

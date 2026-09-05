@@ -20,9 +20,9 @@ import { Label } from '#/components/ui/label'
 import { Separator } from '#/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '#/components/ui/sidebar'
 import { Textarea } from '#/components/ui/textarea'
-import { getActiveOrganizationServerFn } from '#/lib/org-api'
-import { createSkillServerFn } from '#/lib/skills-api'
-import { skillKeys } from '#/lib/skills.queries'
+import { getActiveOrganizationServerFn } from '#/lib/organizations/server'
+import { createSkillServerFn } from '#/lib/skills/server'
+import { skillKeys } from '#/lib/skills/queries'
 
 export const Route = createFileRoute('/_authenticated/library/skills/new')({
   loader: async () => {

@@ -16,7 +16,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "#/components/ui/sidebar.tsx";
-import { authClient } from "#/lib/auth-client.ts";
+import { authClient } from "#/lib/auth/client.ts";
 
 const data = {
   teams: [

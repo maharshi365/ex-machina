@@ -5,7 +5,7 @@ import {
   getSkillServerFn,
   listSkillsServerFn,
   updateSkillServerFn,
-} from './skills-api.js'
+} from './server.js'
 
 export const skillKeys = {
   all: ['skills'] as const,

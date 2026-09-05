@@ -1,7 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getRequest } from '@tanstack/react-start/server'
-import { auth } from '#/lib/auth'
-import { getDb } from '#/lib/db'
+import { requireSessionAndOrg } from '#/lib/auth/session'
+import { getDb } from '#/lib/db/client'
 import {
   createSkill as dbCreateSkill,
   deleteSkill as dbDeleteSkill,
@@ -9,18 +8,6 @@ import {
   getSkills as dbGetSkills,
   updateSkill as dbUpdateSkill,
 } from '@ex-machina/db'
-
-async function requireSessionAndOrg() {
-  const request = getRequest()
-  const session = await auth.api.getSession({ headers: request.headers })
-  if (!session?.user) throw new Error('Unauthorized')
-  const organizationId =
-    (session.session as { activeOrganizationId?: string | null })?.activeOrganizationId ??
-    (session as unknown as { activeOrganizationId?: string | null })?.activeOrganizationId ??
-    null
-  if (!organizationId) throw new Error('No active organization')
-  return { session, organizationId }
-}
 
 // Org is derived server-side — FE does not send it
 export const listSkillsServerFn = createServerFn({ method: 'GET' }).handler(async () => {

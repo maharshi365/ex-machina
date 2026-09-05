@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { completeGitHubInstallation } from "#/lib/github-integration";
-import { requireIntegrationSession } from "#/lib/integration-auth";
+import { completeGitHubInstallation } from "#/lib/integrations/github";
+import { requireIntegrationSession } from "#/lib/integrations/session";
 
 export const Route = createFileRoute("/api/integrations/github/oauth/callback")({
   server: {

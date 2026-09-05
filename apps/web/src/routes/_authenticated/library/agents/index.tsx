@@ -27,8 +27,8 @@ import {
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '#/components/ui/empty'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '#/components/ui/sidebar'
 import { Skeleton } from '#/components/ui/skeleton'
-import { agentKeys, agentsQueryOptions, deleteAgentMutationOptions } from '#/lib/agents.queries'
-import { getActiveOrganizationServerFn } from '#/lib/org-api'
+import { agentKeys, agentsQueryOptions, deleteAgentMutationOptions } from '#/lib/agents/queries'
+import { getActiveOrganizationServerFn } from '#/lib/organizations/server'
 
 export const Route = createFileRoute('/_authenticated/library/agents/')({
   loader: async ({ context }) => {

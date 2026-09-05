@@ -4,8 +4,8 @@ import {
   createExternalConnectionsRepository,
   createExternalResourcesRepository,
 } from "@ex-machina/db";
-import { getDb } from "#/lib/db";
-import { requireIntegrationSession } from "#/lib/integration-auth";
+import { getDb } from "#/lib/db/client";
+import { requireIntegrationSession } from "#/lib/integrations/session";
 
 export const listIntegrationsServerFn = createServerFn({ method: "GET" }).handler(async () => {
   const request = getRequest();
