@@ -29,10 +29,19 @@ function statusBadgeClassName(status: ConnectionStatus): string | undefined {
 }
 
 export function IntegrationStatusBadge({ status }: { status: ConnectionStatus }) {
-  if (status === 'error') return <Badge variant="destructive">{status}</Badge>;
+  if (status === 'error')
+    return (
+      <Badge variant="destructive" className="capitalize">
+        {status}
+      </Badge>
+    );
   if (status === 'suspended' || status === 'revoked')
-    return <Badge variant="secondary">{status}</Badge>;
-  return <Badge className={statusBadgeClassName(status)}>{status}</Badge>;
+    return (
+      <Badge variant="secondary" className="capitalize">
+        {status}
+      </Badge>
+    );
+  return <Badge className={`capitalize ${statusBadgeClassName(status) ?? ''}`}>{status}</Badge>;
 }
 
 export function getIntegrationColumns(onView: (connection: IntegrationRow) => void) {

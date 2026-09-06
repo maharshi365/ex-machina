@@ -1,11 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
 import * as React from 'react';
 import { toast } from 'sonner';
 
 import type { OrganizationDTO } from '@/lib/organizations/server';
-import { integrationsQueryOptions } from '@/lib/integrations/queries';
 
-import { GitHubConnectCard, InstallationSecurityCard } from './github-cards';
 import { ConnectedInstallations } from './connected-installations';
 import { IntegrationsShell } from './integrations-shell';
 
@@ -39,18 +36,9 @@ function IntegrationManager({
   organizationId: string;
   canManage: boolean;
 }) {
-  const { data: connections } = useQuery(integrationsQueryOptions(organizationId));
-  const githubConnections =
-    connections?.filter((connection) => connection.provider === 'github') ?? [];
-
   return (
     <IntegrationsShell>
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(280px,0.6fr)]">
-        <GitHubConnectCard canManage={canManage} hasConnections={githubConnections.length > 0} />
-        <InstallationSecurityCard />
-      </div>
-
-      <ConnectedInstallations organizationId={organizationId} />
+      <ConnectedInstallations organizationId={organizationId} canManage={canManage} />
     </IntegrationsShell>
   );
 }

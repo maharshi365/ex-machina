@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { Plug } from 'lucide-react';
+import { Plug, Plus } from 'lucide-react';
 import * as React from 'react';
 
 import { DataTable } from '@/components/ui/app-table';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -10,8 +11,15 @@ import { integrationsQueryOptions } from '@/lib/integrations/queries';
 
 import { getIntegrationColumns, type IntegrationRow } from './integrations-table';
 import { IntegrationDetailsDialog } from './integration-details-dialog';
+import { IntegrationSetupDialog } from './integration-setup-dialog';
 
-export function ConnectedInstallations({ organizationId }: { organizationId: string }) {
+export function ConnectedInstallations({
+  organizationId,
+  canManage,
+}: {
+  organizationId: string;
+  canManage: boolean;
+}) {
   const {
     data: connections,
     isLoading,
@@ -21,12 +29,19 @@ export function ConnectedInstallations({ organizationId }: { organizationId: str
     connections?.filter((connection) => connection.provider === 'github') ?? [];
 
   const [selected, setSelected] = React.useState<IntegrationRow | null>(null);
+  const [setupOpen, setSetupOpen] = React.useState(false);
 
   const columns = React.useMemo(() => getIntegrationColumns(setSelected), []);
 
   return (
     <div>
-      <h2 className="mb-3 text-sm font-medium">Connected installations</h2>
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <h2 className="text-sm font-medium">Connected installations</h2>
+        <Button size="sm" onClick={() => setSetupOpen(true)}>
+          <Plus className="size-4" />
+          Add integration
+        </Button>
+      </div>
       {isLoading ? (
         <div className="space-y-2">
           <Skeleton className="h-10 w-full" />
@@ -62,6 +77,7 @@ export function ConnectedInstallations({ organizationId }: { organizationId: str
           />
         </TooltipProvider>
       )}
+      <IntegrationSetupDialog canManage={canManage} open={setupOpen} onOpenChange={setSetupOpen} />
     </div>
   );
 }
