@@ -1,10 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import { Github, Plug, Server } from 'lucide-react';
+import { Plug } from 'lucide-react';
+import * as React from 'react';
 
-import { Badge } from '@/components/ui/badge';
+import { DataTable } from '@/components/ui/app-table';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { integrationsQueryOptions } from '@/lib/integrations/queries';
+
+import { getIntegrationColumns, type IntegrationRow } from './integrations-table';
+import { IntegrationDetailsDialog } from './integration-details-dialog';
 
 export function ConnectedInstallations({ organizationId }: { organizationId: string }) {
   const {
@@ -15,13 +20,18 @@ export function ConnectedInstallations({ organizationId }: { organizationId: str
   const githubConnections =
     connections?.filter((connection) => connection.provider === 'github') ?? [];
 
+  const [selected, setSelected] = React.useState<IntegrationRow | null>(null);
+
+  const columns = React.useMemo(() => getIntegrationColumns(setSelected), []);
+
   return (
     <div>
       <h2 className="mb-3 text-sm font-medium">Connected installations</h2>
       {isLoading ? (
-        <div className="grid gap-3 md:grid-cols-2">
-          <Skeleton className="h-36" />
-          <Skeleton className="h-36" />
+        <div className="space-y-2">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-full" />
         </div>
       ) : error ? (
         <Card className="border-destructive">
@@ -40,43 +50,17 @@ export function ConnectedInstallations({ organizationId }: { organizationId: str
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-3 md:grid-cols-2">
-          {githubConnections.map((connection) => {
-            const activeRepositories = connection.resources.filter(
-              (resource) => resource.status === 'active'
-            );
-            return (
-              <Card key={connection._id}>
-                <CardHeader>
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <Github className="size-5" />
-                      <div>
-                        <CardTitle>{connection.account.login}</CardTitle>
-                        <CardDescription>{connection.account.type} installation</CardDescription>
-                      </div>
-                    </div>
-                    <Badge variant={connection.status === 'active' ? 'default' : 'secondary'}>
-                      {connection.status}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-2 text-sm text-muted-foreground">
-                  <p className="flex items-center gap-2">
-                    <Server className="size-4" />
-                    {activeRepositories.length}{' '}
-                    {activeRepositories.length === 1 ? 'repository' : 'repositories'}
-                  </p>
-                  {activeRepositories.length > 0 && (
-                    <p className="line-clamp-2 font-mono text-xs">
-                      {activeRepositories.map((resource) => resource.locator.fullName).join(', ')}
-                    </p>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+        <TooltipProvider>
+          <DataTable
+            columns={columns}
+            data={githubConnections}
+            emptyMessage="No GitHub installations connected yet."
+          />
+          <IntegrationDetailsDialog
+            connection={selected}
+            onOpenChange={(open) => !open && setSelected(null)}
+          />
+        </TooltipProvider>
       )}
     </div>
   );
