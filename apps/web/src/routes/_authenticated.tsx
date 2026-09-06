@@ -1,6 +1,9 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/react-start';
 import { getRequest } from '@tanstack/react-start/server';
+
+import { AppSidebar } from '@/components/app-sidebar';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { auth } from '@/lib/auth/server';
 import { ensureActiveOrganization } from '@/lib/auth/session';
 
@@ -27,5 +30,12 @@ export const Route = createFileRoute('/_authenticated')({
 });
 
 function AuthenticatedLayout() {
-  return <Outlet />;
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <Outlet />
+      </SidebarInset>
+    </SidebarProvider>
+  );
 }

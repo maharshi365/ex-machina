@@ -4,9 +4,8 @@ import { Bot, Plus } from 'lucide-react';
 import * as React from 'react';
 import { toast } from 'sonner';
 
-import { AuthenticatedShell } from '@/components/layout/authenticated-shell';
-import { LibraryTopBar } from '@/components/layout/library-top-bar';
 import { NoOrganizationCard } from '@/components/layout/no-organization-card';
+import { Page } from '@/components/layout/page';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -37,9 +36,9 @@ import { getAgentColumns } from './agents-table';
 export function AgentsPage({ activeOrg }: { activeOrg: OrganizationDTO | null }) {
   if (!activeOrg) {
     return (
-      <AuthenticatedShell>
+      <Page>
         <NoOrganizationCard description="Create or select an organization to manage agents." />
-      </AuthenticatedShell>
+      </Page>
     );
   }
 
@@ -71,22 +70,9 @@ function AgentsManager({
   const columns = React.useMemo(() => getAgentColumns((agent) => setDeleting(agent)), []);
 
   return (
-    <AuthenticatedShell>
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <LibraryTopBar
-          breadcrumb={
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">Library</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Agents</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          }
+    <Page>
+      <Page.Content>
+        <Page.Header
           actions={
             <Button asChild>
               <Link to="/library/agents/new">
@@ -95,7 +81,19 @@ function AgentsManager({
               </Link>
             </Button>
           }
-        />
+        >
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="#">Library</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Agents</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </Page.Header>
 
         {isLoading ? (
           <div className="space-y-2">
@@ -153,7 +151,7 @@ function AgentsManager({
             onConfirm={() => deleteMutation.mutate({ id: deleting._id })}
           />
         )}
-      </div>
-    </AuthenticatedShell>
+      </Page.Content>
+    </Page>
   );
 }

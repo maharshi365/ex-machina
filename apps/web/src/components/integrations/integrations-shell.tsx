@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { Building2 } from 'lucide-react';
 
-import { AuthenticatedShell } from '@/components/layout/authenticated-shell';
+import { Page } from '@/components/layout/page';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -12,7 +12,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 
 export function IntegrationsShell({
   children,
@@ -22,10 +21,9 @@ export function IntegrationsShell({
   noOrg?: boolean;
 }) {
   return (
-    <AuthenticatedShell>
-      <div className="flex flex-1 flex-col gap-5 p-4 pt-0">
-        <div className="sticky top-0 z-10 -mx-4 flex items-center gap-2 border-b bg-background/95 px-4 py-3 backdrop-blur">
-          <SidebarTrigger className="-ml-1" />
+    <Page>
+      <Page.Content className="gap-5">
+        <Page.Header>
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
@@ -37,7 +35,7 @@ export function IntegrationsShell({
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-        </div>
+        </Page.Header>
         {noOrg ? (
           <Card className="border-dashed">
             <CardHeader className="text-center">
@@ -56,7 +54,7 @@ export function IntegrationsShell({
         ) : (
           children
         )}
-      </div>
-    </AuthenticatedShell>
+      </Page.Content>
+    </Page>
   );
 }

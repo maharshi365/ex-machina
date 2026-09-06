@@ -4,9 +4,8 @@ import { Plus, Sparkles } from 'lucide-react';
 import * as React from 'react';
 import { toast } from 'sonner';
 
-import { AuthenticatedShell } from '@/components/layout/authenticated-shell';
-import { LibraryTopBar } from '@/components/layout/library-top-bar';
 import { NoOrganizationCard } from '@/components/layout/no-organization-card';
+import { Page } from '@/components/layout/page';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -37,9 +36,9 @@ import { getSkillColumns } from './skills-table';
 export function SkillsPage({ activeOrg }: { activeOrg: OrganizationDTO | null }) {
   if (!activeOrg) {
     return (
-      <AuthenticatedShell>
+      <Page>
         <NoOrganizationCard description="Create or select an organization to manage skills." />
-      </AuthenticatedShell>
+      </Page>
     );
   }
 
@@ -71,22 +70,9 @@ function SkillsManager({
   const columns = React.useMemo(() => getSkillColumns((skill) => setDeleting(skill)), []);
 
   return (
-    <AuthenticatedShell>
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <LibraryTopBar
-          breadcrumb={
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">Library</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Skills</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          }
+    <Page>
+      <Page.Content>
+        <Page.Header
           actions={
             <Button asChild>
               <Link to="/library/skills/new">
@@ -95,7 +81,19 @@ function SkillsManager({
               </Link>
             </Button>
           }
-        />
+        >
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="#">Library</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Skills</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </Page.Header>
 
         {isLoading ? (
           <div className="space-y-2">
@@ -153,7 +151,7 @@ function SkillsManager({
             onConfirm={() => deleteMutation.mutate({ id: deleting._id })}
           />
         )}
-      </div>
-    </AuthenticatedShell>
+      </Page.Content>
+    </Page>
   );
 }

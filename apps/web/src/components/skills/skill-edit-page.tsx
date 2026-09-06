@@ -4,8 +4,8 @@ import { ArrowLeft, Loader2, Save, Sparkles, Trash2 } from 'lucide-react';
 import * as React from 'react';
 import { toast } from 'sonner';
 
-import { AuthenticatedShell } from '@/components/layout/authenticated-shell';
 import { NoOrganizationCard } from '@/components/layout/no-organization-card';
+import { Page } from '@/components/layout/page';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -43,9 +43,9 @@ export function SkillEditPage({
 }) {
   if (!activeOrg) {
     return (
-      <AuthenticatedShell>
+      <Page>
         <NoOrganizationCard />
-      </AuthenticatedShell>
+      </Page>
     );
   }
 
@@ -110,18 +110,18 @@ function SkillEditManager({
 
   if (isLoading) {
     return (
-      <AuthenticatedShell insetClassName="flex h-svh flex-col overflow-hidden">
+      <Page className="flex h-svh flex-col overflow-hidden">
         <div className="p-4 space-y-4">
           <Skeleton className="h-8 w-48" />
           <Skeleton className="h-[60vh] w-full" />
         </div>
-      </AuthenticatedShell>
+      </Page>
     );
   }
 
   if (error || !skill) {
     return (
-      <AuthenticatedShell>
+      <Page>
         <div className="p-4">
           <Card className="border-destructive">
             <CardHeader>
@@ -141,12 +141,12 @@ function SkillEditManager({
             </CardContent>
           </Card>
         </div>
-      </AuthenticatedShell>
+      </Page>
     );
   }
 
   return (
-    <AuthenticatedShell insetClassName="flex h-svh flex-col overflow-hidden">
+    <Page className="flex h-svh flex-col overflow-hidden">
       <div className="flex flex-1 flex-col min-h-0 overflow-hidden">
         <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-2 border-b bg-background/95 px-4 py-3 backdrop-blur supports-backdrop-filter:bg-background/60">
           <div className="flex min-w-0 items-center gap-2">
@@ -247,6 +247,6 @@ function SkillEditManager({
           </DialogContent>
         </Dialog>
       </div>
-    </AuthenticatedShell>
+    </Page>
   );
 }

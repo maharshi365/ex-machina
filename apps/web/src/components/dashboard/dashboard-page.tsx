@@ -1,6 +1,6 @@
 import { LayoutDashboard } from 'lucide-react';
 
-import { AuthenticatedShell } from '@/components/layout/authenticated-shell';
+import { Page } from '@/components/layout/page';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,14 +17,12 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty';
 import { Separator } from '@/components/ui/separator';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 
 export function DashboardPage() {
   return (
-    <AuthenticatedShell>
-      <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-        <div className="flex items-center gap-2 px-4">
-          <SidebarTrigger className="-ml-1" />
+    <Page>
+      <Page.Header className="static mx-0 h-16 justify-start border-0 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+        <>
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
             <BreadcrumbList>
@@ -37,9 +35,9 @@ export function DashboardPage() {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-        </div>
-      </header>
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        </>
+      </Page.Header>
+      <Page.Content>
         <Empty className="border bg-card">
           <EmptyHeader>
             <EmptyMedia variant="icon">
@@ -51,7 +49,7 @@ export function DashboardPage() {
             </EmptyDescription>
           </EmptyHeader>
         </Empty>
-      </div>
-    </AuthenticatedShell>
+      </Page.Content>
+    </Page>
   );
 }
