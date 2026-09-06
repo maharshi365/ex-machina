@@ -8,7 +8,7 @@ Factory schema version: `1`
 - The portable `FactoryDefinition` is the canonical configuration shape. MongoDB wraps it with platform identity, lifecycle, revision, and audit data.
 - Library agents and skills are live references. An edit is used by the next run. Every run must snapshot the resolved agent, skills, definition revision, and execution configuration, and reference the immutable webhook delivery that caused it.
 - A factory assigns named local agents. Automations target those assignment keys rather than global library IDs.
-- Runtime inheritance is `factory defaults -> assigned agent -> automation`. A supplied `model`, `harness`, or `sandbox` block replaces that whole inherited block.
+- Runtime inheritance is `factory defaults -> assigned agent -> automation`. A supplied `model` or `sandbox` block replaces that whole inherited block.
 - Agent and automation `skillIds` are always present. They default to `[]`; an automation's list is authoritative for that automation.
 - Every automation explicitly lists its writable repository targets. Every trigger explicitly lists its event-source repositories. Those lists may differ.
 - Multiple triggers on an automation use OR semantics. Filters within one trigger use AND semantics; values within one filter use OR semantics.
@@ -95,10 +95,6 @@ type ExecutionDefinition = {
     provider: string;
     modelId: string;
   };
-  harness: {
-    type: 'opencode';
-    version: 1;
-  };
   sandbox: {
     provider: 'aws';
     version: 1;
@@ -106,6 +102,8 @@ type ExecutionDefinition = {
   };
 };
 ```
+
+All runs use the opencode harness. It is a fixed platform behavior, not factory configuration, so it does not appear in the definition.
 
 An image is a platform catalog ID such as `typescript` or `python`, not an arbitrary Docker image. The catalog resolves it to an immutable image digest when a run starts. This lets the platform patch defaults while the run snapshot retains the exact digest used.
 
@@ -203,7 +201,6 @@ export default defineFactory({
   description: 'Reviews pull requests for the payments services',
   executionDefaults: {
     model: { provider: 'openai', modelId: 'gpt-5' },
-    harness: { type: 'opencode', version: 1 },
     sandbox: { provider: 'aws', version: 1, image: { id: 'typescript' } },
   },
   repositories: [
@@ -270,7 +267,7 @@ Activation validation additionally requires:
 - Every trigger uses only filters supported by its provider event.
 - Referenced connections, agents, and skills exist in the same organization.
 - Connections are active and authorize every referenced external repository.
-- Models, images, and harnesses are currently supported.
+- Models and images are currently supported.
 
 An active factory update must pass activation validation atomically. Invalid config never partially replaces the last active definition.
 

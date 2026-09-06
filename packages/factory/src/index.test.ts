@@ -13,7 +13,6 @@ function input(): FactoryDefinitionInput {
     name: 'Pull request factory',
     executionDefaults: {
       model: { provider: 'openai', modelId: 'gpt-5' },
-      harness: { type: 'opencode', version: 1 },
       sandbox: { provider: 'aws', version: 1, image: { id: 'typescript' } },
     },
     repositories: [
@@ -63,7 +62,6 @@ describe('factory definition', () => {
     expect(definition.agents[0]!.skillIds).toEqual([]);
     expect(automation.skillIds).toEqual([]);
     expect(resolveAutomationExecution(definition, automation).model.provider).toBe('anthropic');
-    expect(resolveAutomationExecution(definition, automation).harness.type).toBe('opencode');
     expect(resolveAutomationSkillIds(automation)).toEqual([]);
     expect(() => validateFactoryForActivation(definition)).not.toThrow();
   });
