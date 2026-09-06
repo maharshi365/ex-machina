@@ -1,6 +1,6 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, Loader2, Save, Sparkles } from 'lucide-react';
+import { ArrowLeft, Loader2, Save } from 'lucide-react';
 import * as React from 'react';
 import { toast } from 'sonner';
 
@@ -16,31 +16,24 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import type { OrganizationDTO } from '@/lib/organizations/server';
 import { createSkillServerFn } from '@/lib/skills/server';
 import { skillKeys } from '@/lib/skills/queries';
 
 import { SkillContentField, SkillDescriptionField, SkillNameField } from './skill-form-fields';
 import { validateSkillName } from './skill-validation';
 
-export function SkillNewPage({ activeOrg }: { activeOrg: OrganizationDTO | null }) {
-  if (!activeOrg) {
+export function SkillNewPage({ organizationId }: { organizationId: string | null }) {
+  if (!organizationId) {
     return (
       <Page>
         <NoOrganizationCard />
       </Page>
     );
   }
-  return <Form organizationId={activeOrg.id} organizationName={activeOrg.name} />;
+  return <Form organizationId={organizationId} />;
 }
 
-function Form({
-  organizationId,
-  organizationName,
-}: {
-  organizationId: string;
-  organizationName: string;
-}) {
+function Form({ organizationId }: { organizationId: string }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [name, setName] = React.useState('');
@@ -114,10 +107,6 @@ function Form({
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <span className="hidden items-center gap-1 text-xs text-muted-foreground md:flex">
-            <Sparkles className="size-3" />
-            <span className="truncate">{organizationName}</span>
-          </span>
         </Page.Header>
 
         <Page.Content className="overflow-auto">

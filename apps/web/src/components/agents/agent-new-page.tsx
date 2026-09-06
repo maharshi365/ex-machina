@@ -1,6 +1,6 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, Bot, Loader2, Save } from 'lucide-react';
+import { ArrowLeft, Loader2, Save } from 'lucide-react';
 import * as React from 'react';
 import { toast } from 'sonner';
 
@@ -18,12 +18,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { agentKeys } from '@/lib/agents/queries';
 import { createAgentServerFn } from '@/lib/agents/server';
-import type { OrganizationDTO } from '@/lib/organizations/server';
 
 import { AgentContentField, AgentDescriptionField, AgentNameField } from './agent-form-fields';
 
-export function AgentNewPage({ activeOrg }: { activeOrg: OrganizationDTO | null }) {
-  if (!activeOrg) {
+export function AgentNewPage({ organizationId }: { organizationId: string | null }) {
+  if (!organizationId) {
     return (
       <Page>
         <NoOrganizationCard />
@@ -31,16 +30,10 @@ export function AgentNewPage({ activeOrg }: { activeOrg: OrganizationDTO | null 
     );
   }
 
-  return <Form organizationId={activeOrg.id} organizationName={activeOrg.name} />;
+  return <Form organizationId={organizationId} />;
 }
 
-function Form({
-  organizationId,
-  organizationName,
-}: {
-  organizationId: string;
-  organizationName: string;
-}) {
+function Form({ organizationId }: { organizationId: string }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [name, setName] = React.useState('');
@@ -111,11 +104,6 @@ function Form({
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <span className="hidden items-center gap-2 md:flex">
-            <span className="text-muted-foreground">·</span>
-            <Bot className="size-4 text-muted-foreground" />
-            <span className="truncate text-sm font-medium">{organizationName}</span>
-          </span>
         </Page.Header>
 
         <Page.Content className="gap-4 overflow-auto">

@@ -6,12 +6,12 @@ import { getActiveOrganizationServerFn } from '@/lib/organizations/server';
 export const Route = createFileRoute('/_authenticated/library/skills/new')({
   loader: async () => {
     const activeOrg = await getActiveOrganizationServerFn();
-    return { activeOrg };
+    return { organizationId: activeOrg?.id ?? null };
   },
   component: SkillNewRoute,
 });
 
 function SkillNewRoute() {
-  const { activeOrg } = Route.useLoaderData();
-  return <SkillNewPage activeOrg={activeOrg} />;
+  const { organizationId } = Route.useLoaderData();
+  return <SkillNewPage organizationId={organizationId} />;
 }

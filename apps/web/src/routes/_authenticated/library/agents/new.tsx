@@ -6,12 +6,12 @@ import { getActiveOrganizationServerFn } from '@/lib/organizations/server';
 export const Route = createFileRoute('/_authenticated/library/agents/new')({
   loader: async () => {
     const activeOrg = await getActiveOrganizationServerFn();
-    return { activeOrg };
+    return { organizationId: activeOrg?.id ?? null };
   },
   component: AgentNewRoute,
 });
 
 function AgentNewRoute() {
-  const { activeOrg } = Route.useLoaderData();
-  return <AgentNewPage activeOrg={activeOrg} />;
+  const { organizationId } = Route.useLoaderData();
+  return <AgentNewPage organizationId={organizationId} />;
 }
