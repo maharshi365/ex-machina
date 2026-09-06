@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { listIntegrationsServerFn } from './server.js';
+import { listIntegrationsServerFn, removeIntegrationServerFn } from './server.js';
 
 export const integrationKeys = {
   all: ['integrations'] as const,
@@ -11,4 +11,10 @@ export function integrationsQueryOptions(organizationId: string) {
     queryKey: integrationKeys.list(organizationId),
     queryFn: () => listIntegrationsServerFn(),
   });
+}
+
+export function removeIntegrationMutationOptions() {
+  return {
+    mutationFn: (connectionId: string) => removeIntegrationServerFn({ data: { connectionId } }),
+  } as const;
 }

@@ -4,12 +4,15 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import {
   EXTERNAL_CONNECTIONS_COLLECTION,
   InstallationAlreadyBoundError,
+  getExternalConnectionById,
   listExternalConnections,
+  revokeExternalConnection,
   upsertVerifiedGitHubInstallation,
 } from './external-connections.js';
 import {
   EXTERNAL_RESOURCES_COLLECTION,
   listExternalResources,
+  markExternalResourcesRemoved,
   synchronizeGitHubRepositoryResources,
 } from './external-resources.js';
 import {
@@ -179,6 +182,32 @@ describe('GitHub integration persistence', () => {
     await expect(
       synchronizeGitHubRepositoryResources(db, connection._id, [], orgB)
     ).rejects.toThrow('not found for organization');
+  });
+
+  test('revokes a connection and its resources within the organization', async () => {
+    const connection = await upsertVerifiedGitHubInstallation(db, connectionInput, {
+      organizationId: orgA,
+      userId: userA,
+    });
+    await synchronizeGitHubRepositoryResources(db, connection._id, [repository('1', 'one')], orgA);
+
+    expect(await getExternalConnectionById(db, connection._id, orgB)).toBeNull();
+    expect(
+      await revokeExternalConnection(db, connection._id, {
+        organizationId: orgB,
+        userId: userB,
+      })
+    ).toBeNull();
+    expect(await markExternalResourcesRemoved(db, orgB, connection._id)).toBe(0);
+
+    const revoked = await revokeExternalConnection(db, connection._id, {
+      organizationId: orgA,
+      userId: userB,
+    });
+    expect(revoked?.status).toBe('revoked');
+    expect(revoked?.editedBy).toBe(userB.toHexString());
+    expect(await markExternalResourcesRemoved(db, orgA, connection._id)).toBe(1);
+    expect((await listExternalResources(db, orgA, connection._id))[0]?.status).toBe('removed');
   });
 
   test('creates the required integration indexes', async () => {

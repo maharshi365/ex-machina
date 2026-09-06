@@ -47,6 +47,24 @@ async function parseJson(response: Response, operation: string): Promise<unknown
   return value;
 }
 
+async function expectNoContent(response: Response, operation: string): Promise<void> {
+  if (response.ok) return;
+
+  let value: unknown;
+  try {
+    value = await response.json();
+  } catch {
+    value = undefined;
+  }
+  throw new GitHubProviderError({
+    operation,
+    code: 'http_error',
+    status: response.status,
+    requestId: response.headers.get('x-github-request-id') ?? undefined,
+    providerMessage: providerMessage(value),
+  });
+}
+
 export class GitHubAppClient {
   readonly #config: GitHubAppConfig;
   readonly #fetch: Fetch;
@@ -169,6 +187,25 @@ export class GitHubAppClient {
       }
     );
     return normalizeGitHubInstallation(value);
+  }
+
+  async uninstallInstallation(installationId: string): Promise<void> {
+    const id = githubId(installationId, 'installation id');
+    const authentication = await this.#auth({ type: 'app' });
+    let response: Response;
+    try {
+      response = await this.#fetch(this.#apiUrl(`app/installations/${id}`), {
+        method: 'DELETE',
+        headers: this.#headers(authentication.token),
+      });
+    } catch (cause) {
+      throw new GitHubProviderError({
+        operation: 'App installation uninstall',
+        code: 'network_error',
+        cause,
+      });
+    }
+    await expectNoContent(response, 'App installation uninstall');
   }
 
   async verifyInstallation(input: {

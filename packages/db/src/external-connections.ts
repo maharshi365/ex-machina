@@ -119,6 +119,41 @@ export async function listExternalConnections(
   return connections.map(toExternalConnectionDTO);
 }
 
+export async function getExternalConnectionById(
+  db: Db,
+  connectionId: string | ObjectId,
+  organizationId: string | ObjectId
+): Promise<ExternalConnectionDTO | null> {
+  const connection = await getExternalConnectionsCollection(db).findOne({
+    _id: toObjectId(connectionId),
+    organizationId: toObjectId(organizationId),
+  });
+  return connection ? toExternalConnectionDTO(connection) : null;
+}
+
+export async function revokeExternalConnection(
+  db: Db,
+  connectionId: string | ObjectId,
+  ctx: { userId: string | ObjectId; organizationId: string | ObjectId }
+): Promise<ExternalConnectionDTO | null> {
+  const connection = await getExternalConnectionsCollection(db).findOneAndUpdate(
+    {
+      _id: toObjectId(connectionId),
+      organizationId: toObjectId(ctx.organizationId),
+    },
+    {
+      $set: {
+        status: 'revoked',
+        editedBy: toObjectId(ctx.userId),
+        editedAt: new Date(),
+      },
+      $unset: { lastError: '' },
+    },
+    { returnDocument: 'after' }
+  );
+  return connection ? toExternalConnectionDTO(connection) : null;
+}
+
 export async function upsertVerifiedGitHubInstallation(
   db: Db,
   input: UpsertVerifiedGitHubInstallationInput,
@@ -201,6 +236,10 @@ export function createExternalConnectionsRepository(db: Db, organizationId: stri
   const orgId = toObjectId(organizationId);
   return {
     listExternalConnections: () => listExternalConnections(db, orgId),
+    getExternalConnectionById: (connectionId: string | ObjectId) =>
+      getExternalConnectionById(db, connectionId, orgId),
+    revokeExternalConnection: (connectionId: string | ObjectId, userId: string | ObjectId) =>
+      revokeExternalConnection(db, connectionId, { userId, organizationId: orgId }),
     upsertVerifiedGitHubInstallation: (
       input: UpsertVerifiedGitHubInstallationInput,
       userId: string | ObjectId

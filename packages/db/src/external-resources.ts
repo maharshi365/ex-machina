@@ -150,6 +150,23 @@ export async function synchronizeGitHubRepositoryResources(
   return listExternalResources(db, orgId, connId);
 }
 
+export async function markExternalResourcesRemoved(
+  db: Db,
+  organizationId: string | ObjectId,
+  connectionId: string | ObjectId,
+  removedAt = new Date()
+): Promise<number> {
+  const result = await getExternalResourcesCollection(db).updateMany(
+    {
+      organizationId: toObjectId(organizationId),
+      connectionId: toObjectId(connectionId),
+      status: 'active',
+    },
+    { $set: { status: 'removed', lastSyncedAt: removedAt } }
+  );
+  return result.modifiedCount;
+}
+
 export function createExternalResourcesRepository(db: Db, organizationId: string | ObjectId) {
   const orgId = toObjectId(organizationId);
   return {
@@ -160,6 +177,8 @@ export function createExternalResourcesRepository(db: Db, organizationId: string
       resources: GitHubRepositoryResourceInput[],
       syncedAt?: Date
     ) => synchronizeGitHubRepositoryResources(db, connectionId, resources, orgId, syncedAt),
+    markExternalResourcesRemoved: (connectionId: string | ObjectId, removedAt?: Date) =>
+      markExternalResourcesRemoved(db, orgId, connectionId, removedAt),
     collection: getExternalResourcesCollection(db),
     db,
     organizationId: orgId,

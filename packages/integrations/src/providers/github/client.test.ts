@@ -64,4 +64,18 @@ describe('GitHub App client authentication', () => {
       requests.every((request) => request.authorization?.toLowerCase().startsWith('bearer '))
     ).toBe(true);
   });
+
+  test('uninstalls an installation with App authentication', async () => {
+    let capturedRequest: Request | undefined;
+    const client = new GitHubAppClient(testConfig(), async (input, init) => {
+      capturedRequest = new Request(input, init);
+      return new Response(null, { status: 204 });
+    });
+
+    await client.uninstallInstallation('987');
+
+    expect(capturedRequest?.url).toBe('https://api.github.test/app/installations/987');
+    expect(capturedRequest?.method).toBe('DELETE');
+    expect(capturedRequest?.headers.get('authorization')?.toLowerCase()).toStartWith('bearer ');
+  });
 });

@@ -1,4 +1,4 @@
-import { Copy, ExternalLink, Eye, Github } from 'lucide-react';
+import { Copy, ExternalLink, Eye, Github, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { ExternalConnectionDTO, ExternalResourceDTO } from '@ex-machina/db';
 
@@ -44,7 +44,11 @@ export function IntegrationStatusBadge({ status }: { status: ConnectionStatus })
   return <Badge className={`capitalize ${statusBadgeClassName(status) ?? ''}`}>{status}</Badge>;
 }
 
-export function getIntegrationColumns(onView: (connection: IntegrationRow) => void) {
+export function getIntegrationColumns(
+  onView: (connection: IntegrationRow) => void,
+  onRemove: (connection: IntegrationRow) => void,
+  canManage: boolean
+) {
   return columnHelper.columns([
     columnHelper.accessor('account', {
       header: 'Installation',
@@ -107,6 +111,15 @@ export function getIntegrationColumns(onView: (connection: IntegrationRow) => vo
                     .then(() => toast.success('Installation ID copied'))
                     .catch(() => toast.error('Failed to copy installation ID'));
                 },
+              },
+              {
+                label: canManage
+                  ? 'Remove integration'
+                  : 'Only organization admins can remove integrations',
+                icon: Trash2,
+                variant: 'destructive',
+                disabled: !canManage,
+                onClick: () => onRemove(connection),
               },
             ]}
           />
