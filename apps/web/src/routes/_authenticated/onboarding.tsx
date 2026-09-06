@@ -1,10 +1,19 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 
 import { OnboardingPage } from '@/components/onboarding/onboarding-page';
 import { getOnboardingData } from '@/components/onboarding/onboarding-data';
 
 export const Route = createFileRoute('/_authenticated/onboarding')({
-  loader: async () => await getOnboardingData(),
+  loader: async ({ context }) => {
+    const activeOrganizationId = (
+      context.session.session as { activeOrganizationId?: string | null }
+    ).activeOrganizationId;
+    if (activeOrganizationId) {
+      throw redirect({ to: '/dashboard' });
+    }
+
+    return getOnboardingData();
+  },
   component: OnboardingRoute,
 });
 

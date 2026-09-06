@@ -161,9 +161,7 @@ function SkillEditManager({
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="truncate max-w-40">
-                    {skill.name}
-                  </BreadcrumbPage>
+                  <BreadcrumbPage className="truncate max-w-40">{skill.name}</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>

@@ -1,11 +1,12 @@
-import { Check, Loader2, Mail, X } from 'lucide-react';
+import { Check, Loader2, X } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { createAppColumnHelper, DataTable } from '@/components/ui/app-table';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 
 import type { Invitation } from './types';
+
+const columnHelper = createAppColumnHelper<Invitation>();
 
 export function InvitationsCard({
   invitations,
@@ -22,101 +23,75 @@ export function InvitationsCard({
   onAccept: (id: string) => void;
   onReject: (id: string) => void;
 }) {
-  const hasInvites = invitations.length > 0;
+  const columns = columnHelper.columns([
+    columnHelper.accessor('organizationName', {
+      header: 'Organization',
+      cell: (ctx) => (
+        <span
+          className="block truncate font-medium"
+          title={ctx.getValue() ?? ctx.row.original.organizationId}
+        >
+          {ctx.getValue() ?? ctx.row.original.organizationId}
+        </span>
+      ),
+    }),
+    columnHelper.accessor('role', {
+      header: 'Role',
+      meta: { headClassName: 'w-28', cellClassName: 'w-28' },
+      cell: (ctx) => (
+        <Badge variant="secondary" className="capitalize">
+          {ctx.getValue()}
+        </Badge>
+      ),
+    }),
+    columnHelper.accessor('expiresAt', {
+      header: 'Expires',
+      meta: { headClassName: 'w-36', cellClassName: 'w-36' },
+      cell: (ctx) => <ctx.cell.CellDateTime />,
+    }),
+    columnHelper.display({
+      id: 'actions',
+      header: 'Actions',
+      meta: { headClassName: 'w-44 text-right', cellClassName: 'w-44 text-right' },
+      cell: (ctx) => {
+        const invitation = ctx.row.original;
+        const isPending = acceptingId === invitation.id || rejectingId === invitation.id;
+        return (
+          <div className="flex justify-end gap-2">
+            <Button size="sm" disabled={isPending} onClick={() => onAccept(invitation.id)}>
+              {acceptingId === invitation.id ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Check className="size-4" />
+              )}
+              Accept
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              disabled={isPending}
+              onClick={() => onReject(invitation.id)}
+            >
+              {rejectingId === invitation.id ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <X className="size-4" />
+              )}
+              Decline
+            </Button>
+          </div>
+        );
+      },
+    }),
+  ]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Mail className="size-5 text-muted-foreground" />
-          Pending invites
-          {hasInvites && (
-            <Badge variant="secondary" className="ml-2">
-              {invitations.length}
-            </Badge>
-          )}
-        </CardTitle>
-        <CardDescription>
-          Invitations sent to <span className="font-medium text-foreground">{userEmail}</span>
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        {hasInvites ? (
-          <div className="space-y-3">
-            {invitations.map((inv) => (
-              <div key={inv.id} className="rounded-lg border p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-medium">
-                      {inv.organizationName ?? inv.organizationId}
-                    </p>
-                    <p className="text-xs text-muted-foreground">Invited as {inv.role}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      Expires {new Date(inv.expiresAt).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <Badge variant="outline" className="shrink-0 capitalize">
-                    {inv.status}
-                  </Badge>
-                </div>
-                <Separator className="my-3" />
-                <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    className="flex-1"
-                    disabled={acceptingId === inv.id || rejectingId === inv.id}
-                    onClick={() => onAccept(inv.id)}
-                  >
-                    {acceptingId === inv.id ? (
-                      <Loader2 className="size-4 animate-spin" />
-                    ) : (
-                      <Check className="size-4" />
-                    )}
-                    Accept
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="flex-1"
-                    disabled={acceptingId === inv.id || rejectingId === inv.id}
-                    onClick={() => onReject(inv.id)}
-                  >
-                    {rejectingId === inv.id ? (
-                      <Loader2 className="size-4 animate-spin" />
-                    ) : (
-                      <X className="size-4" />
-                    )}
-                    Decline
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="rounded-lg border border-dashed p-6 text-center">
-            <Mail className="mx-auto size-8 text-muted-foreground/50" />
-            <p className="mt-3 text-sm font-medium">No pending invites</p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              When someone invites you to an organization, it will appear here.
-            </p>
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  );
-}
-
-export function NextStepsCard() {
-  return (
-    <Card className="bg-muted/30">
-      <CardHeader>
-        <CardTitle className="text-sm">What happens next?</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-2 text-sm text-muted-foreground">
-        <p>• Create an organization to get your own workspace.</p>
-        <p>• Accept an invitation to join a teammate&apos;s organization.</p>
-        <p>• Once you have an organization you can go to the dashboard.</p>
-      </CardContent>
-    </Card>
+    <section className="space-y-3">
+      <div>
+        <h2 className="font-semibold">Pending invitations</h2>
+        <p className="text-sm text-muted-foreground">Invitations sent to {userEmail}.</p>
+      </div>
+      <DataTable columns={columns} data={invitations} emptyMessage="No pending invitations." />
+    </section>
   );
 }
