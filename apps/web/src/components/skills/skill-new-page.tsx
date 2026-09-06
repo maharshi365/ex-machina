@@ -16,7 +16,6 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import type { OrganizationDTO } from '@/lib/organizations/server';
 import { createSkillServerFn } from '@/lib/skills/server';
 import { skillKeys } from '@/lib/skills/queries';
@@ -100,9 +99,10 @@ function Form({
             </>
           }
         >
-          <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
             <BreadcrumbList>
+              <BreadcrumbItem className="hidden md:block">Library</BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
                 <BreadcrumbLink asChild>
                   <Link to="/library/skills">Skills</Link>

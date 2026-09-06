@@ -9,7 +9,6 @@ import { Page } from '@/components/layout/page';
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -84,9 +83,7 @@ function AgentsManager({
         >
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">Library</BreadcrumbLink>
-              </BreadcrumbItem>
+              <BreadcrumbItem className="hidden md:block">Library</BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
                 <BreadcrumbPage>Agents</BreadcrumbPage>
