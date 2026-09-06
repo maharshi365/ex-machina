@@ -8,7 +8,7 @@ Factory schema version: `1`
 - The portable `FactoryDefinition` is the canonical configuration shape. MongoDB wraps it with platform identity, lifecycle, revision, and audit data.
 - Library agents and skills are live references. An edit is used by the next run. Every run must snapshot the resolved agent, skills, definition revision, and execution configuration, and reference the immutable webhook delivery that caused it.
 - A factory assigns named local agents. Automations target those assignment keys rather than global library IDs.
-- Runtime inheritance is `factory defaults -> assigned agent -> automation`. A supplied `model`, `harness`, or `sandbox` block replaces that whole inherited block. Adapter `config` objects are never implicitly deep-merged.
+- Runtime inheritance is `factory defaults -> assigned agent -> automation`. A supplied `model`, `harness`, or `sandbox` block replaces that whole inherited block.
 - Agent and automation `skillIds` are always present. They default to `[]`; an automation's list is authoritative for that automation.
 - Every automation explicitly lists its writable repository targets. Every trigger explicitly lists its event-source repositories. Those lists may differ.
 - Multiple triggers on an automation use OR semantics. Filters within one trigger use AND semantics; values within one filter use OR semantics.
@@ -94,18 +94,15 @@ type ExecutionDefinition = {
   model: {
     provider: string;
     modelId: string;
-    config?: Record<string, unknown>;
   };
   harness: {
     type: 'opencode';
     version: 1;
-    config?: Record<string, unknown>;
   };
   sandbox: {
     provider: 'aws';
     version: 1;
     image: { id: string };
-    config?: Record<string, unknown>;
   };
 };
 ```
@@ -150,7 +147,7 @@ type GithubTrigger = {
 };
 ```
 
-Provider and version form a discriminant. New providers add union members rather than weakening the entire schema to `Record<string, unknown>`. Provider-owned `config` remains appropriate for harness, model, and sandbox adapters where the core only passes validated settings through.
+Provider and version form a discriminant. New providers add union members rather than weakening the entire schema to `Record<string, unknown>`.
 
 ## Persistence Boundary
 
@@ -273,7 +270,7 @@ Activation validation additionally requires:
 - Every trigger uses only filters supported by its provider event.
 - Referenced connections, agents, and skills exist in the same organization.
 - Connections are active and authorize every referenced external repository.
-- Models, images, harnesses, and provider configs are currently supported.
+- Models, images, and harnesses are currently supported.
 
 An active factory update must pass activation validation atomically. Invalid config never partially replaces the last active definition.
 
@@ -318,7 +315,7 @@ Integration indexes do not belong in the factory schema.
 
 - Integration implementation; its installation, token, webhook, routing, and retry design is specified in
   [`integration-system-design.md`](./integration-system-design.md).
-- Sandbox provider config beyond AWS v1 and image catalog IDs.
+- Sandbox providers beyond AWS v1 and image catalog IDs.
 - Secret references and runtime permission policy.
 - Immutable library revisions; live references plus run snapshots are the selected initial behavior.
 - JSON Schema generation and config-as-code loading. The portable contract avoids coupling these to MongoDB.

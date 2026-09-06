@@ -6,7 +6,6 @@ export const SandboxDefinitionSchema = z.strictObject({
   image: z.strictObject({
     id: z.string().trim().min(1),
   }),
-  config: z.record(z.string(), z.unknown()).optional(),
 });
 
 export type SandboxDefinition = z.infer<typeof SandboxDefinitionSchema>;
