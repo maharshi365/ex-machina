@@ -70,27 +70,28 @@ function SkillsManager({
 
   return (
     <Page>
+      <Page.Header
+        className="static mx-0 h-16 border-0 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12"
+        actions={
+          <Button asChild>
+            <Link to="/library/skills/new">
+              <Plus className="size-4" />
+              Create skill
+            </Link>
+          </Button>
+        }
+      >
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem className="hidden md:block">Library</BreadcrumbItem>
+            <BreadcrumbSeparator className="hidden md:block" />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Skills</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </Page.Header>
       <Page.Content>
-        <Page.Header
-          actions={
-            <Button asChild>
-              <Link to="/library/skills/new">
-                <Plus className="size-4" />
-                Create skill
-              </Link>
-            </Button>
-          }
-        >
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">Library</BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Skills</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </Page.Header>
 
         {isLoading ? (
           <div className="space-y-2">
