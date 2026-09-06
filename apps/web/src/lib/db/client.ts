@@ -1,10 +1,10 @@
 import { MongoClient } from 'mongodb';
+import { env } from '@/lib/env/server';
 
 // Single shared client for both better-auth and pure @ex-machina/db usage.
 // The db package itself is pure (no client creation) — consumers inject `Db`.
 
-const mongoUri =
-  process.env.MONGODB_URI ?? process.env.DATABASE_URL ?? 'mongodb://localhost:27017/ex-machina';
+const mongoUri = env.mongoUri;
 
 let client: MongoClient | null = null;
 

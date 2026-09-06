@@ -10,6 +10,7 @@ import {
   githubAppConfigFromEnv,
 } from '@ex-machina/integrations/providers/github';
 import { getDb } from '@/lib/db/client';
+import { env } from '@/lib/env/server';
 import { requireIntegrationSession } from '@/lib/integrations/session';
 
 export const listIntegrationsServerFn = createServerFn({ method: 'GET' }).handler(async () => {
@@ -49,7 +50,7 @@ export const removeIntegrationServerFn = createServerFn({ method: 'POST' })
     if (!connection || connection.provider !== 'github') throw new Error('Integration not found');
 
     try {
-      await new GitHubAppClient(githubAppConfigFromEnv(process.env)).uninstallInstallation(
+      await new GitHubAppClient(githubAppConfigFromEnv(env)).uninstallInstallation(
         connection.auth.installationId
       );
     } catch (error) {

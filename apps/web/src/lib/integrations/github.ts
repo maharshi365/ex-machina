@@ -16,12 +16,13 @@ import {
   hashState,
 } from '@ex-machina/integrations/providers/github';
 import { getDb } from '@/lib/db/client';
+import { env } from '@/lib/env/server';
 
 const DEFAULT_RETURN_TO = '/library/integrations';
 let indexesPromise: Promise<void> | undefined;
 
 function getConfig() {
-  return githubAppConfigFromEnv(process.env);
+  return githubAppConfigFromEnv(env);
 }
 
 function ensureIndexes() {
@@ -40,7 +41,7 @@ export function localReturnTo(value: string | null): string {
 }
 
 export function callbackUrl(path: string): string {
-  return new URL(path, process.env.BETTER_AUTH_URL ?? 'http://localhost:3000').href;
+  return new URL(path, env.BETTER_AUTH_URL).href;
 }
 
 export async function beginGitHubInstallation(input: {
