@@ -11,6 +11,7 @@ import {
   Sun,
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useNavigate } from '@tanstack/react-router';
 import { authClient } from '@/lib/auth/client.ts';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
@@ -44,6 +45,7 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
   const { theme, setTheme } = useTheme();
+  const navigate = useNavigate();
 
   return (
     <SidebarMenu>
@@ -139,7 +141,15 @@ export function NavUser({
               </DropdownMenuSubContent>
             </DropdownMenuSub>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => void authClient.signOut()}>
+            <DropdownMenuItem
+              onClick={() =>
+                void authClient.signOut({
+                  fetchOptions: {
+                    onSuccess: () => void navigate({ to: '/login' }),
+                  },
+                })
+              }
+            >
               <LogOut />
               Log out
             </DropdownMenuItem>

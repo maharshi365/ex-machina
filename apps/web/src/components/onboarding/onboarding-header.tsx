@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { Building2, LogOut } from 'lucide-react';
 
 import { authClient } from '@/lib/auth/client';
@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import type { OnboardingUser } from './types';
 
 export function OnboardingHeader({ user }: { user: OnboardingUser }) {
+  const navigate = useNavigate();
+
   return (
     <header className="sticky top-0 z-10 border-b bg-background/80 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">
@@ -27,7 +29,13 @@ export function OnboardingHeader({ user }: { user: OnboardingUser }) {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => void authClient.signOut()}
+            onClick={() =>
+              void authClient.signOut({
+                fetchOptions: {
+                  onSuccess: () => void navigate({ to: '/login' }),
+                },
+              })
+            }
             aria-label="Sign out"
           >
             <LogOut className="size-4" />
