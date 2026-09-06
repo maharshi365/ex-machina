@@ -72,6 +72,14 @@ const authEnvSchema = z.object({
 const databaseEnvSchema = z.object({
   MONGODB_URI: optionalString,
   DATABASE_URL: optionalString,
+  SECRET_ENCRYPTION_KEY: blankToUndefined.pipe(
+    z
+      .string()
+      .refine((value) => new TextEncoder().encode(value).length >= 32, {
+        error: 'SECRET_ENCRYPTION_KEY must be at least 32 bytes',
+      })
+      .optional()
+  ),
 });
 
 // --- GitHub App integration --------------------------------------------------

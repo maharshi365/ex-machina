@@ -14,7 +14,8 @@
     "./external-connections": "./src/external-connections.ts",
     "./external-resources": "./src/external-resources.ts",
     "./installation-intents": "./src/installation-intents.ts",
-    "./integration-indexes": "./src/integration-indexes.ts"
+    "./integration-indexes": "./src/integration-indexes.ts",
+    "./secrets": "./src/secrets.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

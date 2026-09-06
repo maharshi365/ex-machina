@@ -6,3 +6,4 @@ export * from './external-connections.js';
 export * from './external-resources.js';
 export * from './installation-intents.js';
 export * from './integration-indexes.js';
+export * from './secrets.js';
